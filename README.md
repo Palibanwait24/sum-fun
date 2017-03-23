@@ -1,2 +1,11 @@
 # sum-fun
-A small arithmetic game designed to keep your mind sharp.
+
+A small arithmetic game for CS360.
+
+The game consists of a 7 x 7 board of tiles and a queue of five tiles. Each of these tiles is numbered from 0 - 9. In addition, there is a 1-tile border of empty tiles surrounding the board.
+
+The objective of the game is to remove all the tiles from the board. This is done by selecting the first tile in the queue and placing it into an empty spot on the board. If the surrounding tiles add up to the number on the just-placed tile modulo 10, all are eliminated. Furthermore, if three or more tiles are eliminated, the player receives a bonus of 10 * number-of-tiles-removed. Each time a tile is selected, another tile is added to the bottom of the queue.
+
+In the simplest version of the game, the player has 50 moves to eliminate all the tiles from the board.
+
+In the more challenging version of the game, the player has an unlimited number of moves, but only has three minutes to eliminate all the tiles.
