@@ -14,7 +14,13 @@ public class QueuePane extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         for (int i = 0; i < queue.length; i++) {
             gbc.gridy = i;
-            add(new Tile(true), gbc);
+            Tile temp = new Tile(true);
+            add(temp, gbc);
+            queue[i] = Integer.parseInt(temp.getData());
         }
+       
+    }
+    public int getQueue(){
+    	return queue[0];
     }
 }

@@ -29,13 +29,24 @@ public class Tile extends JButton {
             data = "" + n;
         }
         
-        setData(data);
+        setDataString(data);
 
     }
-    /// set number created by pali for test
-    public void setData(String s){
+    /// set number from a string
+    public void setDataString(String s){
         setText("" + s);
+        data="" + s;
     }
+    //set data from a integer
+    public void setDataInteger(int i){
+        setText("" + i);
+        data="" + i;
+    }
+    //get data in String form
+    public String getData(){
+    	return data;
+    }
+    
     
     public Color getRandomColor() {
     	Random rand = new Random();
