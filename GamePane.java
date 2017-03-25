@@ -34,6 +34,7 @@ public class GamePane extends JPanel {
 		info = new InfoPane();
 		queue = new QueuePane();
 		grid = board.getGrid();
+
 		int dimension = board.getDimension();
 		for (int row = 0; row < dimension; row++) {
 			for (int col = 0; col < dimension; col++) {
@@ -49,11 +50,12 @@ public class GamePane extends JPanel {
 							System.out.println("Sum is: " + mySum);// print out the sum
 							int modded = mySum%10;
 							System.out.println("modded = " + modded);
-							if (modded == queue.getQueue()){
+							if (modded == queue.getQueueValue()){
 								System.out.println("this is mod 10");
 							}
 							else{
 								System.out.println("this is not mod 10");
+								
 							}
 						}
 						
@@ -177,8 +179,7 @@ public class GamePane extends JPanel {
 
 			return validity;
 		}
-
-	
-
-
+		public QueuePane getQueue(){
+			return queue;
+		}
 }
