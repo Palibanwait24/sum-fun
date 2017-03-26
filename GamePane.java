@@ -54,6 +54,7 @@ public class GamePane extends JPanel {
 								System.out.println("this is mod 10");
 							} else {
 								System.out.println("this is not mod 10");
+								shakeInvalidMove();
 
 							}
 						} else {
