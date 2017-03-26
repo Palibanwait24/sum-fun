@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class InfoPane extends JPanel {
 	public InfoPane() {
+		
 	}
 	
 }

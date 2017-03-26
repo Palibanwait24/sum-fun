@@ -6,62 +6,94 @@ import javax.swing.*;
 
 public class Window extends JFrame {
 
-    private final int WINDOW_WIDTH = 680;
-    private final int WINDOW_HEIGHT = 720;
-    private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-    private final int LOCATION_X = screensize.height / 3;
-    private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
+	private final int WINDOW_WIDTH = 680;
+	private final int WINDOW_HEIGHT = 720;
+	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+	private final int LOCATION_X = screensize.height / 3;
+	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
 
-    private final JMenuBar menu; // menu for options and operations
+	private final JMenuBar menu; // menu for options and operations
 
-    /**
-     * Constructor for a Window object.
-     */
-    public Window() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocation(LOCATION_X, LOCATION_Y);
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        setResizable(true);
+	/**
+	 * Constructor for a Window object.
+	 */
+	public Window() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocation(LOCATION_X, LOCATION_Y);
+		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		setResizable(true);
 
-        menu = createMenu();
-        setJMenuBar(menu);
+		menu = createMenu();
+		setJMenuBar(menu);
 
-        GamePane pane = new GamePane();
-        pane.setFocusable(true);
-        add(pane);
-        pack();
-    }
+		GamePane pane = new GamePane();
+		pane.setFocusable(true);
+		add(pane);
+		pack();
+	}
 
-    private JMenuBar createMenu() {
-        JMenuBar temp = new JMenuBar();
+	private JMenuBar createMenu() {
+		JMenuBar temp = new JMenuBar();
 
-        JMenu fileMenu = new JMenu("File");
-        JMenuItem n = new JMenuItem("New game"); // start new game
-        n.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // start new game
-            }
-        });
-        fileMenu.add(n);
-        JMenuItem e = new JMenuItem("Exit"); // exit game
-        e.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        fileMenu.add(e);
-        temp.add(fileMenu);
+		JMenu fileMenu = new JMenu("File");
+		JMenuItem n = new JMenuItem("New game"); // start new game
+		n.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// start new game
+			}
+		});
+		fileMenu.add(n);
+		JMenuItem e = new JMenuItem("Exit"); // exit game
+		e.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*
+				int option = JOptionPane.showConfirmDialog((Component) getParent(), "Are you sure you want to exit Sum Fun?",
+						"Confirm Exit", 0);
+				if (option == 0) {
+					System.exit(0);
+				} else {
+					return;
+				}
+				*/
+				System.exit(0); // use for development, remove later
+			}
+		});
+		fileMenu.add(e);
+		temp.add(fileMenu);
 
-        JMenu optionMenu = new JMenu("Option");
-        JMenuItem viewHighScores = new JMenuItem("View high scores"); // view high scores in game
-        viewHighScores.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // show hi scores
-            }
-        });
-        optionMenu.add(viewHighScores);
-        temp.add(optionMenu);
+		JMenu optionMenu = new JMenu("Option");
+		JMenuItem viewHighScores = new JMenuItem("View high scores"); // view high scores in game
+		viewHighScores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// show hi scores
+			}
+		});
+		optionMenu.add(viewHighScores);
+		temp.add(optionMenu);
 
-        return temp;
-    }
+		return temp;
+	}
+
+	public void shake() {
+		final int length = 8;
+		final int ox = getLocationOnScreen().x;
+		final int oy = getLocationOnScreen().y;
+
+		int offset = ox;
+		try {
+			for (int i = 0; i < length; i++) {
+				if (i % 2 == 0) {
+					offset = ox + 10;
+				} else {
+					offset = ox - 10;
+				}
+				setLocation(offset, oy);
+				Thread.sleep(10);
+			}
+		} catch (Exception ex) {
+			System.out.println("Error occured.");
+			ex.printStackTrace();
+		}
+
+	}
 }
