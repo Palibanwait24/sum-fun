@@ -31,7 +31,8 @@ public class QueuePane extends JPanel {
 	public void refresh() {
 		for (int x = 0; x < queue.length; x++) {
 			Random rand = new Random();
-			int n = rand.nextInt(9) + 1; // generate random number in range [1,9]
+			int n = rand.nextInt(9) + 1; // generate random number in range
+											// [1,9]
 			String temp = "" + n;
 			queue[x].setDataString(temp);
 		}
