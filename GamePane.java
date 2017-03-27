@@ -62,16 +62,11 @@ public class GamePane extends JPanel {
 							System.out.println("Sum is: " + mySum);// print out
 																	// the sum
 							int modded = mySum % 10;
-							
+							System.out.println("modded = " + modded);
 							if (modded == queue.getQueueValue()) {
-								// remove valid tiles from isValid
-								
 								System.out.println("this is mod 10");
 							} else {
 								System.out.println("this is not mod 10");
-								// add tile to location and update queue
-								
-								
 								//shakeInvalidMove(); // not needed here, is still valid  move?
 								// just get no points
 							}
@@ -93,6 +88,15 @@ public class GamePane extends JPanel {
 
 	// calculates the sum
 	public int tileSum(int innerRow, int innerCol, boolean[] validity) {
+		
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dy = -1; dy <= 1; dy++) {
+				// convert below code to this
+			}
+		}
+		
+		
+		
 		int sum = 0;
 		// check left if not out of bounds
 		if (validity[0]) {
@@ -110,19 +114,19 @@ public class GamePane extends JPanel {
 		if (validity[3]) {
 			sum += Integer.parseInt(grid[innerRow + 1][innerCol].getData());
 		}
-		// check diagnal up to the left if not out of bounds
+		// check diagonal up to the left if not out of bounds
 		if (validity[4]) {
 			sum += Integer.parseInt(grid[innerRow - 1][innerCol - 1].getData());
 		}
-		// check diagnal up to the right if not out of bounds
+		// check diagonal up to the right if not out of bounds
 		if (validity[5]) {
 			sum += Integer.parseInt(grid[innerRow - 1][innerCol + 1].getData());
 		}
-		// check diagnal down to the left if not out of bounds
+		// check diagonal down to the left if not out of bounds
 		if (validity[6]) {
 			sum += Integer.parseInt(grid[innerRow + 1][innerCol - 1].getData());
 		}
-		// check diagnal down to the right if not out of bounds
+		// check diagonal down to the right if not out of bounds
 		if (validity[7]) {
 			sum += Integer.parseInt(grid[innerRow + 1][innerCol + 1].getData());
 		}
@@ -159,25 +163,25 @@ public class GamePane extends JPanel {
 			}
 		}
 
-		// check diagnal up to the left if not out of bounds
+		// check diagonal up to the left if not out of bounds
 		if (innerRow != 0 && innerCol != 0) {
 			if (!grid[innerRow - 1][innerCol - 1].getData().equals("")) {
 				validity[4] = true;
 			}
 		}
-		// check diagnal up to the right if not out of bounds
+		// check diagonal up to the right if not out of bounds
 		if (innerRow != 0 && innerCol != 8) {
 			if (!grid[innerRow - 1][innerCol + 1].getData().equals("")) {
 				validity[5] = true;
 			}
 		}
-		// check diagnal down to the left if not out of bounds
+		// check diagonal down to the left if not out of bounds
 		if (innerRow != 8 && innerCol != 0) {
 			if (!grid[innerRow + 1][innerCol - 1].getData().equals("")) {
 				validity[6] = true;
 			}
 		}
-		// check diagnal down to the right if not out of bounds
+		// check diagonal down to the right if not out of bounds
 		if (innerRow != 8 && innerCol != 8) {
 			if (!grid[innerRow + 1][innerCol + 1].getData().equals("")) {
 				validity[7] = true;

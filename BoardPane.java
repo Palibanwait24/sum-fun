@@ -37,7 +37,7 @@ public class BoardPane extends JPanel {
 
 		}
 
-		
+		// grid[8][1].setNumber(2);
 
 	}
 	public int getDimension(){
