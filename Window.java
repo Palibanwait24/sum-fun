@@ -11,7 +11,7 @@ public class Window extends JFrame {
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 	private final int LOCATION_X = screensize.height / 3;
 	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
-
+	private GamePane pane;
 	private final JMenuBar menu; // menu for options and operations
 
 	/**
@@ -26,7 +26,7 @@ public class Window extends JFrame {
 		menu = createMenu();
 		setJMenuBar(menu);
 
-		GamePane pane = new GamePane();
+		pane = new GamePane();
 		pane.setFocusable(true);
 		add(pane);
 		pack();
@@ -39,7 +39,12 @@ public class Window extends JFrame {
 		JMenuItem n = new JMenuItem("New game"); // start new game
 		n.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// start new game
+				pane.setVisible(false);
+				remove(pane);
+				pane = new GamePane();
+				add(pane);
+				pane.setFocusable(true);
+
 			}
 		});
 		fileMenu.add(n);
