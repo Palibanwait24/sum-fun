@@ -13,7 +13,7 @@ public class GamePane extends JPanel {
 	private QueuePane queue;
 	private Tile[][] grid;
 
-	/**
+	/**check
 	 * This is the constructor for the main game panel. It handles all mouse motion and mouse clicks.
 	 */
 	public GamePane() {
