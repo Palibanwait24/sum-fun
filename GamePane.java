@@ -2,6 +2,7 @@ package sumfun;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.channels.AlreadyBoundException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +14,9 @@ public class GamePane extends JPanel {
 	private QueuePane queue;
 	private Tile[][] grid;
 
-	/**check
-	 * This is the constructor for the main game panel. It handles all mouse motion and mouse clicks.
+	/**
+	 * check This is the constructor for the main game panel. It handles all
+	 * mouse motion and mouse clicks.
 	 */
 	public GamePane() {
 		setFocusable(true);
@@ -22,7 +24,8 @@ public class GamePane extends JPanel {
 
 		Box left = Box.createVerticalBox(); // holds board
 		Box right = Box.createVerticalBox(); // holds info and queue
-		Box container = Box.createHorizontalBox(); // holds left and right panels
+		Box container = Box.createHorizontalBox(); // holds left and right
+													// panels
 
 		Box right_top = Box.createHorizontalBox(); // holds game info
 		Box right_bottom = Box.createHorizontalBox(); // holds queue
@@ -57,8 +60,19 @@ public class GamePane extends JPanel {
 						// *NEED* add number from top of queue to mySum
 						if (grid[innerRow][innerCol].getData().equals("")) {
 
-							boolean[] isValid = tileCheck(innerRow, innerCol);// find out which moves are valid
-							int mySum = tileSum(innerRow, innerCol, isValid);// find out the sum using valid move
+							boolean[] isValid = tileCheck(innerRow, innerCol);// find
+																				// out
+																				// which
+																				// moves
+																				// are
+																				// valid
+							int mySum = tileSum(innerRow, innerCol);// find
+																				// out
+																				// the
+																				// sum
+																				// using
+																				// valid
+																				// move
 							System.out.println("Sum is: " + mySum);// print out
 																	// the sum
 							int modded = mySum % 10;
@@ -67,7 +81,8 @@ public class GamePane extends JPanel {
 								System.out.println("this is mod 10");
 							} else {
 								System.out.println("this is not mod 10");
-								//shakeInvalidMove(); // not needed here, is still valid  move?
+								// shakeInvalidMove(); // not needed here, is
+								// still valid move?
 								// just get no points
 							}
 						} else {
@@ -87,107 +102,45 @@ public class GamePane extends JPanel {
 	}
 
 	// calculates the sum
-	public int tileSum(int innerRow, int innerCol, boolean[] validity) {
-		
+	public int tileSum(int innerRow, int innerCol) {
+		int sum = 0;
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
-				// convert below code to this
+
+				try {
+					if (!grid[innerRow + dx][innerCol + dy].getData().equals("")) {
+						sum += Integer.parseInt(grid[innerRow + dx][innerCol + dy].getData());
+					}
+				} catch (ArrayIndexOutOfBoundsException e) {}
+
 			}
 		}
-		
-		
-		
-		int sum = 0;
-		// check left if not out of bounds
-		if (validity[0]) {
-			sum += Integer.parseInt(grid[innerRow][innerCol - 1].getData());
-		}
-		// check right if not out of bounds
-		if (validity[1]) {
-			sum += Integer.parseInt(grid[innerRow][innerCol + 1].getData());
-		}
-		// check up if not out of bounds
-		if (validity[2]) {
-			sum += Integer.parseInt(grid[innerRow - 1][innerCol].getData());
-		}
-		// check down if not out of bounds
-		if (validity[3]) {
-			sum += Integer.parseInt(grid[innerRow + 1][innerCol].getData());
-		}
-		// check diagonal up to the left if not out of bounds
-		if (validity[4]) {
-			sum += Integer.parseInt(grid[innerRow - 1][innerCol - 1].getData());
-		}
-		// check diagonal up to the right if not out of bounds
-		if (validity[5]) {
-			sum += Integer.parseInt(grid[innerRow - 1][innerCol + 1].getData());
-		}
-		// check diagonal down to the left if not out of bounds
-		if (validity[6]) {
-			sum += Integer.parseInt(grid[innerRow + 1][innerCol - 1].getData());
-		}
-		// check diagonal down to the right if not out of bounds
-		if (validity[7]) {
-			sum += Integer.parseInt(grid[innerRow + 1][innerCol + 1].getData());
-		}
+
 		return sum;
 	}
 
 	public boolean[] tileCheck(int innerRow, int innerCol) {
 		boolean[] validity = new boolean[8];
+		int counter = 0;
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dy = -1; dy <= 1; dy++) {
+				if(dx==0 && dy == 0){
+					continue;
+				}
+				try {
+					if (!grid[innerRow + dx][innerCol + dy].getData().equals("")) {
+						validity[counter]= true;
+					}
+				} catch (ArrayIndexOutOfBoundsException e) {}
+				counter ++;
 
-		// check left if not out of bounds
-		if (innerCol != 0) {
-			if (!grid[innerRow][innerCol - 1].getData().equals("")) {
-				validity[0] = true;
 			}
 		}
-
-		// check right if not out of bounds
-		if (innerCol != 8) {
-			if (!grid[innerRow][innerCol + 1].getData().equals("")) {
-				validity[1] = true;
-			}
-		}
-
-		// check up if not out of bounds
-		if (innerRow != 0) {
-			if (!grid[innerRow - 1][innerCol].getData().equals("")) {
-				validity[2] = true;
-			}
-		}
-		// check down if not out of bounds
-		if (innerRow != 8) {
-			if (!grid[innerRow + 1][innerCol].getData().equals("")) {
-				validity[3] = true;
-			}
-		}
-
-		// check diagonal up to the left if not out of bounds
-		if (innerRow != 0 && innerCol != 0) {
-			if (!grid[innerRow - 1][innerCol - 1].getData().equals("")) {
-				validity[4] = true;
-			}
-		}
-		// check diagonal up to the right if not out of bounds
-		if (innerRow != 0 && innerCol != 8) {
-			if (!grid[innerRow - 1][innerCol + 1].getData().equals("")) {
-				validity[5] = true;
-			}
-		}
-		// check diagonal down to the left if not out of bounds
-		if (innerRow != 8 && innerCol != 0) {
-			if (!grid[innerRow + 1][innerCol - 1].getData().equals("")) {
-				validity[6] = true;
-			}
-		}
-		// check diagonal down to the right if not out of bounds
-		if (innerRow != 8 && innerCol != 8) {
-			if (!grid[innerRow + 1][innerCol + 1].getData().equals("")) {
-				validity[7] = true;
-			}
-		}
-
+		/*
+		System.out.println(validity[0] +" "+ validity[1]+" "+ validity[2]);
+		System.out.println(validity[3] +" "+ "none" +" "+ validity[4]);
+		System.out.println(validity[5] +" "+ validity[6]+" "+ validity[7]);
+		*/
 		return validity;
 	}
 
@@ -196,7 +149,11 @@ public class GamePane extends JPanel {
 	}
 
 	private void shakeInvalidMove() {
-		Window w = (Window) SwingUtilities.getWindowAncestor(this); // shake frame to signify invalid move
+		Window w = (Window) SwingUtilities.getWindowAncestor(this); // shake
+																	// frame to
+																	// signify
+																	// invalid
+																	// move
 		w.shake();
 	}
 }
