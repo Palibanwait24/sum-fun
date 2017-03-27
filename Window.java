@@ -44,7 +44,6 @@ public class Window extends JFrame {
 				pane = new GamePane();
 				add(pane);
 				pane.setFocusable(true);
-
 			}
 		});
 		fileMenu.add(n);
@@ -81,16 +80,16 @@ public class Window extends JFrame {
 
 	public void shake() {
 		final int length = 8;
-		final int ox = getLocationOnScreen().x;
-		final int oy = getLocationOnScreen().y;
+		final int ox = getLocationOnScreen().x; // original x position
+		final int oy = getLocationOnScreen().y; // original y position
 
 		int offset = ox;
 		try {
 			for (int i = 0; i < length; i++) {
 				if (i % 2 == 0) {
-					offset = ox + 10;
+					offset = ox + 5;
 				} else {
-					offset = ox - 10;
+					offset = ox - 5;
 				}
 				setLocation(offset, oy);
 				Thread.sleep(10);

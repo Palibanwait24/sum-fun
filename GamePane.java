@@ -18,21 +18,34 @@ public class GamePane extends JPanel {
 	 */
 	public GamePane() {
 		setFocusable(true);
-		setLayout(new BoxLayout(this, WIDTH));
+		setLayout(new BoxLayout(this, 0));
 
 		Box left = Box.createVerticalBox(); // holds board
 		Box right = Box.createVerticalBox(); // holds info and queue
 		Box container = Box.createHorizontalBox(); // holds left and right panels
 
-		// right.setLayout(new BoxLayout(this, WIDTH));
-		Box right_top = Box.createVerticalBox(); // holds info
-		Box right_bottom = Box.createVerticalBox(); // holds queue
+		Box right_top = Box.createHorizontalBox(); // holds game info
+		Box right_bottom = Box.createHorizontalBox(); // holds queue
 
-		// build left side
 		board = new BoardPane();
 		info = new InfoPane();
 		queue = new QueuePane();
 		grid = board.getGrid();
+
+		// build left side
+		left.add(board);
+
+		// build right side
+		right_top.add(info);
+		right_bottom.add(queue);
+
+		right.add(right_top);
+		right.add(right_bottom);
+
+		// build window
+		container.add(left);
+		container.add(right);
+		add(container);
 
 		int dimension = board.getDimension();
 		for (int row = 0; row < dimension; row++) {
@@ -54,8 +67,8 @@ public class GamePane extends JPanel {
 								System.out.println("this is mod 10");
 							} else {
 								System.out.println("this is not mod 10");
-								shakeInvalidMove();
-
+								//shakeInvalidMove(); // not needed here, is still valid  move?
+								// just get no points
 							}
 						} else {
 							shakeInvalidMove();
@@ -70,21 +83,7 @@ public class GamePane extends JPanel {
 				});
 			}
 		}
-		left.add(board);
 
-		// build right side
-
-		right_top.add(info);
-
-		right_bottom.add(queue);
-
-		right.add(right_top);
-		right.add(right_bottom);
-
-		// build window
-		container.add(left);
-		container.add(right);
-		add(container);
 	}
 
 	// calculates the sum
