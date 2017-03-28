@@ -27,7 +27,19 @@ public class QueuePane extends JPanel {
 	public int getQueueValue() {
 		return Integer.parseInt(queue[0].getData());
 	}
+	public void updateQueue(){
 
+		for(int x = 0; x < queue.length-1; x++){
+			queue[x].setDataString(queue[x+1].getData());
+		}
+		Random rand = new Random();
+		queue[queue.length-1].setDataInteger(rand.nextInt(9) + 1);
+	}
+	public String remove(){
+		String temp =  queue[0].getData();
+		updateQueue();
+		return temp;
+	}
 	public void refresh() {
 		for (int x = 0; x < queue.length; x++) {
 			Random rand = new Random();

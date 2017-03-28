@@ -58,55 +58,52 @@ public class GamePane extends JPanel {
 				grid[row][col].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent click) {
 						// *NEED* add number from top of queue to mySum
+						boolean add = false;
 						if (grid[innerRow][innerCol].getData().equals("")) {
 
-							boolean[] isValid = tileCheck(innerRow, innerCol);// find
-																				// out
-																				// which
-																				// moves
-																				// are
-																				// valid
-							int mySum = tileSum(innerRow, innerCol);// find
-																				// out
-																				// the
-																				// sum
-																				// using
-																				// valid
-																				// move
-							System.out.println("Sum is: " + mySum);// print out
-																	// the sum
-							int modded = mySum % 10;
-							System.out.println("modded = " + modded);
+							boolean[] isValid = tileCheck(innerRow, innerCol);// find out which moves are valid
+							int mySum = tileSum(innerRow, innerCol);// find out the sum using valid move
+							int modded = mySum % 10; // gets the modded value
 							if (modded == queue.getQueueValue()) {
-								System.out.println("this is mod 10");
+								// erase surrounding box texts and remove queue[0]
+								erase(innerRow,innerCol);
+								queue.remove();
+								
+								// calculate points here!!!!!
+								// calculate points here!!!!!
+								// calculate points here!!!!!
+								
 							} else {
-								System.out.println("this is not mod 10");
-								// shakeInvalidMove(); // not needed here, is
-								// still valid move?
-								// just get no points
+								//update queue and set queue[0] number to current location
+								grid[innerRow][innerCol].setDataString(queue.remove());
+								System.out.println(grid[innerRow][innerCol].getData());
+
 							}
 						} else {
 							shakeInvalidMove();
 						}
-
-						// *NEED* if mod 10 = number from top of queue then
-						// remove
-						// tiles and compute score accordingly also remove 1
-						// move
-
 					}
 				});
 			}
 		}
 
 	}
-
+	public void erase(int row, int col){
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dy = -1; dy <= 1; dy++) {
+				try {
+					grid[row + dx][col + dy].setDataString("");
+					
+				} catch (ArrayIndexOutOfBoundsException e) {}
+			}
+		}
+	}
 	// calculates the sum
 	public int tileSum(int innerRow, int innerCol) {
 		int sum = 0;
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
-
+				
 				try {
 					if (!grid[innerRow + dx][innerCol + dy].getData().equals("")) {
 						sum += Integer.parseInt(grid[innerRow + dx][innerCol + dy].getData());
@@ -149,11 +146,7 @@ public class GamePane extends JPanel {
 	}
 
 	private void shakeInvalidMove() {
-		Window w = (Window) SwingUtilities.getWindowAncestor(this); // shake
-																	// frame to
-																	// signify
-																	// invalid
-																	// move
+		Window w = (Window) SwingUtilities.getWindowAncestor(this); // shake frame to signify invalid  move
 		w.shake();
 	}
 }
