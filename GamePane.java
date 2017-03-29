@@ -2,10 +2,8 @@ package sumfun;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.channels.AlreadyBoundException;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class GamePane extends JPanel {
 

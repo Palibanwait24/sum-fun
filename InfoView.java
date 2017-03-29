@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class InfoPane extends JPanel {
+public class InfoView extends JPanel {
 	
 	// data fields
 	private int score = 0;
@@ -19,7 +19,7 @@ public class InfoPane extends JPanel {
 	private JLabel score_holder, time_holder, moves_holder;
 	private JButton hint, refresh;
 	
-	public InfoPane() {
+	public InfoView() {
 		
 		// construct info pane layout
 		setLayout(new BoxLayout(this, 0));

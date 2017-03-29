@@ -11,7 +11,7 @@ public class Window extends JFrame {
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 	private final int LOCATION_X = screensize.height / 3;
 	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
-	private GamePane pane;
+	private GameView gamePane;
 	private final JMenuBar menu; // menu for options and operations
 
 	/**
@@ -26,9 +26,9 @@ public class Window extends JFrame {
 		menu = createMenu();
 		setJMenuBar(menu);
 
-		pane = new GamePane();
-		pane.setFocusable(true);
-		add(pane);
+		gamePane = new GameView();
+		gamePane.setFocusable(true);
+		add(gamePane);
 		pack();
 	}
 
@@ -39,11 +39,11 @@ public class Window extends JFrame {
 		JMenuItem n = new JMenuItem("New game"); // start new game
 		n.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pane.setVisible(false);
-				remove(pane);
-				pane = new GamePane();
-				add(pane);
-				pane.setFocusable(true);
+				gamePane.setVisible(false);
+				remove(gamePane);
+				gamePane = new GameView();
+				add(gamePane);
+				gamePane.setFocusable(true);
 			}
 		});
 		fileMenu.add(n);
@@ -66,13 +66,13 @@ public class Window extends JFrame {
 		temp.add(fileMenu);
 
 		JMenu optionMenu = new JMenu("Option");
-		JMenuItem viewHighScores = new JMenuItem("View high scores"); // view high scores in game
-		viewHighScores.addActionListener(new ActionListener() {
+		JMenuItem GameViewHighScores = new JMenuItem("GameView high scores"); // GameView high scores in game
+		GameViewHighScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// show hi scores
 			}
 		});
-		optionMenu.add(viewHighScores);
+		optionMenu.add(GameViewHighScores);
 		temp.add(optionMenu);
 
 		return temp;
