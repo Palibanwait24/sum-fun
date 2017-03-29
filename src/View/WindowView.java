@@ -56,8 +56,8 @@ public class WindowView extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
+		//GameModel game = (GameModel) o;
+		//TileModel tile = (TileModel) o;
 	}
 	
 	public void addObserver(Observable model) {
@@ -131,7 +131,7 @@ public class WindowView extends JFrame implements Observer {
 		temp.add(fileMenu);
 
 		JMenu optionMenu = new JMenu("Option");
-		JMenuItem GameViewHighScores = new JMenuItem("GameView high scores"); // GameView high scores in game
+		JMenuItem GameViewHighScores = new JMenuItem("View high scores"); // GameView high scores in game
 		GameViewHighScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// show hi scores

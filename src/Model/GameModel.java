@@ -50,22 +50,10 @@ public class GameModel extends Observable {
 	
 	public void move() {
 		
-		
+		// set stuff
 		
 		setChanged();
 		notifyObservers();
-	}
-
-	@Override
-	protected void setChanged() {
-		// TODO Auto-generated method stub
-		super.setChanged();
-	}
-
-	@Override
-	public void notifyObservers(Object arg) {
-		// TODO Auto-generated method stub
-		super.notifyObservers(arg);
 	}
 
 }
