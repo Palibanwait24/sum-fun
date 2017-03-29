@@ -2,13 +2,15 @@ package View;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.*;
 
 import Model.TileModel;
 import sumfun.Window;
 
-public class GameView extends JPanel {
+public class GameView extends JPanel implements Observer {
 
 	private BoardView board;
 	private InfoView info;
@@ -65,6 +67,12 @@ public class GameView extends JPanel {
 
 	public QueueView getQueue() {
 		return queue;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
