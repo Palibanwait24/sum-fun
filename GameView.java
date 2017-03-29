@@ -14,7 +14,8 @@ public class GameView extends JPanel {
 	private Window main;
 
 	/**
-	 * This is the constructor for the main game panes. It handles all mouse motion and mouse clicks.
+	 * This is the constructor for the main game panes. It handles all mouse
+	 * motion and mouse clicks.
 	 */
 	public GameView() {
 		setFocusable(true);
@@ -83,11 +84,13 @@ class GridListener implements ActionListener {
 
 	public void actionPerformed(ActionEvent click) {
 		// *NEED* add number from top of queue to mySum
-		boolean add = false;
+		
 		if (grid[row][col].getData().equals("")) {
 
-			boolean[] isValid = tileCheck(row, col);// find out which moves are valid
 			int mySum = tileSum(row, col);// find out the sum using valid move
+			
+			if(mySum!= 0){
+				
 			int modded = mySum % 10; // gets the modded value
 			if (modded == queue.getQueueValue()) {
 				// erase surrounding box texts and remove queue[0]
@@ -99,13 +102,16 @@ class GridListener implements ActionListener {
 				// calculate points here!!!!!
 
 			} else {
-				//update queue and set queue[0] number to current location
+				// update queue and set queue[0] number to current location
 				grid[row][col].setDataString(queue.remove());
-				System.out.println(grid[row][col].getData());
+				
 			}
+			}
+			
 		} else {
-			//parent = (Window) SwingUtilities.getWindowAncestor(this.);
-			//parent.shake(); // invalid move, shake window to notify
+			System.out.println("not valid");
+			// parent = (Window) SwingUtilities.getWindowAncestor(this.);
+			// parent.shake(); // invalid move, shake window to notify
 		}
 	}
 
@@ -122,43 +128,76 @@ class GridListener implements ActionListener {
 	}
 
 	// calculates the sum
-	public int tileSum(int row, int col) {
+	public int tileSum(int innerRow, int innerCol) {
 		int sum = 0;
-		for (int dx = -1; dx <= 1; dx++) {
-			for (int dy = -1; dy <= 1; dy++) {
-				try {
-					if (!grid[row + dx][col + dy].getData().equals("")) {
-						sum += Integer.parseInt(grid[row + dx][col + dy].getData());
-					}
-				} catch (ArrayIndexOutOfBoundsException e) {
-					// do nothing
-				}
+		//check left
+
+		if (innerCol != 0 && (innerRow == 0 || innerRow ==8 || innerCol ==8)) {
+			
+			if (!grid[innerRow][innerCol - 1].getData().equals("")) {
+				
+				sum += Integer.parseInt(grid[innerRow][innerCol - 1].getData());
+			}
+		}
+
+
+		// check right if not out of bounds
+		if (innerCol != 8 && (innerRow == 0 || innerRow ==8 || innerCol ==0)) {
+		
+			if (!grid[innerRow][innerCol + 1].getData().equals("")) {
+				sum += Integer.parseInt(grid[innerRow][innerCol + 1].getData());
+			}
+		}
+
+		// check up if not out of bounds
+		if (innerRow != 0 && (innerCol == 0 || innerCol ==8 || innerRow ==8)) {
+			
+			if (!grid[innerRow - 1][innerCol].getData().equals("")) {
+				sum += Integer.parseInt(grid[innerRow - 1][innerCol].getData());
+			}
+		}
+
+		// check down if not out of bounds
+		if (innerRow != 8 && (innerCol == 0 || innerCol ==8 || innerRow ==0)) {
+			
+			if (!grid[innerRow + 1][innerCol].getData().equals("")) {
+				sum += Integer.parseInt(grid[innerRow+1][innerCol].getData());
+			}
+		}
+	
+		// check diagnal up to the left if not out of bounds
+		if (innerRow != 0 && innerCol != 0 &&( innerCol ==8 || innerRow ==8)) {
+			
+			if (!grid[innerRow - 1][innerCol - 1].getData().equals("")) {
+				sum += Integer.parseInt(grid[innerRow-1][innerCol -1].getData());
+			}
+		}
+
+		// check diagnal up to the right if not out of bounds
+		if (innerRow != 0 && innerCol != 8 &&( innerCol ==0 || innerRow ==8)) {
+			
+			if (!grid[innerRow - 1][innerCol + 1].getData().equals("")) {
+				sum += Integer.parseInt(grid[innerRow-1][innerCol + 1].getData());
+			}
+		}
+		
+		// check diagnal down to the left if not out of bounds
+		if (innerRow != 8 && innerCol != 0 &&( innerCol == 8|| innerRow ==0)) {
+			
+			if (!grid[innerRow + 1][innerCol - 1].getData().equals("")) {
+				sum += Integer.parseInt(grid[innerRow+1][innerCol - 1].getData());
+			}
+		}
+		
+		// check diagnal down to the right if not out of bounds
+		if (innerRow != 8 && innerCol != 8 &&( innerCol == 0|| innerRow ==0)) {
+			
+			if (!grid[innerRow + 1][innerCol + 1].getData().equals("")) {
+				sum += Integer.parseInt(grid[innerRow+1][innerCol + 1].getData());
 			}
 		}
 
 		return sum;
-	}
-
-	public boolean[] tileCheck(int row, int col) {
-		boolean[] validity = new boolean[8];
-		int counter = 0;
-		for (int dx = -1; dx <= 1; dx++) {
-			for (int dy = -1; dy <= 1; dy++) {
-				if (dx == 0 && dy == 0) {
-					continue;
-				}
-				try {
-					if (!grid[row + dx][col + dy].getData().equals("")) {
-						validity[counter] = true;
-					}
-				} catch (ArrayIndexOutOfBoundsException e) {
-					// do nothing
-				}
-				counter++;
-			}
-		}
-
-		return validity;
 	}
 
 }
