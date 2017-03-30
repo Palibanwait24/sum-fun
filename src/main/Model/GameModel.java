@@ -1,17 +1,12 @@
-package Model;
+package main.Model;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 
-import javax.swing.SwingUtilities;
-
-import View.BoardView;
-import View.InfoView;
-import View.QueueView;
-import View.WindowView;
+import main.Model.TileModel;
+import main.View.QueueView;
+import main.View.WindowView;
 
 public class GameModel extends Observable {
 
@@ -47,11 +42,11 @@ public class GameModel extends Observable {
 	public TileModel[][] getGrid() {
 		return grid;
 	}
-	
+
 	public void move() {
-		
+
 		// set stuff
-		
+
 		setChanged();
 		notifyObservers();
 	}

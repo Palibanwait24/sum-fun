@@ -1,4 +1,4 @@
-package Model;
+package main.Model;
 
 import java.util.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ public class TileModel extends JButton {
 
     private final int d = 60; // dimension of tile
     private final Color cellColor = Color.WHITE; // default color of each cell
-    private String data = ""; 
+    private String data = "";
 
     /**
      * Constructor for a Tile object.
@@ -28,7 +28,7 @@ public class TileModel extends JButton {
             int n = rand.nextInt(9) + 1; // generate random number in range [1,9]
             data = "" + n;
         }
-        
+
         setDataString(data);
 
     }
@@ -44,18 +44,18 @@ public class TileModel extends JButton {
     }
     //get data in String form
     public String getData(){
-    	return data;
+        return data;
     }
-    
-    
+
+
     public Color getRandomColor() {
-    	Random rand = new Random();
-    	int r = rand.nextInt(255);
-    	int g = rand.nextInt(255);
-    	int b = rand.nextInt(255);
-    	
-    	Color c = new Color(r, g, b);
-    	return c.darker();
+        Random rand = new Random();
+        int r = rand.nextInt(255);
+        int g = rand.nextInt(255);
+        int b = rand.nextInt(255);
+
+        Color c = new Color(r, g, b);
+        return c.darker();
     }
 
     @Override

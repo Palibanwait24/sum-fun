@@ -1,11 +1,11 @@
-package View;
+package main.View;
 
 import java.awt.*;
 import java.util.Random;
 
 import javax.swing.*;
 
-import Model.TileModel;
+import main.Model.TileModel;
 
 public class QueueView extends JPanel {
 
@@ -42,5 +42,5 @@ public class QueueView extends JPanel {
 		updateQueue();
 		return temp;
 	}
-	
+
 }

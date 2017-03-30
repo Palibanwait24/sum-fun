@@ -1,13 +1,11 @@
-package View;
+package main.View;
 
 import java.util.*;
 import javax.swing.*;
 
-import Model.TileModel;
+import main.Model.TileModel;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class BoardView extends JPanel implements Observer {
 
@@ -51,7 +49,7 @@ public class BoardView extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

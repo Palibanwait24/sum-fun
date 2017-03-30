@@ -1,4 +1,4 @@
-package View;
+package main.View;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -21,7 +21,7 @@ public class WindowView extends JFrame implements Observer {
 	private QueueView queue;
 	private InfoView info;
 	private final JMenuBar menu; // menu for options and operations
-	
+
 	/**
 	 * Constructor for a Window object.
 	 */
@@ -50,7 +50,7 @@ public class WindowView extends JFrame implements Observer {
 			}
 		}
 		*/
-		
+
 		pack();
 	}
 
@@ -59,14 +59,14 @@ public class WindowView extends JFrame implements Observer {
 		//GameModel game = (GameModel) o;
 		//TileModel tile = (TileModel) o;
 	}
-	
+
 	public void addObserver(Observable model) {
 		model.addObserver(this);
 	}
-	
+
 	private JPanel buildGameView() {
 		JPanel view = new JPanel();
-		
+
 		view.setLayout(new BoxLayout(this, 0));
 		view.setFocusable(true);
 
