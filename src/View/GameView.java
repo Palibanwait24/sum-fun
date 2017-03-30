@@ -11,11 +11,11 @@ import Model.TileModel;
 
 public class GameView extends JPanel implements Observer {
 
-	private BoardView board;
+	private GridView board;
 	private InfoView info;
 	private QueueView queue;
 	private TileModel[][] grid;
-	private Window main;
+	private WindowView main;
 
 	/**
 	 * This is the constructor for the main game panes. It handles all mouse
