@@ -27,7 +27,7 @@ public class Controller implements ActionListener {
 		// *NEED* add number from top of queue to mySum
 		
 
-		if (grid[row][col].getData().equals("")) {
+		if (grid[row][col].getData().equals("") && parent.getMoveRem()>0) {
 			parent.setMoves_rem(parent.getMoveRem()-1);
 
 			int mySum = tileSum(row, col);// find out the sum using valid move
@@ -64,14 +64,17 @@ public class Controller implements ActionListener {
 	}
 
 	public void updateQueue() {
-		for (int i = 0; i < queue.length - 1; i++) {
-			queue[i].setDataString(queue[i + 1].getData());
-		}
 
-		Random r = new Random();
-		queue[queue.length - 1].setDataInteger(r.nextInt(9) + 1);
-
-		
+        for (int i = 0; i < queue.length - 1; i++) {
+            queue[i].setDataString(queue[i + 1].getData());
+        }
+        if(parent.getMoveRem()>=5) {
+            Random r = new Random();
+            queue[queue.length - 1].setDataInteger(r.nextInt(9) + 1);
+        }
+		else{
+            queue[4].setDataString("");
+        }
 	}
 
 	public int getTopQueueValue() {
