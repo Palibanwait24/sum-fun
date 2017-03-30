@@ -47,7 +47,6 @@ public class TileModel extends JButton {
     	return data;
     }
     
-    
     public Color getRandomColor() {
     	Random rand = new Random();
     	int r = rand.nextInt(255);

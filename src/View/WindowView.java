@@ -7,7 +7,8 @@ import java.util.Observer;
 
 import javax.swing.*;
 
-import Model.TileModel;
+import Controller.Controller;
+import Model.*;
 
 public class WindowView extends JFrame implements Observer {
 
@@ -19,6 +20,7 @@ public class WindowView extends JFrame implements Observer {
 	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
 
 	// data members
+	private JPanel gameView; // game view
 	private JPanel gridView;
 	private JPanel queueView;
 	private JPanel infoView;
@@ -28,6 +30,8 @@ public class WindowView extends JFrame implements Observer {
 	private TileModel[][] grid; // grid of TileModels is the game board
 
 	private TileModel[] queue; // queue of TileModels
+	
+	private int moves_rem = 50; // moves remaining in game
 
 	/**
 	 * Constructor for a Window object.
@@ -39,62 +43,59 @@ public class WindowView extends JFrame implements Observer {
 		setResizable(true);
 		setTitle("Sum Fun");
 
+		gameView = new JPanel();
+		gameView.setLayout(new BorderLayout());
+
 		gridView = new JPanel();
-		buildGridView();
 		queueView = new JPanel();
-		buildQueueView();
 		infoView = new JPanel();
-		buildInfoView();
 		menu = createMenu();
 		setJMenuBar(menu);
-		
-		JPanel view = new JPanel(); // from here on is fucked up!
 
-		view.setLayout(new BoxLayout(this, 0));
-		view.setFocusable(true);
+		grid = new TileModel[d][d];
+		queue = new TileModel[5];
 
-		Box left = Box.createVerticalBox(); // holds board
-		Box right = Box.createVerticalBox(); // holds info and queue
-		Box container = Box.createHorizontalBox(); // holds left and right
+		buildGridView();
+		buildQueueView();
+		buildInfoView();
+		//GridController gControler = new GridController(, null, d, d, null);
+		gameView.add(gridView, BorderLayout.CENTER);
+		gameView.add(queueView, BorderLayout.WEST);
+		gameView.add(infoView, BorderLayout.SOUTH);
+		add(gameView);
 
-		Box right_top = Box.createHorizontalBox(); // holds game info
-		Box right_bottom = Box.createHorizontalBox(); // holds queue
-
-		// build left side
-		left.add(gridView);
-
-		// build right side
-		right_top.add(infoView);
-		right_bottom.add(queueView);
-
-		right.add(right_top);
-		right.add(right_bottom);
-
-		// build window
-		container.add(left);
-		container.add(right);
-		add(container);
-
-		/*
-		int dimension = board.getDimension();
-		for (int row = 0; row < dimension; row++) {
-			for (int col = 0; col < dimension; col++) {
-				final Integer innerRow = new Integer(row);
-				final Integer innerCol = new Integer(col);
-				//grid[row][col].addActionListener(new GridListener(grid, queue, innerRow, innerCol, main));
-			}
-		}
-		*/
-
-		pack();
+		//pack();
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o.getClass().getName().equals("GridModel")) {
+		System.out.println("hey");
+		if (o.getClass().getName().equals("Model.GridModel")) {
+			System.out.println("hey");
+			TileModel[][] temp = ((GridModel) o).getGrid();
+			
+			for (int row = 0; row < grid.length; row++) {
+				for (int col = 0; col < grid.length; col++) {
+					if (!temp[row][col].getData().equals("")) {
+						grid[row][col].setDataString(temp[row][col].getData());
+					} else {
+						grid[row][col].setDataString("");
+					}
+				}
+			}
+			
 
-		} else if (o.getClass().getName().equals("QueueModel")) {
-
+		} else if (o.getClass().getName().equals("Model.QueueModel")) {
+			/*
+						setLayout(new GridBagLayout());
+						GridBagConstraints gbc = new GridBagConstraints();
+						for (int i = 0; i < queue.length; i++) {
+							gbc.gridy = i;
+							TileModel temp = new TileModel(true);
+							add(temp, gbc);
+							queue[i] = temp;
+						}
+						*/
 		} else {
 			System.out.println("Error occured in WindowView.update().");
 		}
@@ -106,77 +107,80 @@ public class WindowView extends JFrame implements Observer {
 	}
 
 	private void buildGridView() {
-		grid = new TileModel[d][d];
-
-		setLayout(new GridBagLayout());
+		gridView.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
+		
+		boolean fill = true;
+		
 		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < grid.length; col++) {
 				gbc.gridy = row;
 				gbc.gridx = col;
-				if (row == 0 || row == grid.length - 1) {
-					TileModel c = new TileModel(false);
-					grid[row][col] = c;
-					add(c, gbc);
-				} else if (col == 0 || col == grid.length - 1) {
-					TileModel c = new TileModel(false);
-					grid[row][col] = c;
-					add(c, gbc);
+				if (row == 0 || row == grid.length - 1) { // do not fill
+					fill = false;
+				} else if (col == 0 || col == grid.length - 1) { // do not fill
+					fill = false;
 				} else {
-					TileModel c = new TileModel(true);
-					grid[row][col] = c;
-					add(c, gbc);
+					fill = true;
 				}
+				TileModel tile = new TileModel(fill);
+				tile.addActionListener(new Controller(row, col, grid, queue));
+				grid[row][col] = tile;
+				gridView.add(tile, gbc);
 			}
 		}
 	}
 
-	private void buildQueueView() {
-		queue = new TileModel[5];
-
-		setLayout(new GridBagLayout());
+	public void buildQueueView() {
+		queueView.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
+		JLabel label = new JLabel("  Number Queue");
+		label.setForeground(Color.BLUE);
+		JLabel separ = new JLabel(" ===========");
+		queueView.add(label, gbc);
+		gbc.gridy = 1;
+		queueView.add(separ, gbc);
+		
 		for (int i = 0; i < queue.length; i++) {
-			gbc.gridy = i;
+			gbc.gridy = i + 2;
 			TileModel temp = new TileModel(true);
-			add(temp, gbc);
+			queueView.add(temp, gbc);
 			queue[i] = temp;
 		}
+		queue[0].setBackground(Color.GREEN);
+		queue[0].setOpaque(true);
 	}
 
-	private void buildInfoView() {
+	public void buildInfoView() {
 
-	}
+		// data fields
+		int score = 0;
+		long time = 0; // later
 
-	private JPanel buildGameView() {
-		JPanel view = new JPanel();
+		// design fields
+		JLabel score_label, time_label, moves_label;
+		JLabel score_holder, time_holder, moves_holder, empty_holder;
 
-		view.setLayout(new BoxLayout(this, 0));
-		view.setFocusable(true);
+		// construct info pane layout
+		infoView.setLayout(new GridLayout(4, 2));
 
-		Box left = Box.createVerticalBox(); // holds board
-		Box right = Box.createVerticalBox(); // holds info and queue
-		Box container = Box.createHorizontalBox(); // holds left and right
+		score_label = new JLabel("  Score: ");
+		moves_label = new JLabel("  Moves remaining: ");
+		time_label = new JLabel("  Time: ");
 
-		Box right_top = Box.createHorizontalBox(); // holds game info
-		Box right_bottom = Box.createHorizontalBox(); // holds queue
+		score_holder = new JLabel("" + score);
+		moves_holder = new JLabel("" + moves_rem);
+		time_holder = new JLabel("--:--");
+		empty_holder = new JLabel("");
 
-		// build left side
-		left.add(gridView);
-
-		// build right side
-		right_top.add(infoView);
-		right_bottom.add(queueView);
-
-		right.add(right_top);
-		right.add(right_bottom);
-
-		// build window
-		container.add(left);
-		container.add(right);
-		add(container);
-
-		return view;
+		//build top pane
+		infoView.add(score_label);
+		infoView.add(score_holder);
+		infoView.add(moves_label);
+		infoView.add(moves_holder);
+		infoView.add(time_label);
+		infoView.add(time_holder);
+		infoView.add(empty_holder);
 	}
 
 	private JMenuBar createMenu() {
