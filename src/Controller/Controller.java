@@ -13,9 +13,10 @@ public class Controller implements ActionListener {
 	private TileModel[] queue;
 	private int row;
 	private int col;
-	private WindowView parent;
+	private WindowView parent ;
 
-	public Controller(int innerRow, int innerCol, TileModel[][] grid, TileModel[] queue) {
+	public Controller(int innerRow, int innerCol, TileModel[][] grid, TileModel[] queue, WindowView son) {
+		parent = son;
 		this.grid = grid;
 		this.queue = queue;
 		row = innerRow;
@@ -27,6 +28,7 @@ public class Controller implements ActionListener {
 		
 
 		if (grid[row][col].getData().equals("")) {
+			parent.setMoves_rem(parent.getMoveRem()-1);
 
 			int mySum = tileSum(row, col);// find out the sum using valid move
 

@@ -25,7 +25,7 @@ public class WindowView extends JFrame implements Observer {
 	private JPanel queueView;
 	private JPanel infoView;
 	private final JMenuBar menu; // menu for options and operations
-
+	private JLabel moves_holder ;
 	private final int d = 9; // dimension of game board
 	private TileModel[][] grid; // grid of TileModels is the game board
 
@@ -124,7 +124,7 @@ public class WindowView extends JFrame implements Observer {
 					fill = true;
 				}
 				TileModel tile = new TileModel(fill);
-				tile.addActionListener(new Controller(row, col, grid, queue));
+				tile.addActionListener(new Controller(row, col, grid, queue, this));
 				grid[row][col] = tile;
 				gridView.add(tile, gbc);
 			}
@@ -159,7 +159,7 @@ public class WindowView extends JFrame implements Observer {
 
 		// design fields
 		JLabel score_label, time_label, moves_label;
-		JLabel score_holder, time_holder, moves_holder, empty_holder;
+		JLabel score_holder, time_holder, empty_holder;
 
 		// construct info pane layout
 		infoView.setLayout(new GridLayout(4, 2));
@@ -182,7 +182,13 @@ public class WindowView extends JFrame implements Observer {
 		infoView.add(time_holder);
 		infoView.add(empty_holder);
 	}
-
+	public int getMoveRem(){
+		return moves_rem;
+	}
+	public void setMoves_rem(int newInt){
+		moves_holder.setText(newInt +"");
+		moves_rem = newInt;
+	}
 	private JMenuBar createMenu() {
 		JMenuBar temp = new JMenuBar();
 
