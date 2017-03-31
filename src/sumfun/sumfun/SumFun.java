@@ -8,17 +8,16 @@ import View.WindowView;
 public class SumFun {
 
     public static GridModel grid;
-    public static QueueModel queue;
-    public final static int maxMoves = 50;
+   // public static QueueModel queue;
 	
     public static void main(String[] args) {
     	grid = new GridModel();
-    	queue = QueueModel.getQueueModel();
+    	//queue = new QueueModel();
         WindowView main = new WindowView(); // main game frame
         main.addObserver(grid);
-        main.addObserver(queue);
+        //main.addObserver(queue);
         grid.start();
-        queue.start();
+       // queue.start();
         main.setVisible(true);
     }
     

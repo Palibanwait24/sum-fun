@@ -29,25 +29,32 @@ public class TileModel extends JButton {
             data = "" + n;
         }
         
-        setDataString(data);
-
+        setData(data);
     }
-    /// set number from a string
-    public void setDataString(String s){
+    
+    public boolean isEmpty() {
+    	return data.equals("");
+    }
+    
+    
+    // set number from a string
+    public void setData(String s){
         setText("" + s);
         data="" + s;
     }
-    //set data from a integer
-    public void setDataInteger(int i){
+    
+    // set data from a integer
+    public void setData(int i){
         setText("" + i);
         data="" + i;
     }
-    //get data in String form
+    
+    // get data and return as string
     public String getData(){
     	return data;
     }
     
-    public Color getRandomColor() {
+    private Color getRandomColor() {
     	Random rand = new Random();
     	int r = rand.nextInt(255);
     	int g = rand.nextInt(255);

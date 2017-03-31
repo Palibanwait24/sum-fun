@@ -2,14 +2,13 @@ package View;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.util.Queue;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.*;
 
 import Controller.Controller;
 import Model.*;
-import sumfun.SumFun;
 
 public class WindowView extends JFrame implements Observer {
 
@@ -21,18 +20,18 @@ public class WindowView extends JFrame implements Observer {
 	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
 
 	// data members
-	private JPanel gameView; // holds all sub-views below
-	private JPanel gridView; // view for game board
-	private JPanel queueView; // view for game queue
-	private JPanel infoView; // view for info/stats on current game
+	private JPanel gameView; // game view
+	private JPanel gridView;
+	private JPanel queueView;
+	private JPanel infoView;
 	private final JMenuBar menu; // menu for options and operations
-	private JLabel moves_holder, score_holder;
+
 	private final int d = 9; // dimension of game board
 	private TileModel[][] grid; // grid of TileModels is the game board
 
 	private TileModel[] queue; // queue of TileModels
 
-	private int movesRem = 50; // moves remaining in game
+	private int moves_rem = 50; // moves remaining in game
 
 	/**
 	 * Constructor for a Window object.
@@ -41,7 +40,7 @@ public class WindowView extends JFrame implements Observer {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(LOCATION_X, LOCATION_Y);
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		setResizable(false);
+		setResizable(true);
 		setTitle("Sum Fun");
 
 		gameView = new JPanel();
@@ -50,6 +49,8 @@ public class WindowView extends JFrame implements Observer {
 		gridView = new JPanel();
 		queueView = new JPanel();
 		infoView = new JPanel();
+		menu = createMenu();
+		setJMenuBar(menu);
 
 		grid = new TileModel[d][d];
 		queue = new TileModel[5];
@@ -57,8 +58,7 @@ public class WindowView extends JFrame implements Observer {
 		buildGridView();
 		buildQueueView();
 		buildInfoView();
-		menu = createMenu();
-		setJMenuBar(menu);
+		//GridController gControler = new GridController(, null, d, d, null);
 		gameView.add(gridView, BorderLayout.CENTER);
 		gameView.add(queueView, BorderLayout.WEST);
 		gameView.add(infoView, BorderLayout.SOUTH);
@@ -69,36 +69,34 @@ public class WindowView extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		System.out.println("hey");
 		if (o.getClass().getName().equals("Model.GridModel")) {
-			// process grid update
+			System.out.println("hey");
 			TileModel[][] temp = ((GridModel) o).getGrid();
 
-			if (!GridModel.getValid()) {
-				shake();
-			}
-			for (int r = 0; r < temp.length; r++) {
-				for (int c = 0; c < temp[r].length; c++) {
-					if (temp[r][c].isEmpty()) {
-						grid[r][c].setData("");
+			for (int row = 0; row < grid.length; row++) {
+				for (int col = 0; col < grid.length; col++) {
+					if (!temp[row][col].getData().equals("")) {
+						grid[row][col].setDataString(temp[row][col].getData());
 					} else {
-						grid[r][c].setData(temp[r][c].getData());
+						grid[row][col].setDataString("");
 					}
 				}
 			}
-			score_holder.setText("" + GridModel.getScore());
-			moves_holder.setText("" + (SumFun.maxMoves - GridModel.getMovesTaken()));
+
 		} else if (o.getClass().getName().equals("Model.QueueModel")) {
-			// process queue update
-			Queue<Integer> temp = ((QueueModel) o).getQueue();
-			int i = 0;
-
-			for (Integer item : temp) {
-				queue[i].setData(item.toString());
-				i++;
-			}
-
+			/*
+						setLayout(new GridBagLayout());
+						GridBagConstraints gbc = new GridBagConstraints();
+						for (int i = 0; i < queue.length; i++) {
+							gbc.gridy = i;
+							TileModel temp = new TileModel(true);
+							add(temp, gbc);
+							queue[i] = temp;
+						}
+						*/
 		} else {
-			System.out.println("Error occured in WindowView.update()");
+			System.out.println("Error occured in WindowView.update().");
 		}
 
 	}
@@ -125,18 +123,18 @@ public class WindowView extends JFrame implements Observer {
 					fill = true;
 				}
 				TileModel tile = new TileModel(fill);
-				tile.addActionListener(new Controller(row, col));
+				tile.addActionListener(new Controller(row, col, grid, queue));
 				grid[row][col] = tile;
 				gridView.add(tile, gbc);
 			}
 		}
 	}
 
-	private void buildQueueView() {
+	public void buildQueueView() {
 		queueView.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		JLabel label = new JLabel("  Number Queue");
-		label.setForeground(Color.BLACK);
+		label.setForeground(Color.BLUE);
 		JLabel separ = new JLabel(" ===========");
 		queueView.add(label, gbc);
 		gbc.gridy = 1;
@@ -152,7 +150,7 @@ public class WindowView extends JFrame implements Observer {
 		queue[0].setOpaque(true);
 	}
 
-	private void buildInfoView() {
+	public void buildInfoView() {
 
 		// data fields
 		int score = 0;
@@ -160,7 +158,7 @@ public class WindowView extends JFrame implements Observer {
 
 		// design fields
 		JLabel score_label, time_label, moves_label;
-		JLabel time_holder, empty_holder;
+		JLabel score_holder, time_holder, moves_holder, empty_holder;
 
 		// construct info pane layout
 		infoView.setLayout(new GridLayout(4, 2));
@@ -170,7 +168,7 @@ public class WindowView extends JFrame implements Observer {
 		time_label = new JLabel("  Time: ");
 
 		score_holder = new JLabel("" + score);
-		moves_holder = new JLabel("" + movesRem);
+		moves_holder = new JLabel("" + moves_rem);
 		time_holder = new JLabel("--:--");
 		empty_holder = new JLabel("");
 
@@ -188,26 +186,32 @@ public class WindowView extends JFrame implements Observer {
 		JMenuBar temp = new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
-		JMenuItem n = new JMenuItem("New game");
+		JMenuItem n = new JMenuItem("New game"); // start new game
 		n.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// start new game
+				/*
+				gamePane.setVisible(false);
+				remove(gamePane);
+				gamePane = new GameView();
+				add(gamePane);
+				gamePane.setFocusable(true);
+				*/
 			}
 		});
 		fileMenu.add(n);
 		JMenuItem e = new JMenuItem("Exit"); // exit game
 		e.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				int option = JOptionPane.showConfirmDialog((Component) getParent(),
-						"Are you sure you want to exit Sum Fun?", "Confirm Exit", 0);
+				/*
+				int option = JOptionPane.showConfirmDialog((Component) getParent(), "Are you sure you want to exit Sum Fun?",
+						"Confirm Exit", 0);
 				if (option == 0) {
 					System.exit(0);
 				} else {
 					return;
 				}
-
-				// System.exit(0); // use for development, remove later
+				*/
+				System.exit(0); // use for development, remove later
 			}
 		});
 		fileMenu.add(e);
@@ -226,7 +230,7 @@ public class WindowView extends JFrame implements Observer {
 		return temp;
 	}
 
-	private void shake() {
+	public void shake() {
 		final int length = 8;
 		final int ox = getLocationOnScreen().x; // original x position
 		final int oy = getLocationOnScreen().y; // original y position
