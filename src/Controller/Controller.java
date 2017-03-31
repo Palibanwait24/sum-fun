@@ -35,7 +35,7 @@ public class Controller implements ActionListener {
 			if (mySum != 0) {
 
 				int modded = mySum % 10; // gets the modded value
-				System.out.println("" + mySum);
+
 				//grid[row][col].setDataString("99");
 
 				if (modded == getTopQueueValue()) {
@@ -57,9 +57,9 @@ public class Controller implements ActionListener {
 			}
 
 		} else {
-			System.out.println("not valid");
-			// parent = (Window) SwingUtilities.getWindowAncestor(this.);
-			// parent.shake(); // invalid move, shake window to notify
+
+			 ////parent.SwingUtilities.getWindowAncestor(this.);
+			 parent.shake(); // invalid move, shake window to notify
 		}
 	}
 

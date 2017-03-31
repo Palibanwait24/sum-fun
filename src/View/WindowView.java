@@ -69,9 +69,9 @@ public class WindowView extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("hey");
+
 		if (o.getClass().getName().equals("Model.GridModel")) {
-			System.out.println("hey");
+
 			TileModel[][] temp = ((GridModel) o).getGrid();
 			
 			for (int row = 0; row < grid.length; row++) {
@@ -97,7 +97,7 @@ public class WindowView extends JFrame implements Observer {
 						}
 						*/
 		} else {
-			System.out.println("Error occured in WindowView.update().");
+
 		}
 
 	}
@@ -196,20 +196,14 @@ public class WindowView extends JFrame implements Observer {
 		JMenuItem n = new JMenuItem("New game"); // start new game
 		n.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
-				gamePane.setVisible(false);
-				remove(gamePane);
-				gamePane = new GameView();
-				add(gamePane);
-				gamePane.setFocusable(true);
-				*/
+
 			}
 		});
 		fileMenu.add(n);
 		JMenuItem e = new JMenuItem("Exit"); // exit game
 		e.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
+
 				int option = JOptionPane.showConfirmDialog((Component) getParent(), "Are you sure you want to exit Sum Fun?",
 						"Confirm Exit", 0);
 				if (option == 0) {
@@ -217,8 +211,8 @@ public class WindowView extends JFrame implements Observer {
 				} else {
 					return;
 				}
-				*/
-				System.exit(0); // use for development, remove later
+
+				//System.exit(0); // use for development, remove later
 			}
 		});
 		fileMenu.add(e);
