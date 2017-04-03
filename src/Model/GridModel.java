@@ -5,7 +5,8 @@ import java.util.*;
 import sumfun.SumFun;
 import Model.QueueModel;
 
-public class GridModel extends Observable {
+public class
+GridModel extends Observable {
 
 	private TileModel[][] grid; // game board
 	private final int d = 9; // dimension of game board

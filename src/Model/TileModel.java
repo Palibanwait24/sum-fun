@@ -48,7 +48,11 @@ public class TileModel extends JButton {
         setText("" + i);
         data="" + i;
     }
-    
+    public void newRandomValue() {
+        Random rand = new Random();
+        int n = rand.nextInt(10); // generate random number in range [1,9]
+        this.setData(n);
+    }
     // get data and return as string
     public String getData(){
     	return data;
