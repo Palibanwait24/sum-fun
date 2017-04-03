@@ -41,7 +41,7 @@ public class GridModel extends Observable {
 	}
 
 	public void move(int row, int col) {
-		if (moves > SumFun.maxMoves) {
+		if (moves > SumFun.maxMoves - 1) {
 			return; // out of moves
 		}
 

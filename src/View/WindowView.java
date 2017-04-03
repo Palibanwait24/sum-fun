@@ -135,9 +135,9 @@ public class WindowView extends JFrame implements Observer {
 	private void buildQueueView() {
 		queueView.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		JLabel label = new JLabel("  Number Queue");
+		JLabel label = new JLabel("  Queue");
 		label.setForeground(Color.BLACK);
-		JLabel separ = new JLabel(" ===========");
+		JLabel separ = new JLabel(" =========");
 		queueView.add(label, gbc);
 		gbc.gridy = 1;
 		queueView.add(separ, gbc);
