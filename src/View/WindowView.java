@@ -14,8 +14,8 @@ import sumfun.SumFun;
 public class WindowView extends JFrame implements Observer {
 
 	// utilities to size window
-	private final int WINDOW_WIDTH = 680;
-	private final int WINDOW_HEIGHT = 720;
+	private final int WINDOW_WIDTH = 660;
+	private final int WINDOW_HEIGHT = 700;
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 	private final int LOCATION_X = screensize.height / 3;
 	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
@@ -117,9 +117,9 @@ public class WindowView extends JFrame implements Observer {
 			for (int col = 0; col < grid.length; col++) {
 				gbc.gridy = row;
 				gbc.gridx = col;
-				if (row == 0 || row == grid.length - 1) { // do not fill
+				if (row == 0 || row == grid.length - 1) { // top/bottom row, do not fill
 					fill = false;
-				} else if (col == 0 || col == grid.length - 1) { // do not fill
+				} else if (col == 0 || col == grid.length - 1) { // left/right column, do not fill
 					fill = false;
 				} else {
 					fill = true;
@@ -137,7 +137,7 @@ public class WindowView extends JFrame implements Observer {
 		GridBagConstraints gbc = new GridBagConstraints();
 		JLabel label = new JLabel("  Queue");
 		label.setForeground(Color.BLACK);
-		JLabel separ = new JLabel(" =========");
+		JLabel separ = new JLabel("  =======");
 		queueView.add(label, gbc);
 		gbc.gridy = 1;
 		queueView.add(separ, gbc);
@@ -198,7 +198,7 @@ public class WindowView extends JFrame implements Observer {
 		JMenuItem e = new JMenuItem("Exit"); // exit game
 		e.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				/*
 				int option = JOptionPane.showConfirmDialog((Component) getParent(),
 						"Are you sure you want to exit Sum Fun?", "Confirm Exit", 0);
 				if (option == 0) {
@@ -206,21 +206,21 @@ public class WindowView extends JFrame implements Observer {
 				} else {
 					return;
 				}
-
-				// System.exit(0); // use for development, remove later
+				*/
+				System.exit(0); // use for development, remove later
 			}
 		});
 		fileMenu.add(e);
 		temp.add(fileMenu);
 
 		JMenu optionMenu = new JMenu("Option");
-		JMenuItem GameViewHighScores = new JMenuItem("View high scores"); // GameView high scores in game
-		GameViewHighScores.addActionListener(new ActionListener() {
+		JMenuItem viewHighScores = new JMenuItem("View high scores"); // view local high scores in game
+		viewHighScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// show hi scores
 			}
 		});
-		optionMenu.add(GameViewHighScores);
+		optionMenu.add(viewHighScores);
 		temp.add(optionMenu);
 
 		return temp;
@@ -243,7 +243,7 @@ public class WindowView extends JFrame implements Observer {
 				Thread.sleep(10);
 			}
 		} catch (Exception ex) {
-			System.out.println("Error occured.");
+			System.out.println("Error occured in WindowView.shake()");
 			ex.printStackTrace();
 		}
 	}
