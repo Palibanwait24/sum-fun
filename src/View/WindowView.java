@@ -188,19 +188,33 @@ public class WindowView extends JFrame implements Observer {
 		JMenuBar temp = new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
-		JMenuItem n = new JMenuItem("New game");
-		n.addActionListener(new ActionListener() {
+		JMenuItem newGame = new JMenuItem("New game");
+		newGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// start new game
 			}
 		});
-		fileMenu.add(n);
-		JMenuItem e = new JMenuItem("Exit"); // exit game
-		e.addActionListener(new ActionListener() {
+		fileMenu.add(newGame);
+		JMenuItem save = new JMenuItem("Save game");
+		save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// save game
+			}
+		});
+		fileMenu.add(save);
+		JMenuItem load = new JMenuItem("Load game");
+		load.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// load game
+			}
+		});
+		fileMenu.add(load);
+		JMenuItem exit = new JMenuItem("Exit"); // exit game
+		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/*
 				int option = JOptionPane.showConfirmDialog((Component) getParent(),
-						"Are you sure you want to exit Sum Fun?", "Confirm Exit", 0);
+						"Are you sure you want to exit Sum Fun?\nAll unsaved progress will be lost.", "Confirm Exit", 0);
 				if (option == 0) {
 					System.exit(0);
 				} else {
@@ -210,18 +224,47 @@ public class WindowView extends JFrame implements Observer {
 				System.exit(0); // use for development, remove later
 			}
 		});
-		fileMenu.add(e);
+		fileMenu.add(exit);
 		temp.add(fileMenu);
 
-		JMenu optionMenu = new JMenu("Option");
-		JMenuItem viewHighScores = new JMenuItem("View high scores"); // view local high scores in game
-		viewHighScores.addActionListener(new ActionListener() {
+		JMenu viewMenu = new JMenu("View");
+		JMenuItem highScores = new JMenuItem("High scores"); // view local high scores
+		highScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// show hi scores
 			}
 		});
-		optionMenu.add(viewHighScores);
-		temp.add(optionMenu);
+		viewMenu.add(highScores);
+		temp.add(viewMenu);
+
+		JMenu helpMenu = new JMenu("Help");
+		JMenuItem hint = new JMenuItem("Hint");
+		hint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// show hint
+			}
+		});
+		helpMenu.add(hint);
+		JMenuItem about = new JMenuItem("About game");
+		about.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTextArea message = new JTextArea("");
+				message.setLineWrap(true);
+				message.setWrapStyleWord(true);
+
+				JScrollPane scroll = new JScrollPane(message);
+
+				JOptionPane.showMessageDialog(null, scroll);
+				try {
+					
+				} catch (Exception ex) {
+					System.out.println("Error occured in WindowView.createMenu()");
+					ex.printStackTrace();
+				}
+			}
+		});
+		helpMenu.add(about);
+		temp.add(helpMenu);
 
 		return temp;
 	}
