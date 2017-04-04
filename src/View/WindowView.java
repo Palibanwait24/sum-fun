@@ -137,7 +137,7 @@ public class WindowView extends JFrame implements Observer {
 		}
 	}
 
-	private void buildQueueView() {
+	public void buildQueueView() {
 		queueView.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		JLabel label = new JLabel("  Queue");
