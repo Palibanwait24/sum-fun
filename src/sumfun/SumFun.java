@@ -13,9 +13,8 @@ public class SumFun {
 	
     public static void main(String[] args) {
     	grid = new GridModel();
-    	queue = QueueModel.getQueueModel();
-    	TileModel[] queueue = new TileModel[5];
-        WindowView main = new WindowView(grid.getGrid(), queueue, queue.getQueue()); // main game frame
+    	queue = new QueueModel();
+        WindowView main = new WindowView(grid, queue); // main game frame
         main.addObserver(grid);
         main.addObserver(queue);
         grid.start();

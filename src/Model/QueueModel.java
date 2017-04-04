@@ -7,7 +7,7 @@ public class QueueModel extends Observable {
 
 	// private static QueueModel queue;
 	private final int size = 5; // size of queue
-	private static QueueModel model = null;
+	private static QueueModel model;
 	private static Queue<Integer> queue; // queue for game
 	private int count; // current count of how many tiles have been added to queue
 
@@ -17,6 +17,7 @@ public class QueueModel extends Observable {
 		for (int i = 0; i < size; i++) {
 			enqueue();
 		}
+		model = this;
 	}
 	
 	public void start() { // initializes queue
@@ -46,9 +47,6 @@ public class QueueModel extends Observable {
 	}
 	
 	public static QueueModel getQueueModel() {
-		if (model == null) {
-			model = new QueueModel();
-		}
 		return model;
 	}
 	

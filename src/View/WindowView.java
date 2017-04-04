@@ -20,27 +20,29 @@ public class WindowView extends JFrame implements Observer {
 	private final int LOCATION_X = screensize.height / 3;
 	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
 
-	// data members
+	// design members
 	private JPanel gameView; // holds all sub-views below
 	private JPanel gridView; // view for game board
 	private JPanel queueView; // view for game queue
-	private JPanel infoView; // view for info/stats on current game
+	private JPanel infoView; // view for info/statistics on current game
 	private final JMenuBar menu; // menu for options and operations
 	private JLabel moves_holder, score_holder;
-	private final int d = 9; // dimension of game board
-	private TileModel[][] grid; // grid of TileModels is the game board
 
-	private TileModel[] queue; // queue of TileModels
-	private Queue<Integer> queueInt; // queue of integers
+	// model members
+	private GridModel gridModel; // grid model
 
+	// data members
+	private TileModel[][] grid; // grid data -> game board
+	private TileModel[] queue; // queue data -> game queue
+
+	// statistic members
 	private int movesRem = 50; // moves remaining in game
-	private boolean usedHint = false;
-
+	private boolean usedHint = false; // flag to determine if hint has been used
 
 	/**
 	 * Constructor for a Window object.
 	 */
-	public WindowView(TileModel[][] g, TileModel[] queueue, Queue<Integer> q) {
+	public WindowView(GridModel g, QueueModel q) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(LOCATION_X, LOCATION_Y);
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -54,10 +56,9 @@ public class WindowView extends JFrame implements Observer {
 		queueView = new JPanel();
 		infoView = new JPanel();
 
-		grid = g;
-		queueInt = q;
-		//grid = new TileModel[d][d];
-		queue = queueue;
+		gridModel = g;
+		grid = gridModel.getGrid();
+		queue = new TileModel[5];
 
 		buildGridView();
 		buildQueueView();
