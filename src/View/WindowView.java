@@ -251,15 +251,13 @@ public class WindowView extends JFrame implements Observer {
 		refresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// check if this is MVC
-				if (usedRefresh== false) {
+				if (usedRefresh == false) {
 					for (TileModel x : queue) {
 						QueueModel.getQueueModel().updateQueue();
 					}
-					usedRefresh= true;
-				}
-				else {
-
-					JOptionPane.showMessageDialog(null, "Refresh Queue Already Used!");
+					usedRefresh = true;
+				} else {
+					JOptionPane.showMessageDialog(null, "Refresh queue already used!");
 				}
 			}
 		});
@@ -276,7 +274,7 @@ public class WindowView extends JFrame implements Observer {
 
 				JOptionPane.showMessageDialog(null, scroll);
 				try {
-					
+
 				} catch (Exception ex) {
 					System.out.println("Error occured in WindowView.createMenu()");
 					ex.printStackTrace();
