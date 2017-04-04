@@ -35,7 +35,7 @@ public class WindowView extends JFrame implements Observer {
 
 	private int movesRem = 50; // moves remaining in game
 	private boolean usedHint = false;
-	private boolean usedRefresh = false;
+
 
 	/**
 	 * Constructor for a Window object.
@@ -251,19 +251,7 @@ public class WindowView extends JFrame implements Observer {
 		});
 		helpMenu.add(hint);
 		JMenuItem refresh = new JMenuItem("Refresh Queue");
-		refresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// check if this is MVC
-				if (usedRefresh == false) {
-					for (TileModel x : queue) {
-						QueueModel.getQueueModel().updateQueue();
-					}
-					usedRefresh = true;
-				} else {
-					JOptionPane.showMessageDialog(null, "Refresh queue already used!");
-				}
-			}
-		});
+		refresh.addActionListener(new RefreshController(queue));
 		helpMenu.add(refresh);
 
 		JMenuItem about = new JMenuItem("About game");
