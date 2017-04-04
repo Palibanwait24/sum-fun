@@ -155,6 +155,7 @@ public class WindowView extends JFrame implements Observer {
 		}
 		queue[0].setBackground(Color.GREEN);
 		queue[0].setOpaque(true);
+		//
 	}
 
 	private void buildInfoView() {
