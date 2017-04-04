@@ -7,7 +7,7 @@ import java.util.Queue;
 
 import javax.swing.*;
 
-import Controller.Controller;
+import Controller.*;
 import Model.*;
 import sumfun.SumFun;
 
@@ -31,6 +31,7 @@ public class WindowView extends JFrame implements Observer {
 	private TileModel[][] grid; // grid of TileModels is the game board
 
 	private TileModel[] queue; // queue of TileModels
+	private Queue<Integer> queueInt; // queue of integers
 
 	private int movesRem = 50; // moves remaining in game
 	private boolean usedHint = false;
@@ -39,7 +40,7 @@ public class WindowView extends JFrame implements Observer {
 	/**
 	 * Constructor for a Window object.
 	 */
-	public WindowView() {
+	public WindowView(TileModel[][] g, TileModel[] queueue, Queue<Integer> q) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(LOCATION_X, LOCATION_Y);
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -53,8 +54,10 @@ public class WindowView extends JFrame implements Observer {
 		queueView = new JPanel();
 		infoView = new JPanel();
 
-		grid = new TileModel[d][d];
-		queue = new TileModel[5];
+		grid = g;
+		queueInt = q;
+		//grid = new TileModel[d][d];
+		queue = queueue;
 
 		buildGridView();
 		buildQueueView();
@@ -127,7 +130,7 @@ public class WindowView extends JFrame implements Observer {
 					fill = true;
 				}
 				TileModel tile = new TileModel(fill);
-				tile.addActionListener(new Controller(row, col));
+				tile.addActionListener(new GridController(row, col));
 				grid[row][col] = tile;
 				gridView.add(tile, gbc);
 			}
@@ -239,7 +242,7 @@ public class WindowView extends JFrame implements Observer {
 		viewMenu.add(highScores);
 		temp.add(viewMenu);
 
-		JMenu helpMenu = new JMenu("Game Help");
+		JMenu helpMenu = new JMenu("Help");
 		JMenuItem hint = new JMenuItem("Hint");
 		hint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
