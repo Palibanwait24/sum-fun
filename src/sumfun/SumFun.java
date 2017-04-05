@@ -7,19 +7,20 @@ import View.WindowView;
 
 public class SumFun {
 
-    public static GridModel grid;
-    public static QueueModel queue;
+    public static GridModel grid = null;
+    public static QueueModel queue = null;
+    public static WindowView mainView = null;
     public final static int maxMoves = 50;
 	
     public static void main(String[] args) {
     	grid = new GridModel();
     	queue = new QueueModel();
-        WindowView main = new WindowView(grid, queue); // main game frame
-        main.addObserver(grid);
-        main.addObserver(queue);
-        grid.start();
-        queue.start();
-        main.setVisible(true);
+        mainView = new WindowView(grid, queue); // main game frame
+        mainView.addObserver(grid);
+        mainView.addObserver(queue);
+        grid.start();// do we need
+        queue.start();// do we need
+        mainView.setVisible(true);
     }
     
 }

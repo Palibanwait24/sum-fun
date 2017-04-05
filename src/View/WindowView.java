@@ -196,19 +196,13 @@ public class WindowView extends JFrame implements Observer {
 
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem newGame = new JMenuItem("New game");
-		newGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// start new game
-			}
-		});
+		newGame.addActionListener(new NewGameController());
 		fileMenu.add(newGame);
+
 		JMenuItem save = new JMenuItem("Save game");
-		save.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// save game
-			}
-		});
+
 		fileMenu.add(save);
+
 		JMenuItem load = new JMenuItem("Load game");
 		load.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
