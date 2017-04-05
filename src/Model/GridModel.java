@@ -71,6 +71,7 @@ public class GridModel extends Observable {
 		setChanged();
 		notifyObservers();
 		valid = true;
+		// check win?
 	}
 
 	// calculates sum of surrounding tiles

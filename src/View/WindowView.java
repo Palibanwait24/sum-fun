@@ -2,8 +2,8 @@ package View;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.*;
-import java.util.Queue;
 
 import javax.swing.*;
 
@@ -253,18 +253,18 @@ public class WindowView extends JFrame implements Observer {
 		JMenuItem about = new JMenuItem("About game");
 		about.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JTextArea message = new JTextArea("");
-				message.setLineWrap(true);
-				message.setWrapStyleWord(true);
-
-				JScrollPane scroll = new JScrollPane(message);
-
-				JOptionPane.showMessageDialog(null, scroll);
 				try {
-
+					BufferedReader br = new BufferedReader(new FileReader("resources/about.txt"));
+					String message = "";
+					String line = "";
+					while ((line = br.readLine()) != null) {
+						message += line + "\n";
+					}
+					JOptionPane.showMessageDialog(null, message, "About Sum Fun", JOptionPane.INFORMATION_MESSAGE);
+					br.close();
 				} catch (Exception ex) {
 					System.out.println("Error occured in WindowView.createMenu()");
-					ex.printStackTrace();
+					System.out.println(ex);
 				}
 			}
 		});
