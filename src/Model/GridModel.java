@@ -123,7 +123,7 @@ public class GridModel extends Observable {
 		return grid;
 	}
 
-	public int getScore() {
+	public static int getScore() {
 		return score;
 	}
 
