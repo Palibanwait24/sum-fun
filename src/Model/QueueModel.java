@@ -5,13 +5,14 @@ import sumfun.SumFun;
 
 public class QueueModel extends Observable {
 
-	// private static QueueModel queue;
+	private SumFun game;
 	private final int size = 5; // size of queue
 	private static QueueModel model;
 	private static Queue<Integer> queue; // queue for game
 	private int count; // current count of how many tiles have been added to queue
 
-	public QueueModel() {
+	public QueueModel(SumFun game) {
+		this.game = game;
 		queue = new LinkedList<Integer>();
 		count = 0;
 		for (int i = 0; i < size; i++) {
@@ -19,19 +20,19 @@ public class QueueModel extends Observable {
 		}
 		model = this;
 	}
-	
+
 	public void start() { // initializes queue
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	public int updateQueue() {
 		int next = dequeue();
-		
-		if (count < (SumFun.maxMoves - size)) {
+
+		if (count < (game.getMaxMoves() - size)) {
 			enqueue();
 		}
-		
+
 		setChanged();
 		notifyObservers();
 		return next;
@@ -45,11 +46,11 @@ public class QueueModel extends Observable {
 	private int dequeue() {
 		return queue.poll();
 	}
-	
+
 	public static QueueModel getQueueModel() {
 		return model;
 	}
-	
+
 	public static Queue<Integer> getQueue() {
 		return queue;
 	}

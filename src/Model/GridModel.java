@@ -7,13 +7,15 @@ import Model.QueueModel;
 
 public class GridModel extends Observable {
 
+	private SumFun game; // reference to main game... controller?
 	private TileModel[][] grid; // game board
 	private final int d = 9; // dimension of game board
 	private static int moves; // current number of moves on board
 	private static int score; // score for current game
 	private static boolean valid; // flag to show if move is valid or not
 
-	public GridModel() {
+	public GridModel(SumFun game) {
+		this.game = game;
 		grid = new TileModel[d][d];
 		moves = 0;
 		score = 0;
@@ -41,7 +43,7 @@ public class GridModel extends Observable {
 	}
 
 	public void move(int row, int col) {
-		if (moves > SumFun.maxMoves - 1) {
+		if (moves > game.getMaxMoves() - 1) {
 			return; // out of moves
 		}
 

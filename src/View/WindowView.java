@@ -28,6 +28,8 @@ public class WindowView extends JFrame implements Observer {
 	private final JMenuBar menu; // menu for options and operations
 	private JLabel moves_holder, score_holder;
 
+	private SumFun game;
+
 	// model members
 	private GridModel gridModel; // grid model
 
@@ -42,7 +44,7 @@ public class WindowView extends JFrame implements Observer {
 	/**
 	 * Constructor for a Window object.
 	 */
-	public WindowView(GridModel g, QueueModel q) {
+	public WindowView(SumFun game, GridModel g, QueueModel q) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(LOCATION_X, LOCATION_Y);
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -56,6 +58,7 @@ public class WindowView extends JFrame implements Observer {
 		queueView = new JPanel();
 		infoView = new JPanel();
 
+		this.game = game;
 		gridModel = g;
 		grid = gridModel.getGrid();
 		queue = new TileModel[5];
@@ -92,7 +95,7 @@ public class WindowView extends JFrame implements Observer {
 				}
 			}
 			score_holder.setText("" + GridModel.getScore());
-			moves_holder.setText("" + (SumFun.maxMoves - GridModel.getMovesTaken()));
+			moves_holder.setText("" + (game.getMaxMoves() - GridModel.getMovesTaken()));
 		} else if (o.getClass().getName().equals("Model.QueueModel")) {
 			// process queue update
 			Queue<Integer> temp = ((QueueModel) o).getQueue();
@@ -131,7 +134,7 @@ public class WindowView extends JFrame implements Observer {
 					fill = true;
 				}
 				TileModel tile = new TileModel(fill);
-				tile.addActionListener(new GridController(row, col));
+				tile.addActionListener(new GridController(row, col, game));
 				grid[row][col] = tile;
 				gridView.add(tile, gbc);
 			}
