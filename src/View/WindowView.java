@@ -199,7 +199,7 @@ public class WindowView extends JFrame implements Observer {
 
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem newGame = new JMenuItem("New game");
-		newGame.addActionListener(new NewGameController());
+		newGame.addActionListener(new NewGameController(game));
 		fileMenu.add(newGame);
 
 		JMenuItem save = new JMenuItem("Save game");
