@@ -2,6 +2,7 @@ package Model;
 
 import java.util.*;
 
+import View.WindowView;
 import sumfun.SumFun;
 import Model.QueueModel;
 
