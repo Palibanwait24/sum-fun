@@ -3,7 +3,6 @@ package Controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import Model.GridModel;
 import sumfun.SumFun;
 
 public class GridController implements ActionListener {

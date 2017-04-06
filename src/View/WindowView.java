@@ -32,14 +32,15 @@ public class WindowView extends JFrame implements Observer {
 
 	// model members
 	private GridModel gridModel; // grid model
+	private QueueModel queueModel; // queue model
 
 	// data members
 	private TileModel[][] grid; // grid data -> game board
 	private TileModel[] queue; // queue data -> game queue
 
 	// statistic members
-	private int movesRem = 50; // moves remaining in game
-	private boolean usedHint = false; // flag to determine if hint has been used
+	private int movesRem; // moves remaining in game
+	private boolean usedHint; // flag to determine if hint has been used
 
 	/**
 	 * Constructor for a Window object.
@@ -60,8 +61,12 @@ public class WindowView extends JFrame implements Observer {
 
 		this.game = game;
 		gridModel = g;
+		queueModel = q;
 		grid = gridModel.getGrid();
 		queue = new TileModel[5];
+
+		movesRem = game.getMaxMoves();
+		usedHint = false;
 
 		buildGridView();
 		buildQueueView();
@@ -82,7 +87,7 @@ public class WindowView extends JFrame implements Observer {
 			// process grid update
 			TileModel[][] temp = ((GridModel) o).getGrid();
 
-			if (!GridModel.getValid()) {
+			if (!gridModel.getValid()) {
 				shake();
 			}
 			for (int r = 0; r < temp.length; r++) {
@@ -94,8 +99,8 @@ public class WindowView extends JFrame implements Observer {
 					}
 				}
 			}
-			score_holder.setText("" + GridModel.getScore());
-			moves_holder.setText("" + (game.getMaxMoves() - GridModel.getMovesTaken()));
+			score_holder.setText("" + gridModel.getScore());
+			moves_holder.setText("" + (game.getMaxMoves() - gridModel.getMovesTaken()));
 		} else if (o.getClass().getName().equals("Model.QueueModel")) {
 			// process queue update
 			Queue<Integer> temp = ((QueueModel) o).getQueue();
@@ -249,8 +254,8 @@ public class WindowView extends JFrame implements Observer {
 			}
 		});
 		helpMenu.add(hint);
-		JMenuItem refresh = new JMenuItem("Refresh Queue");
-		refresh.addActionListener(new RefreshController(queue));
+		JMenuItem refresh = new JMenuItem("Refresh queue");
+		refresh.addActionListener(new RefreshController(queue, queueModel));
 		helpMenu.add(refresh);
 
 		JMenuItem about = new JMenuItem("About game");

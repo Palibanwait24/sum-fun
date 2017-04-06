@@ -7,8 +7,8 @@ public class QueueModel extends Observable {
 
 	private SumFun game;
 	private final int size = 5; // size of queue
-	private static QueueModel model;
-	private static Queue<Integer> queue; // queue for game
+	private QueueModel model;
+	private Queue<Integer> queue; // queue for game
 	private int count; // current count of how many tiles have been added to queue
 
 	public QueueModel(SumFun game) {
@@ -47,11 +47,11 @@ public class QueueModel extends Observable {
 		return queue.poll();
 	}
 
-	public static QueueModel getQueueModel() {
+	public QueueModel getQueueModel() {
 		return model;
 	}
 
-	public static Queue<Integer> getQueue() {
+	public Queue<Integer> getQueue() {
 		return queue;
 	}
 

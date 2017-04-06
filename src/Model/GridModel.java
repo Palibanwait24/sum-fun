@@ -2,25 +2,30 @@ package Model;
 
 import java.util.*;
 
-import View.WindowView;
+import javax.swing.JOptionPane;
+
 import sumfun.SumFun;
 import Model.QueueModel;
 
 public class GridModel extends Observable {
 
 	private SumFun game; // reference to main game... controller?
+	private QueueModel queueModel; // reference to game queue
 	private TileModel[][] grid; // game board
 	private final int d = 9; // dimension of game board
-	private static int moves; // current number of moves on board
-	private static int score; // score for current game
-	private static boolean valid; // flag to show if move is valid or not
+	private int moves; // current number of moves on board
+	private int score; // score for current game
+	private boolean valid; // flag to show if move is valid
+	private boolean win; // flag to show if game is over
 
-	public GridModel(SumFun game) {
+	public GridModel(SumFun game, QueueModel queue) {
 		this.game = game;
+		this.queueModel = queue;
 		grid = new TileModel[d][d];
 		moves = 0;
 		score = 0;
 		valid = true;
+		win = false;
 		boolean fill = false;
 
 		for (int row = 0; row < grid.length; row++) {
@@ -45,13 +50,16 @@ public class GridModel extends Observable {
 
 	public void move(int row, int col) {
 		if (moves > game.getMaxMoves() - 1) {
+			// we should move this pop-up to view.... just do max calculation there with getter
+			JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
 			return; // out of moves
 		}
+		valid = true; // reset valid flag
 
 		if (grid[row][col].isEmpty()) {
 			int sum = tileSum(row, col); // determine sum of tile and its neighbors
 
-			int tileToAdd = QueueModel.getQueueModel().updateQueue();
+			int tileToAdd = queueModel.updateQueue();
 			grid[row][col].setData(tileToAdd);
 
 			if (sum != 0) {
@@ -68,13 +76,36 @@ public class GridModel extends Observable {
 
 			moves++;
 		} else {
-			valid = false;
+			valid = false; // tile already has number, invalid move
 		}
 
 		setChanged();
 		notifyObservers();
-		valid = true;
-		// check win?
+		// valid = true; // reset valid flag
+		win = checkWin(); // check if game is over
+		if (win) {
+			// should move this to view too, i think
+			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
+			// not sure what else
+		}
+	}
+
+	// iterate thru board to determine if game is over
+	private boolean checkWin() {
+		for (int row = 0; row < grid.length; row++) {
+			for (int col = 0; col < grid[row].length; col++) {
+				try {
+					if (grid[row][col].isEmpty()) {
+						continue; // tile is empty, continue to next tile
+					} else {
+						return false; // tile is not empty, game is not over
+					}
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					// tile is not on board, do nothing
+				}
+			}
+		}
+		return true; // all tiles are empty, game is over
 	}
 
 	// calculates sum of surrounding tiles
@@ -86,10 +117,10 @@ public class GridModel extends Observable {
 					if (dx == 0 && dy == 0) {
 						continue;
 					}
-					if (!grid[row + dx][col + dy].getData().equals("")) {
+					if (!grid[row + dx][col + dy].isEmpty()) {
 						sum += Integer.parseInt(grid[row + dx][col + dy].getData());
 					}
-				} catch (ArrayIndexOutOfBoundsException e) {
+				} catch (ArrayIndexOutOfBoundsException ex) {
 					// tile is not on board, do nothing
 				}
 			}
@@ -103,7 +134,7 @@ public class GridModel extends Observable {
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				try {
-					if (grid[row + dx][col + dy].getData().equals("")) { // empty tile, do nothing
+					if (grid[row + dx][col + dy].isEmpty()) { // empty tile, do nothing
 						continue;
 					} else if (dx == 0 && dy == 0) { // current tile, remove but do not count as removed tile
 						grid[row + dx][col + dy].setData("");
@@ -111,7 +142,7 @@ public class GridModel extends Observable {
 					}
 					grid[row + dx][col + dy].setData("");
 					c++;
-				} catch (ArrayIndexOutOfBoundsException e) {
+				} catch (ArrayIndexOutOfBoundsException ex) {
 					// no tile, do nothing
 				}
 			}
@@ -124,15 +155,15 @@ public class GridModel extends Observable {
 		return grid;
 	}
 
-	public static int getScore() {
+	public int getScore() {
 		return score;
 	}
 
-	public static int getMovesTaken() {
+	public int getMovesTaken() {
 		return moves;
 	}
 
-	public static boolean getValid() {
+	public boolean getValid() {
 		return valid;
 	}
 }

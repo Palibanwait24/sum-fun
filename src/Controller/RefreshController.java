@@ -2,25 +2,27 @@ package Controller;
 
 import Model.QueueModel;
 import Model.TileModel;
-import View.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class RefreshController implements ActionListener {
+
 	private boolean usedRefresh = false;
 	private TileModel[] queue;
+	private QueueModel model;
 
-	public RefreshController(TileModel[] queue) {
+	public RefreshController(TileModel[] queue, QueueModel model) {
 		this.queue = queue;
+		this.model = model;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (usedRefresh == false) {
 			for (TileModel x : queue) {
-				QueueModel.getQueueModel().updateQueue();
+				model.updateQueue();
 			}
 			usedRefresh = true;
 		} else {

@@ -18,8 +18,8 @@ public class SumFun {
 	}
 
 	public void run(SumFun game) {
-		grid = new GridModel(game);
 		queue = new QueueModel(game);
+		grid = new GridModel(game, queue);
 		mainView = new WindowView(game, grid, queue); // main game frame
 		mainView.addObserver(grid);
 		mainView.addObserver(queue);
@@ -27,9 +27,10 @@ public class SumFun {
 		queue.start();
 		mainView.setVisible(true);
 	}
-	public void stop(SumFun game){
 
-    }
+	public void stop(SumFun game) {
+
+	}
 
 	public void move(int row, int col) {
 		grid.move(row, col);

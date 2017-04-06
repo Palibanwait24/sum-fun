@@ -4,8 +4,6 @@ import java.util.*;
 import java.awt.*;
 import javax.swing.*;
 
-import sumfun.SumFun;
-
 public class TileModel extends JButton {
 
 	private final int d = 60; // dimension of tile
