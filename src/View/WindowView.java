@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.*;
 import javax.swing.Timer;
 import javax.swing.*;
-import java.util.concurrent.*;
 import Controller.*;
 import Model.*;
 import sumfun.SumFun;
@@ -113,6 +112,9 @@ public class WindowView extends JFrame implements Observer {
 				i++;
 			}
 
+		} else if (o.getClass().getName().equals("Model.BotModel")) {
+			// process bot update
+
 		} else {
 			System.out.println("Error occured in WindowView.update()");
 		}
@@ -171,10 +173,8 @@ public class WindowView extends JFrame implements Observer {
 
 	private void buildInfoView() {
 
-
 		// data fields
 		int score = 0;
-		long time = 0; // later
 
 		// design fields
 		JLabel score_label, time_label, moves_label;
@@ -190,12 +190,11 @@ public class WindowView extends JFrame implements Observer {
 		score_holder = new JLabel("" + score);
 		moves_holder = new JLabel("" + movesRem);
 		time_holder = new JLabel();
-		if(timedGame) {
+		if (timedGame) {
 
-			timer = new Timer(1000,new CountdownController(this, gridModel, time_holder,moves_holder));
+			timer = new Timer(1000, new CountdownController(this, gridModel, time_holder, moves_holder));
 
 			timer.start();
-
 
 		}
 
@@ -293,7 +292,8 @@ public class WindowView extends JFrame implements Observer {
 
 		return temp;
 	}
-	public Timer getTimer(){
+
+	public Timer getTimer() {
 		return timer;
 	}
 

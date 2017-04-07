@@ -21,7 +21,7 @@ public class NewGameController implements ActionListener {
 		oldGame.mainView.setVisible(false);
 		oldGame.queue = new QueueModel(oldGame);
 		oldGame.grid = new GridModel(oldGame, oldGame.queue);
-		oldGame.mainView = new WindowView(oldGame, oldGame.grid, oldGame.queue, oldGame.timedGame);
+		oldGame.mainView = new WindowView(oldGame, oldGame.grid, oldGame.queue, oldGame.getTimedGame());
 		oldGame.mainView.addObserver(oldGame.grid);
 		oldGame.mainView.addObserver(oldGame.queue);
 		oldGame.grid.start();

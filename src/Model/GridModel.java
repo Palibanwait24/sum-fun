@@ -9,7 +9,7 @@ import Model.QueueModel;
 
 public class GridModel extends Observable {
 
-	private SumFun game; // reference to main game... controller?
+	private SumFun game; // reference to main game
 	private QueueModel queueModel; // reference to game queue
 	private TileModel[][] grid; // game board
 	private final int d = 9; // dimension of game board
@@ -17,7 +17,7 @@ public class GridModel extends Observable {
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid
 	private boolean win; // flag to show if game is over
-	private boolean gameLost= false;
+	private boolean gameLost = false;
 
 	public GridModel(SumFun game, QueueModel queue) {
 		this.game = game;
@@ -48,16 +48,20 @@ public class GridModel extends Observable {
 		setChanged();
 		notifyObservers();
 	}
-	public boolean isGameLost(){
+
+	public boolean isGameLost() {
 		return gameLost;
 	}
-	public void setGameLost(boolean answer){
+
+	public void setGameLost(boolean answer) {
 		gameLost = answer;
 	}
+
+	// perform move for user
 	public void move(int row, int col) {
 		if (moves > game.getMaxMoves() - 1) {
 			// we should move this pop-up to view.... just do max calculation there with getter
-			gameLost= true;
+			gameLost = true;
 			JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
 			return; // out of moves
 		}
@@ -98,8 +102,101 @@ public class GridModel extends Observable {
 		}
 	}
 
+	// perform move for bot
+	protected void moveBot() {
+		if (moves > game.getMaxMoves() - 1) {
+			// we should move this pop-up to view.... just do max calculation there with getter
+			gameLost = true;
+			JOptionPane.showMessageDialog(null, "Bot is out of moves! Please start a new game.");
+			return; // out of moves
+		}
+		valid = true; // reset valid flag
+
+		int[][] gridSums = getGridSums();
+		int[][] neighborsRemoved = getNeighborsRemoved(gridSums, queueModel.getTopOfQueue());
+		int max = 0;
+		int maxRow = 0;
+		int maxCol = 0;
+
+		for (int row = 0; row < neighborsRemoved.length; row++) {
+			for (int col = 0; col < neighborsRemoved[row].length; col++) {
+				if (neighborsRemoved[row][col] > max) {
+					max = neighborsRemoved[row][col];
+					maxRow = row;
+					maxCol = col;
+				}
+			}
+		}
+
+		int tileToAdd = queueModel.updateQueue();
+		grid[maxRow][maxCol].setData(tileToAdd);
+		int tilesRemoved = erase(maxRow, maxCol); // erase surrounding tiles
+		if (tilesRemoved >= 3) {
+			score += (tilesRemoved * 10);
+		}
+		moves++;
+
+		setChanged();
+		notifyObservers();
+		// valid = true; // reset valid flag
+		win = checkWin(); // check if game is over
+		if (win) {
+			// should move this to view too, i think
+			gameLost = true;
+			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
+			// not sure what else
+		}
+	}
+
+	// returns an array of the sum of each tile on the board based on its current neighbors
+	private int[][] getGridSums() {
+		int[][] temp = new int[d][d];
+
+		for (int row = 0; row < grid.length; row++) {
+			for (int col = 0; col < grid[row].length; col++) {
+				if (grid[row][col].isEmpty()) {
+					int sum = tileSum(row, col); // determine sum of tile and its neighbors
+					temp[row][col] = sum;
+				} else {
+					temp[row][col] = 0;
+				}
+			}
+		}
+
+		return temp;
+	}
+
+	// returns an array of the number of neighbors that could possibly be removed from a given tile
+	private int[][] getNeighborsRemoved(int[][] gridSums, int tileToAdd) {
+		int[][] temp = new int[d][d];
+		int count = 0; // number of neighbors for given tile
+
+		for (int row = 0; row < gridSums.length; row++) {
+			for (int col = 0; col < gridSums[row].length; col++) {
+				count = 0;
+				int mod = gridSums[row][col] % 10;
+				if (mod == tileToAdd) {
+					for (int dx = -1; dx <= 1; dx++) {
+						for (int dy = -1; dy <= 1; dy++) {
+							try {
+								if (!grid[dx][dy].isEmpty()) {
+									count++;
+								}
+							} catch (ArrayIndexOutOfBoundsException ex) {
+								// no tile, do nothing
+							}
+						}
+					}
+				}
+				temp[row][col] = count;
+			}
+		}
+
+		return temp;
+	}
+
 	// iterate thru board to determine if game is over
-	private boolean checkWin() {
+	protected boolean checkWin() {
 		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < grid[row].length; col++) {
 				try {
@@ -117,7 +214,7 @@ public class GridModel extends Observable {
 	}
 
 	// calculates sum of surrounding tiles
-	private int tileSum(int row, int col) {
+	protected int tileSum(int row, int col) {
 		int sum = 0;
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
@@ -136,7 +233,7 @@ public class GridModel extends Observable {
 		return sum;
 	}
 
-	private int erase(int row, int col) {
+	protected int erase(int row, int col) {
 		int c = 0; // number of tiles removed from move
 
 		for (int dx = -1; dx <= 1; dx++) {
@@ -174,7 +271,8 @@ public class GridModel extends Observable {
 	public boolean getValid() {
 		return valid;
 	}
-	public void setMoves(int number){
+
+	public void setMoves(int number) {
 		moves = number;
 	}
 }

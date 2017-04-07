@@ -56,6 +56,10 @@ public class QueueModel extends Observable {
 		return queue;
 	}
 
+	protected int getTopOfQueue() {
+		return queue.element();
+	}
+
 	private int getRandomNumber() {
 		Random rand = new Random();
 		int n = rand.nextInt(10); // generate random number in range [1,9]
