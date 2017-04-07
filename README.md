@@ -8,4 +8,4 @@ The objective of the game is to remove all the tiles from the board. This is don
 
 In the simplest version of the game, the player has 50 moves to eliminate all the tiles from the board.
 
-In the more challenging version of the game, the player has an unlimited number of moves, but only has three minutes to eliminate all the tiles.
+In the more challenging version of the game, the player has an unlimited number of moves, but only has five minutes to eliminate all the tiles.
