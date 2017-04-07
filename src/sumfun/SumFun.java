@@ -11,6 +11,7 @@ public class SumFun {
 	public QueueModel queue;
 	public WindowView mainView;
 	private final int maxMoves = 50;
+	public boolean timedGame = true;
 
 	public static void main(String[] args) {
 		SumFun game = new SumFun();
@@ -18,9 +19,10 @@ public class SumFun {
 	}
 
 	public void run(SumFun game) {
+
 		queue = new QueueModel(game);
 		grid = new GridModel(game, queue);
-		mainView = new WindowView(game, grid, queue); // main game frame
+		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
 		mainView.addObserver(grid);
 		mainView.addObserver(queue);
 		grid.start();

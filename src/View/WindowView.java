@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-
+import javax.swing.Timer;
 import javax.swing.*;
-
+import java.util.concurrent.*;
 import Controller.*;
 import Model.*;
 import sumfun.SumFun;
@@ -37,7 +37,9 @@ public class WindowView extends JFrame implements Observer {
 	// data members
 	private TileModel[][] grid; // grid data -> game board
 	private TileModel[] queue; // queue data -> game queue
+	private boolean timedGame;
 
+	private Timer timer;
 	// statistic members
 	private int movesRem; // moves remaining in game
 	private boolean usedHint; // flag to determine if hint has been used
@@ -45,13 +47,13 @@ public class WindowView extends JFrame implements Observer {
 	/**
 	 * Constructor for a Window object.
 	 */
-	public WindowView(SumFun game, GridModel g, QueueModel q) {
+	public WindowView(SumFun game, GridModel g, QueueModel q, boolean tG) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(LOCATION_X, LOCATION_Y);
 		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		setResizable(false);
 		setTitle("Sum Fun");
-
+		timedGame = tG;
 		gameView = new JPanel();
 		gameView.setLayout(new BorderLayout());
 
@@ -169,6 +171,7 @@ public class WindowView extends JFrame implements Observer {
 
 	private void buildInfoView() {
 
+
 		// data fields
 		int score = 0;
 		long time = 0; // later
@@ -186,7 +189,16 @@ public class WindowView extends JFrame implements Observer {
 
 		score_holder = new JLabel("" + score);
 		moves_holder = new JLabel("" + movesRem);
-		time_holder = new JLabel("--:--");
+		time_holder = new JLabel();
+		if(timedGame) {
+
+			timer = new Timer(1000,new CountdownController(this, gridModel, time_holder,moves_holder));
+
+			timer.start();
+
+
+		}
+
 		empty_holder = new JLabel("");
 
 		//build top pane
@@ -280,6 +292,9 @@ public class WindowView extends JFrame implements Observer {
 		temp.add(helpMenu);
 
 		return temp;
+	}
+	public Timer getTimer(){
+		return timer;
 	}
 
 	private void shake() {

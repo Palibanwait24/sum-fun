@@ -27,6 +27,7 @@ public class QueueModel extends Observable {
 	}
 
 	public int updateQueue() {
+
 		int next = dequeue();
 
 		if (count < (game.getMaxMoves() - size)) {

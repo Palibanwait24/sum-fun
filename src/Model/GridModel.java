@@ -17,6 +17,7 @@ public class GridModel extends Observable {
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid
 	private boolean win; // flag to show if game is over
+	private boolean gameLost= false;
 
 	public GridModel(SumFun game, QueueModel queue) {
 		this.game = game;
@@ -47,10 +48,16 @@ public class GridModel extends Observable {
 		setChanged();
 		notifyObservers();
 	}
-
+	public boolean isGameLost(){
+		return gameLost;
+	}
+	public void setGameLost(boolean answer){
+		gameLost = answer;
+	}
 	public void move(int row, int col) {
 		if (moves > game.getMaxMoves() - 1) {
 			// we should move this pop-up to view.... just do max calculation there with getter
+			gameLost= true;
 			JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
 			return; // out of moves
 		}
@@ -85,6 +92,7 @@ public class GridModel extends Observable {
 		win = checkWin(); // check if game is over
 		if (win) {
 			// should move this to view too, i think
+			gameLost = true;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 			// not sure what else
 		}
@@ -165,5 +173,8 @@ public class GridModel extends Observable {
 
 	public boolean getValid() {
 		return valid;
+	}
+	public void setMoves(int number){
+		moves = number;
 	}
 }
