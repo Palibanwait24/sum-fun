@@ -179,7 +179,7 @@ public class GridModel extends Observable {
 					for (int dx = -1; dx <= 1; dx++) {
 						for (int dy = -1; dy <= 1; dy++) {
 							try {
-								if (!grid[dx][dy].isEmpty()) {
+								if (!grid[row + dx][col + dy].isEmpty()) {
 									count++;
 								}
 							} catch (ArrayIndexOutOfBoundsException ex) {

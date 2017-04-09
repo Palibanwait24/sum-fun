@@ -3,7 +3,7 @@ package Model;
 public class BotModel {
 
 	private GridModel gridModel;
-	private final int sleep = 2000; // time between moves
+	private final int sleep = 1000; // time between moves
 
 	public BotModel(GridModel gridModel) {
 		this.gridModel = gridModel;

@@ -38,33 +38,58 @@ public class SumFun {
 		}
 	}
 
+	public void startNewGame() {
+
+		SumFun newGame = new SumFun();
+		newGame.run(newGame);
+		/*
+		selectGame();
+		
+		queue = new QueueModel(oldGame);
+		grid = new GridModel(oldGame, oldGame.queue);
+		oldGame.mainView = new WindowView(oldGame, oldGame.grid, oldGame.queue, oldGame.getTimedGame());
+		oldGame.mainView.addObserver(oldGame.grid);
+		oldGame.mainView.addObserver(oldGame.queue);
+		oldGame.grid.start();
+		oldGame.queue.start();
+		oldGame.mainView.setVisible(true);
+		*/
+	}
+
 	private void selectGame() {
 		boolean dev = true; // turn off later before we turn in
 		if (dev) {
-			Object[] options = { "Watch bot", "Timed game", "Untimed game" };
+			Object[] options = { "Exit", "Watch bot", "Timed game", "Untimed game" };
+			int n = JOptionPane.showOptionDialog(null, //parent container of JOptionPane
+					"Welcome to Sum Fun!\nWhat type of game do you want to play?", "Select Game",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[3]);
+
+			// we should add a quit option to this ^^^^ closing it starts new game
+			if (n == 1) { // bot game
+				timedGame = false;
+				botEnabled = true;
+			} else if (n == 2) { // timed game
+				timedGame = true;
+				botEnabled = false;
+			} else if (n == 3) { // untimed game
+				timedGame = false;
+				botEnabled = false;
+			} else { // exit
+				System.exit(0);
+			}
+		} else {
+			Object[] options = { "Exit", "Timed game", "Untimed game" };
 			int n = JOptionPane.showOptionDialog(null, //parent container of JOptionPane
 					"Welcome to Sum Fun!\nWhat type of game do you want to play?", "Select Game",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
 
 			// we should add a quit option to this ^^^^ closing it starts new game
-			if (n == 0) {
-				botEnabled = true;
-			} else if (n == 1) {
+			if (n == 1) { // timed game
 				timedGame = true;
-			} else {
-				// untimed game
-			}
-		} else {
-			Object[] options = { "Timed game", "Untimed game" };
-			int n = JOptionPane.showOptionDialog(null, //parent container of JOptionPane
-					"Welcome to Sum Fun!\nWhat type of game do you want to play?", "Select Game",
-					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-
-			// we should add a quit option to this ^^^^ closing it starts new game
-			if (n == 0) {
-				timedGame = true;
-			} else {
-				// untimed game
+			} else if (n == 2) { // untimed game
+				timedGame = false;
+			} else { // exit
+				System.exit(0);
 			}
 		}
 
