@@ -41,7 +41,7 @@ public class QueueModel extends Observable {
 
 	private void enqueue() {
 		queue.add(getRandomNumber());
-		count++; 
+		count++;
 		// TODO only allow 50 tiles to be added to queue, no more
 	}
 

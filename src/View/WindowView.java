@@ -112,9 +112,6 @@ public class WindowView extends JFrame implements Observer {
 				i++;
 			}
 
-		} else if (o.getClass().getName().equals("Model.BotModel")) {
-			// process bot update
-
 		} else {
 			System.out.println("Error occured in WindowView.update()");
 		}
@@ -310,12 +307,13 @@ public class WindowView extends JFrame implements Observer {
 				} else {
 					offset = ox - 5;
 				}
-				setLocation(offset, oy);
+				setLocation(offset, oy); // shake window
 				Thread.sleep(10);
 			}
 		} catch (Exception ex) {
 			System.out.println("Error occured in WindowView.shake()");
 			ex.printStackTrace();
 		}
+		setLocation(ox, oy); // place window back in original position
 	}
 }

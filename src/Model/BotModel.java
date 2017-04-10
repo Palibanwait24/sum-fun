@@ -1,16 +1,20 @@
 package Model;
 
+import sumfun.SumFun;
+
 public class BotModel {
 
 	private GridModel gridModel;
+	private SumFun game;
 	private final int sleep = 1000; // time between moves
 
-	public BotModel(GridModel gridModel) {
+	public BotModel(SumFun game, GridModel gridModel) {
+		this.game = game;
 		this.gridModel = gridModel;
 	}
 
 	public void run() {
-		while (!gridModel.checkWin()) {
+		while (!gridModel.checkWin() || !game.getStop()) {
 			move();
 		}
 	}

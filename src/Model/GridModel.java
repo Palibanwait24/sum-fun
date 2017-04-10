@@ -96,7 +96,7 @@ public class GridModel extends Observable {
 		win = checkWin(); // check if game is over
 		if (win) {
 			// should move this to view too, i think
-			gameLost = true;
+			gameLost = false;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 			// not sure what else
 		}
@@ -136,13 +136,15 @@ public class GridModel extends Observable {
 		}
 		moves++;
 
+		System.out.println("r: " + maxRow + "\nc: " + maxCol);
+
 		setChanged();
 		notifyObservers();
 		// valid = true; // reset valid flag
 		win = checkWin(); // check if game is over
 		if (win) {
 			// should move this to view too, i think
-			gameLost = true;
+			gameLost = false;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 			// not sure what else
 		}
@@ -158,7 +160,7 @@ public class GridModel extends Observable {
 					int sum = tileSum(row, col); // determine sum of tile and its neighbors
 					temp[row][col] = sum;
 				} else {
-					temp[row][col] = 0;
+					temp[row][col] = -1;
 				}
 			}
 		}
@@ -173,6 +175,9 @@ public class GridModel extends Observable {
 
 		for (int row = 0; row < gridSums.length; row++) {
 			for (int col = 0; col < gridSums[row].length; col++) {
+				if (gridSums[row][col] == -1) {
+					continue; // not a valid move, continue
+				}
 				count = 0;
 				int mod = gridSums[row][col] % 10;
 				if (mod == tileToAdd) {

@@ -13,8 +13,9 @@ public class SumFun {
 	public BotModel bot;
 	public WindowView mainView;
 	private final int maxMoves = 50;
-	private boolean timedGame = false;
-	private boolean botEnabled = false;
+	private boolean timedGame = false; // flag for timed or untimed game
+	private boolean botEnabled = false; // flag for if bot is enabled
+	private boolean stop = false; // flag to continue or stop game
 
 	public static void main(String[] args) {
 		SumFun game = new SumFun();
@@ -26,8 +27,8 @@ public class SumFun {
 
 		queue = new QueueModel(game);
 		grid = new GridModel(game, queue);
-		bot = new BotModel(grid);
 		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
+		bot = new BotModel(game, grid);
 		mainView.addObserver(grid);
 		mainView.addObserver(queue);
 		grid.start();
@@ -39,8 +40,10 @@ public class SumFun {
 	}
 
 	public void startNewGame() {
-
+		// TODO stop old game
+		stop = true;
 		SumFun newGame = new SumFun();
+		//newGame.setStop() = true; // something like this but fuck
 		newGame.run(newGame);
 		/*
 		selectGame();
@@ -95,18 +98,11 @@ public class SumFun {
 
 	}
 
-	public void stop(SumFun game) {
-
+	public boolean getStop() {
+		return stop;
 	}
 
 	public void move(int row, int col) {
-		/*
-		if (botEnabled) {
-			bot.move();
-		} else {
-			grid.move(row, col);
-		}
-		*/
 		grid.move(row, col);
 	}
 
