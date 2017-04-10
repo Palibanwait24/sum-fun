@@ -16,6 +16,7 @@ public class SumFun {
 	private boolean timedGame = false; // flag for timed or untimed game
 	private boolean botEnabled = false; // flag for if bot is enabled
 	private boolean stop = false; // flag to continue or stop game
+	private String name; // player name
 
 	public static void main(String[] args) {
 		SumFun game = new SumFun();
@@ -37,6 +38,7 @@ public class SumFun {
 		if (botEnabled) {
 			bot.run();
 		}
+		System.out.println(name);
 	}
 
 	public void startNewGame() {
@@ -80,6 +82,8 @@ public class SumFun {
 			} else { // exit
 				System.exit(0);
 			}
+
+			promptForName();
 		} else {
 			Object[] options = { "Exit", "Timed game", "Untimed game" };
 			int n = JOptionPane.showOptionDialog(null, //parent container of JOptionPane
@@ -94,8 +98,13 @@ public class SumFun {
 			} else { // exit
 				System.exit(0);
 			}
-		}
 
+			promptForName();
+		}
+	}
+
+	private void promptForName() {
+		name = JOptionPane.showInputDialog("Enter player name:");
 	}
 
 	public boolean getStop() {

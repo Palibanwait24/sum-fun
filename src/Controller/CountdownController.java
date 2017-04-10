@@ -8,7 +8,7 @@ import Model.GridModel;
 import View.WindowView;
 
 public class CountdownController implements ActionListener {
-	private int counter1 = 300; // number of seconds for the countdown, 5 min = 300
+	private int counter1 = 5; // number of seconds for the countdown, 5 min = 300
 	private GridModel gridModel;
 	private WindowView window;
 	private JLabel time_holder;
