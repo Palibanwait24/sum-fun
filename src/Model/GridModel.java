@@ -117,23 +117,45 @@ public class GridModel extends Observable {
 		int max = 0;
 		int maxRow = 0;
 		int maxCol = 0;
-
+		boolean selection = false;
+		
 		for (int row = 0; row < neighborsRemoved.length; row++) {
 			for (int col = 0; col < neighborsRemoved[row].length; col++) {
 				if (neighborsRemoved[row][col] > max) {
 					max = neighborsRemoved[row][col];
 					maxRow = row;
 					maxCol = col;
+					selection = true;
 				}
 			}
 		}
-
 		int tileToAdd = queueModel.updateQueue();
-		grid[maxRow][maxCol].setData(tileToAdd);
-		int tilesRemoved = erase(maxRow, maxCol); // erase surrounding tiles
-		if (tilesRemoved >= 3) {
-			score += (tilesRemoved * 10);
+		if(selection){
+			
+			grid[maxRow][maxCol].setData(tileToAdd);
+			int tilesRemoved = erase(maxRow, maxCol); // erase surrounding tiles
+			if (tilesRemoved >= 3) {
+				score += (tilesRemoved * 10);
+			}
 		}
+		else{
+			boolean breakPoint = true;
+			
+			for (int row = 0; row < neighborsRemoved.length; row++) {
+				for (int col = 0; col < neighborsRemoved[row].length; col++) {
+				if (grid[row][col].getData().equals( "") && breakPoint != false){
+					grid[row][col].setData(tileToAdd);
+					breakPoint = false;
+					
+				}
+				
+			}
+			
+		}
+
+		}
+		
+		
 		moves++;
 
 		System.out.println("r: " + maxRow + "\nc: " + maxCol);
@@ -145,9 +167,11 @@ public class GridModel extends Observable {
 		if (win) {
 			// should move this to view too, i think
 			gameLost = false;
+			moves=50;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 			// not sure what else
 		}
+		
 	}
 
 	// returns an array of the sum of each tile on the board based on its current neighbors
