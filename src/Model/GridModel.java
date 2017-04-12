@@ -18,7 +18,7 @@ public class GridModel extends Observable {
 	private boolean valid; // flag to show if move is valid
 	private boolean win; // flag to show if game is over
 	private boolean gameLost = false;
-
+	private boolean stopJoptionPaneBot = true;
 	public GridModel(SumFun game, QueueModel queue) {
 		this.game = game;
 		this.queueModel = queue;
@@ -104,16 +104,21 @@ public class GridModel extends Observable {
 
 	// perform move for bot
 	protected void moveBot() {
-		if (moves > game.getMaxMoves() - 1) {
+		
+		
+		if (moves > game.getMaxMoves() - 1 && stopJoptionPaneBot) {
 			// we should move this pop-up to view.... just do max calculation there with getter
 			gameLost = true;
 			JOptionPane.showMessageDialog(null, "Bot is out of moves! Please start a new game.");
+			stopJoptionPaneBot = false;
 			return; // out of moves
 		}
 		valid = true; // reset valid flag
 
 		int[][] gridSums = getGridSums();
+		if(stopJoptionPaneBot ==true){
 		int[][] neighborsRemoved = getNeighborsRemoved(gridSums, queueModel.getTopOfQueue());
+		
 		int max = 0;
 		int maxRow = 0;
 		int maxCol = 0;
@@ -129,6 +134,7 @@ public class GridModel extends Observable {
 				}
 			}
 		}
+		
 		int tileToAdd = queueModel.updateQueue();
 		if(selection){
 			
@@ -143,36 +149,39 @@ public class GridModel extends Observable {
 			
 			for (int row = 0; row < neighborsRemoved.length; row++) {
 				for (int col = 0; col < neighborsRemoved[row].length; col++) {
-				if (grid[row][col].getData().equals( "") && breakPoint != false){
-					grid[row][col].setData(tileToAdd);
-					breakPoint = false;
-					
+				if (!grid[row][col+1].getData().equals( "")|| !grid[row+1][col].getData().equals( "")){
+						if(breakPoint != false){
+							grid[row][col].setData(tileToAdd);
+							breakPoint = false;
+						}
 				}
 				
 			}
 			
 		}
 
-		}
+		}}
 		
 		
 		moves++;
 
-		System.out.println("r: " + maxRow + "\nc: " + maxCol);
+		
 
 		setChanged();
 		notifyObservers();
 		// valid = true; // reset valid flag
 		win = checkWin(); // check if game is over
-		if (win) {
+
+		if (win && stopJoptionPaneBot) {
 			// should move this to view too, i think
 			gameLost = false;
-			moves=50;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
+			stopJoptionPaneBot = false;
 			// not sure what else
 		}
-		
-	}
+		}
+	
+	
 
 	// returns an array of the sum of each tile on the board based on its current neighbors
 	private int[][] getGridSums() {

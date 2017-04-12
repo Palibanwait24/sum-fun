@@ -30,7 +30,7 @@ public class QueueModel extends Observable {
 
 		int next = dequeue();
 
-		if (count < (game.getMaxMoves() - size)) {
+		if (count < game.getMaxMoves()) {
 			enqueue();
 		}
 
