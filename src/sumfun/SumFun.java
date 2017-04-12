@@ -73,17 +73,19 @@ public class SumFun {
 			if (n == 1) { // bot game
 				timedGame = false;
 				botEnabled = true;
+				name = "bot";
 			} else if (n == 2) { // timed game
 				timedGame = true;
 				botEnabled = false;
+				promptForName();
 			} else if (n == 3) { // untimed game
 				timedGame = false;
 				botEnabled = false;
+				promptForName();
 			} else { // exit
 				System.exit(0);
 			}
 
-			promptForName();
 		} else {
 			Object[] options = { "Exit", "Timed game", "Untimed game" };
 			int n = JOptionPane.showOptionDialog(null, //parent container of JOptionPane
@@ -109,6 +111,9 @@ public class SumFun {
 
 	public boolean getStop() {
 		return stop;
+	}
+	public void setStop(){
+		stop = true;
 	}
 
 	public void move(int row, int col) {

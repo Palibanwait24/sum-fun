@@ -19,6 +19,7 @@ public class GridModel extends Observable {
 	private boolean win; // flag to show if game is over
 	private boolean gameLost = false;
 	private boolean stopJoptionPaneBot = true;
+
 	public GridModel(SumFun game, QueueModel queue) {
 		this.game = game;
 		this.queueModel = queue;
@@ -98,14 +99,15 @@ public class GridModel extends Observable {
 			// should move this to view too, i think
 			gameLost = false;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
+
 			// not sure what else
 		}
+
 	}
 
 	// perform move for bot
 	protected void moveBot() {
-		
-		
+
 		if (moves > game.getMaxMoves() - 1 && stopJoptionPaneBot) {
 			// we should move this pop-up to view.... just do max calculation there with getter
 			gameLost = true;
@@ -116,59 +118,69 @@ public class GridModel extends Observable {
 		valid = true; // reset valid flag
 
 		int[][] gridSums = getGridSums();
-		if(stopJoptionPaneBot ==true){
-		int[][] neighborsRemoved = getNeighborsRemoved(gridSums, queueModel.getTopOfQueue());
-		
-		int max = 0;
-		int maxRow = 0;
-		int maxCol = 0;
-		boolean selection = false;
-		
-		for (int row = 0; row < neighborsRemoved.length; row++) {
-			for (int col = 0; col < neighborsRemoved[row].length; col++) {
-				if (neighborsRemoved[row][col] > max) {
-					max = neighborsRemoved[row][col];
-					maxRow = row;
-					maxCol = col;
-					selection = true;
-				}
-			}
-		}
-		
-		int tileToAdd = queueModel.updateQueue();
-		if(selection){
-			
-			grid[maxRow][maxCol].setData(tileToAdd);
-			int tilesRemoved = erase(maxRow, maxCol); // erase surrounding tiles
-			if (tilesRemoved >= 3) {
-				score += (tilesRemoved * 10);
-			}
-		}
-		else{
-			boolean breakPoint = true;
-			
+		if (stopJoptionPaneBot == true) {
+			int[][] neighborsRemoved = getNeighborsRemoved(gridSums, queueModel.getTopOfQueue());
+
+			int max = 0;
+			int maxRow = 0;
+			int maxCol = 0;
+			boolean selection = false;
+
 			for (int row = 0; row < neighborsRemoved.length; row++) {
 				for (int col = 0; col < neighborsRemoved[row].length; col++) {
-				if (grid[row+1][col].getData() != ( "")||grid[row][col+1].getData() != ( "")){
-						if(breakPoint){
-							grid[row][col].setData(tileToAdd);
-							breakPoint = false;
-							
-						}
-						
+					if (neighborsRemoved[row][col] > max) {
+						max = neighborsRemoved[row][col];
+						maxRow = row;
+						maxCol = col;
+						selection = true;
+					}
 				}
-				
-				
 			}
-			
+
+			int tileToAdd;
+			if (selection) {
+				tileToAdd = queueModel.updateQueue();
+				grid[maxRow][maxCol].setData(tileToAdd);
+				int tilesRemoved = erase(maxRow, maxCol); // erase surrounding tiles
+				if (tilesRemoved >= 3) {
+					score += (tilesRemoved * 10);
+				}
+				moves++;
+			} else {
+				boolean breakPoint = true;
+
+				for (int row = 0; row < neighborsRemoved.length; row++) {
+					for (int col = 0; col < neighborsRemoved[row].length; col++) {
+						if (!grid[row][col].isEmpty()) {
+							continue;
+						}
+
+						for (int dx = -1; dx <= 1; dx++) {
+							for (int dy = -1; dy <= 1; dy++) {
+								try {
+									if (dx == 0 && dy == 0) {
+										continue;
+									}
+
+									if (!grid[row + dx][col + dy].isEmpty()) {
+										if (breakPoint) {
+											tileToAdd = queueModel.updateQueue();
+											grid[row][col].setData(tileToAdd);
+											breakPoint = false;
+											moves++;
+										}
+									}
+								} catch (ArrayIndexOutOfBoundsException ex) {
+									// tile is not on board, do nothing
+								}
+							}
+						}
+					}
+
+				}
+
+			}
 		}
-
-		}}
-		
-		
-		moves++;
-
-		
 
 		setChanged();
 		notifyObservers();
@@ -179,14 +191,13 @@ public class GridModel extends Observable {
 			// should move this to view too, i think
 			gameLost = false;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
-			
+			game.setStop();
 			stopJoptionPaneBot = false;
 			return;
 			// not sure what else
 		}
-		}
-	
-	
+
+	}
 
 	// returns an array of the sum of each tile on the board based on its current neighbors
 	private int[][] getGridSums() {
