@@ -149,7 +149,7 @@ public class GridModel extends Observable {
 			
 			for (int row = 0; row < neighborsRemoved.length; row++) {
 				for (int col = 0; col < neighborsRemoved[row].length; col++) {
-				if (grid[row][col].getData().equals( "")){
+				if (grid[row+1][col].getData() != ( "")||grid[row][col+1].getData() != ( "")){
 						if(breakPoint){
 							grid[row][col].setData(tileToAdd);
 							breakPoint = false;
@@ -179,7 +179,9 @@ public class GridModel extends Observable {
 			// should move this to view too, i think
 			gameLost = false;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
+			
 			stopJoptionPaneBot = false;
+			return;
 			// not sure what else
 		}
 		}
