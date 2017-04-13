@@ -128,4 +128,7 @@ public class SumFun {
 		return timedGame;
 	}
 
+	public String getName() {
+		return name;
+	}
 }

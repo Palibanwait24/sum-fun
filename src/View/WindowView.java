@@ -16,7 +16,7 @@ public class WindowView extends JFrame implements Observer {
 	private final int WINDOW_WIDTH = 660;
 	private final int WINDOW_HEIGHT = 700;
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-	private final int LOCATION_X = screensize.height / 3;
+	private final int LOCATION_X = screensize.height / 5;
 	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
 
 	// design members
@@ -32,6 +32,7 @@ public class WindowView extends JFrame implements Observer {
 	// model members
 	private GridModel gridModel; // grid model
 	private QueueModel queueModel; // queue model
+	private OverallHighScoreModel overallScoreModel;//score model
 
 	// data members
 	private TileModel[][] grid; // grid data -> game board
@@ -248,7 +249,7 @@ public class WindowView extends JFrame implements Observer {
 		JMenuItem highScores = new JMenuItem("High scores"); // view local high scores
 		highScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// show hi scores
+				HighScoreView h1 = new HighScoreView();
 			}
 		});
 		viewMenu.add(highScores);
