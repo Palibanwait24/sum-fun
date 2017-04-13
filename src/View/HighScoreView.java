@@ -53,7 +53,7 @@ public class HighScoreView extends JFrame implements Observer {
         for(int i = 1 ; i < (NUMBER_OF_SCORES+1) ; i++){
             if(score.getScore() > scoreList.get(i-1).getScore()){
                 JLabel temp  = new JLabel(i+". "+ score.toString());
-                top10.add(i,temp);
+                top10.get(i,temp);
             }else{
                 return;
             }
