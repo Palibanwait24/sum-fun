@@ -3,3 +3,4 @@
 .*
 bin/
 scores.txt
+*.iml
