@@ -42,23 +42,9 @@ public class SumFun {
 	}
 
 	public void startNewGame() {
-		// TODO stop old game
 		stop = true;
 		SumFun newGame = new SumFun();
-		//newGame.setStop() = true; // something like this but fuck
 		newGame.run(newGame);
-		/*
-		selectGame();
-		
-		queue = new QueueModel(oldGame);
-		grid = new GridModel(oldGame, oldGame.queue);
-		oldGame.mainView = new WindowView(oldGame, oldGame.grid, oldGame.queue, oldGame.getTimedGame());
-		oldGame.mainView.addObserver(oldGame.grid);
-		oldGame.mainView.addObserver(oldGame.queue);
-		oldGame.grid.start();
-		oldGame.queue.start();
-		oldGame.mainView.setVisible(true);
-		*/
 	}
 
 	private void selectGame() {
@@ -69,7 +55,6 @@ public class SumFun {
 					"Welcome to Sum Fun!\nWhat type of game do you want to play?", "Select Game",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[3]);
 
-			// we should add a quit option to this ^^^^ closing it starts new game
 			if (n == 1) { // bot game
 				timedGame = false;
 				botEnabled = true;
@@ -92,7 +77,6 @@ public class SumFun {
 					"Welcome to Sum Fun!\nWhat type of game do you want to play?", "Select Game",
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
 
-			// we should add a quit option to this ^^^^ closing it starts new game
 			if (n == 1) { // timed game
 				timedGame = true;
 			} else if (n == 2) { // untimed game
@@ -112,7 +96,8 @@ public class SumFun {
 	public boolean getStop() {
 		return stop;
 	}
-	public void setStop(){
+
+	public void setStop() {
 		stop = true;
 	}
 
