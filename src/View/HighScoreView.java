@@ -67,14 +67,15 @@ public class HighScoreView extends JFrame implements Observer {
 				}
 
 			}
-
+			sc.close();
+			Collections.sort(scoreList);
+			printScores();
+			updateJlabels();
 		} catch (FileNotFoundException | ParseException e) {
-			System.out.printf(e.toString());
+
+			System.out.printf("file not found" );
 		}
-		sc.close();
-		Collections.sort(scoreList);
-		printScores();
-		updateJlabels();
+
 
 	}
 
@@ -114,7 +115,7 @@ public class HighScoreView extends JFrame implements Observer {
 			}
 			writer.close();
 		} catch (FileNotFoundException e) {
-
+			System.out.println("file not updating");
 		}
 
 	}
