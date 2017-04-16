@@ -80,7 +80,6 @@ public class HighScoreView extends JFrame implements Observer {
     }
 
     public void printScores() {
-        if (scoreList.size() >= 10) {
             int index = NUMBER_OF_SCORES - scoreList.size();
             for (int i = 0, j = scoreList.size()+1; i < index; i++, j++) {
                 JLabel temp = new JLabel(j + ". ");
@@ -94,7 +93,7 @@ public class HighScoreView extends JFrame implements Observer {
 
 
         }
-    }
+
 
 
     public void updateJlabels() {
