@@ -1,6 +1,7 @@
 package sumfun;
 
 import Model.*;
+import View.HighScoreView;
 import View.WindowView;
 import javax.swing.JOptionPane;
 
@@ -17,6 +18,7 @@ public class SumFun {
 	private boolean botEnabled = false; // flag for if bot is enabled
 	private boolean stop = false; // flag to continue or stop game
 	private String name; // player name
+	private HighScoreView hsView;
 
 	public static void main(String[] args) {
 		SumFun game = new SumFun();
@@ -25,9 +27,8 @@ public class SumFun {
 
 	public void run(SumFun game) {
 		selectGame();
-
 		queue = new QueueModel(game);
-		grid = new GridModel(game, queue);
+		grid = new GridModel(game, queue,name);
 		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
 		bot = new BotModel(game, grid);
 		mainView.addObserver(grid);

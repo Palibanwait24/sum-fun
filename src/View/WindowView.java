@@ -32,7 +32,8 @@ public class WindowView extends JFrame implements Observer {
 	// model members
 	private GridModel gridModel; // grid model
 	private QueueModel queueModel; // queue model
-	private OverallHighScoreModel overallScoreModel;//score model
+	private OverallHighScoreModel overallScoreModel;
+	private HighScoreView h1;//score model
 
 	// data members
 	private TileModel[][] grid; // grid data -> game board
@@ -249,9 +250,9 @@ public class WindowView extends JFrame implements Observer {
 		JMenuItem highScores = new JMenuItem("High scores"); // view local high scores
 		highScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				HighScoreView h1 = new HighScoreView();
-			}
-		});
+				h1 = new HighScoreView();
+	}
+});
 		viewMenu.add(highScores);
 		temp.add(viewMenu);
 
@@ -316,5 +317,9 @@ public class WindowView extends JFrame implements Observer {
 			ex.printStackTrace();
 		}
 		setLocation(ox, oy); // place window back in original position
+	}
+
+	public HighScoreView getHighScoreView(){
+		return h1;
 	}
 }

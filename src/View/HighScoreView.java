@@ -22,7 +22,7 @@ public class HighScoreView extends JFrame implements Observer {
 	private final int WINDOW_WIDTH = 400;
 	private final int WINDOW_HEIGHT = 400;
 	private final int NUMBER_OF_SCORES = 10;
-	private final String FILENAME = "aresources\\scores.txt";
+	private final String FILENAME = "resources\\scores.txt";
 	private ArrayList<JLabel> top10;
 	private ArrayList<OverallHighScoreModel> scoreList;
 	private Scanner sc;
@@ -101,6 +101,7 @@ public class HighScoreView extends JFrame implements Observer {
 	public void addScore(OverallHighScoreModel addedScore) {
 		scoreList.add(addedScore);
 		Collections.sort(scoreList);
+		updateFile();
 		printScores();
 		updateJlabels();
 	}
@@ -109,7 +110,7 @@ public class HighScoreView extends JFrame implements Observer {
 		try {
 			PrintWriter writer = new PrintWriter(FILENAME);
 			for (OverallHighScoreModel el : scoreList) {
-				writer.println(el.getName() + "," + formatter.format(el.getDate()) + "," + el.getScore() + ",");
+				writer.print(el.getName() + "," + formatter.format(el.getDate()) + "," + el.getScore() + ",");
 			}
 			writer.close();
 		} catch (FileNotFoundException e) {

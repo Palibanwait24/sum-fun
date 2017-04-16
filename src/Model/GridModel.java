@@ -1,9 +1,11 @@
 package Model;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.swing.JOptionPane;
 
+import View.HighScoreView;
 import sumfun.SumFun;
 import Model.QueueModel;
 
@@ -19,8 +21,13 @@ public class GridModel extends Observable {
 	private boolean win; // flag to show if game is over
 	private boolean gameLost = false;
 	private boolean stopJoptionPaneBot = true;
+	private String name;
+	private SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+	private HighScoreView hsView;
 
-	public GridModel(SumFun game, QueueModel queue) {
+
+
+	public GridModel(SumFun game, QueueModel queue, String n) {
 		this.game = game;
 		this.queueModel = queue;
 		grid = new TileModel[d][d];
@@ -29,6 +36,9 @@ public class GridModel extends Observable {
 		valid = true;
 		win = false;
 		boolean fill = false;
+		name = n;
+		hsView = new HighScoreView();
+		hsView.setVisible(false);
 
 		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < grid[row].length; col++) {
@@ -98,6 +108,9 @@ public class GridModel extends Observable {
 		if (win) {
 			// should move this to view too, i think
 			gameLost = false;
+			OverallHighScoreModel m1 = new OverallHighScoreModel(name,new Date(),score);
+			System.out.println("I am here");
+			hsView.addScore(m1);
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 
 			// not sure what else
@@ -193,6 +206,8 @@ public class GridModel extends Observable {
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 			game.setStop();
 			stopJoptionPaneBot = false;
+			OverallHighScoreModel m1 = new OverallHighScoreModel(name,new Date(),score);
+			hsView.addScore(m1);
 			return;
 			// not sure what else
 		}
@@ -264,6 +279,8 @@ public class GridModel extends Observable {
 				}
 			}
 		}
+
+
 		return true; // all tiles are empty, game is over
 	}
 
