@@ -28,11 +28,11 @@ public class WindowView extends JFrame implements Observer {
 	private JLabel moves_holder, score_holder;
 
 	private SumFun game;
+	private Timer timer;
 
 	// model members
 	private GridModel gridModel; // grid model
 	private QueueModel queueModel; // queue model
-	private OverallHighScoreModel overallScoreModel;
 	private HighScoreView h1;//score model
 
 	// data members
@@ -40,7 +40,6 @@ public class WindowView extends JFrame implements Observer {
 	private TileModel[] queue; // queue data -> game queue
 	private boolean timedGame;
 
-	private Timer timer;
 	// statistic members
 	private int movesRem; // moves remaining in game
 	private boolean usedHint; // flag to determine if hint has been used
@@ -167,7 +166,6 @@ public class WindowView extends JFrame implements Observer {
 		}
 		queue[0].setBackground(Color.GREEN);
 		queue[0].setOpaque(true);
-		//
 	}
 
 	private void buildInfoView() {
@@ -231,16 +229,15 @@ public class WindowView extends JFrame implements Observer {
 		JMenuItem exit = new JMenuItem("Exit"); // exit game
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*
 				int option = JOptionPane.showConfirmDialog((Component) getParent(),
-						"Are you sure you want to exit Sum Fun?\nAll unsaved progress will be lost.", "Confirm Exit", 0);
+						"Are you sure you want to exit Sum Fun?\nAll unsaved progress will be lost.", "Confirm Exit",
+						0);
 				if (option == 0) {
 					System.exit(0);
 				} else {
 					return;
 				}
-				*/
-				System.exit(0); // use for development, remove later
+				//System.exit(0); // use for development, remove later
 			}
 		});
 		fileMenu.add(exit);
@@ -251,8 +248,8 @@ public class WindowView extends JFrame implements Observer {
 		highScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				h1 = new HighScoreView();
-	}
-});
+			}
+		});
 		viewMenu.add(highScores);
 		temp.add(viewMenu);
 
@@ -296,6 +293,10 @@ public class WindowView extends JFrame implements Observer {
 		return timer;
 	}
 
+	public HighScoreView getHighScoreView() {
+		return h1;
+	}
+
 	private void shake() {
 		final int length = 8;
 		final int ox = getLocationOnScreen().x; // original x position
@@ -317,9 +318,5 @@ public class WindowView extends JFrame implements Observer {
 			ex.printStackTrace();
 		}
 		setLocation(ox, oy); // place window back in original position
-	}
-
-	public HighScoreView getHighScoreView(){
-		return h1;
 	}
 }

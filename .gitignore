@@ -2,5 +2,5 @@
 .DS_Store
 .*
 bin/
-scores.txt
+resources/scores.txt
 *.iml

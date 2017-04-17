@@ -1,8 +1,6 @@
 package Model;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
-
 import javax.swing.JOptionPane;
 
 import View.HighScoreView;
@@ -10,6 +8,8 @@ import sumfun.SumFun;
 import Model.QueueModel;
 
 public class GridModel extends Observable {
+
+	private static GridModel gridModel;
 
 	private SumFun game; // reference to main game
 	private QueueModel queueModel; // reference to game queue
@@ -22,10 +22,7 @@ public class GridModel extends Observable {
 	private boolean gameLost = false;
 	private boolean stopJoptionPaneBot = true;
 	private String name;
-	private SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 	private HighScoreView hsView;
-
-
 
 	public GridModel(SumFun game, QueueModel queue, String n) {
 		this.game = game;
@@ -60,6 +57,13 @@ public class GridModel extends Observable {
 		notifyObservers();
 	}
 
+	public static GridModel getInstance(SumFun game, QueueModel queue, String name) {
+		if (gridModel == null) {
+			gridModel = new GridModel(game, queue, name);
+		}
+		return gridModel;
+	}
+
 	public boolean isGameLost() {
 		return gameLost;
 	}
@@ -71,7 +75,6 @@ public class GridModel extends Observable {
 	// perform move for user
 	public void move(int row, int col) {
 		if (moves > game.getMaxMoves() - 1) {
-			// we should move this pop-up to view.... just do max calculation there with getter
 			gameLost = true;
 			JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
 			return; // out of moves
@@ -106,14 +109,10 @@ public class GridModel extends Observable {
 		// valid = true; // reset valid flag
 		win = checkWin(); // check if game is over
 		if (win) {
-			// should move this to view too, i think
 			gameLost = false;
-			OverallHighScoreModel m1 = new OverallHighScoreModel(name,new Date(),score);
-			System.out.println("I am here");
+			OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
 			hsView.addScore(m1);
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
-
-			// not sure what else
 		}
 
 	}
@@ -122,7 +121,6 @@ public class GridModel extends Observable {
 	protected void moveBot() {
 
 		if (moves > game.getMaxMoves() - 1 && stopJoptionPaneBot) {
-			// we should move this pop-up to view.... just do max calculation there with getter
 			gameLost = true;
 			JOptionPane.showMessageDialog(null, "Bot is out of moves! Please start a new game.");
 			stopJoptionPaneBot = false;
@@ -201,15 +199,13 @@ public class GridModel extends Observable {
 		win = checkWin(); // check if game is over
 
 		if (win && stopJoptionPaneBot) {
-			// should move this to view too, i think
 			gameLost = false;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 			game.setStop();
 			stopJoptionPaneBot = false;
-			OverallHighScoreModel m1 = new OverallHighScoreModel(name,new Date(),score);
+			OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
 			hsView.addScore(m1);
 			return;
-			// not sure what else
 		}
 
 	}
@@ -279,7 +275,6 @@ public class GridModel extends Observable {
 				}
 			}
 		}
-
 
 		return true; // all tiles are empty, game is over
 	}
