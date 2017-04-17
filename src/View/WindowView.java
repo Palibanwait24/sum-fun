@@ -319,4 +319,11 @@ public class WindowView extends JFrame implements Observer {
 		}
 		setLocation(ox, oy); // place window back in original position
 	}
+
+	public void setGame(SumFun newGame, GridModel grid, QueueModel queue, boolean timedGame) {
+		this.game = newGame;
+		this.gridModel = grid;
+		this.queueModel = queue;
+		this.timedGame = timedGame;
+	}
 }

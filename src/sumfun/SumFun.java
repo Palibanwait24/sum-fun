@@ -48,15 +48,17 @@ public class SumFun {
 		
 		selectGame();
 		queue = new QueueModel(newGame);
-		grid.setGame(newGame);
-		grid.setQueue(queue);
-		grid.setName(name);
-		mainView = new WindowView(newGame, grid, queue, timedGame); // main game frame
-		bot = new BotModel(newGame, grid);
-		mainView.addObserver(grid);
-		mainView.addObserver(queue);
-		grid.start();
-		queue.start();
+		grid = GridModel.getInstance(newGame, queue, name);
+
+		//grid.setGame(newGame);
+		//grid.setQueue(queue);
+		//grid.setName(name);
+		mainView.setGame(newGame, grid, queue, timedGame); // main game frame
+		//bot = new BotModel(newGame, grid);
+		//mainView.addObserver(grid);
+		//mainView.addObserver(queue);
+		//grid.start();
+		//queue.start();
 		mainView.setVisible(true);
 	}
 
