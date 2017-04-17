@@ -16,7 +16,7 @@ public class HighScoreView extends JFrame implements Observer {
 	private final int WINDOW_WIDTH = 400;
 	private final int WINDOW_HEIGHT = 400;
 	private final int NUMBER_OF_SCORES = 10;
-	private final String FILENAME = "resources\\scores.txt";
+	private final String FILENAME = "resources/scores.txt";
 	private ArrayList<JLabel> top10;
 	private ArrayList<OverallHighScoreModel> scoreList;
 	private Scanner sc;

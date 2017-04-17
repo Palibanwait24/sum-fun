@@ -41,8 +41,23 @@ public class SumFun {
 
 	public void startNewGame() {
 		stop = true;
+		grid.setMoves(0);
+		//grid.setScore(0);
 		SumFun newGame = new SumFun();
-		newGame.run(newGame);
+		//newGame.run(newGame);
+		
+		selectGame();
+		queue = new QueueModel(newGame);
+		grid.setGame(newGame);
+		grid.setQueue(queue);
+		grid.setName(name);
+		mainView = new WindowView(newGame, grid, queue, timedGame); // main game frame
+		bot = new BotModel(newGame, grid);
+		mainView.addObserver(grid);
+		mainView.addObserver(queue);
+		grid.start();
+		queue.start();
+		mainView.setVisible(true);
 	}
 
 	private void selectGame() {

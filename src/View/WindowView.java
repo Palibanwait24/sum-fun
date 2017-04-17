@@ -90,7 +90,7 @@ public class WindowView extends JFrame implements Observer {
 			TileModel[][] temp = ((GridModel) o).getGrid();
 
 			if (!gridModel.getValid()) {
-				shake();
+				//shake();
 			}
 			for (int r = 0; r < temp.length; r++) {
 				for (int c = 0; c < temp[r].length; c++) {

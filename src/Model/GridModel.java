@@ -24,7 +24,7 @@ public class GridModel extends Observable {
 	private String name;
 	private HighScoreView hsView;
 
-	public GridModel(SumFun game, QueueModel queue, String n) {
+	private GridModel(SumFun game, QueueModel queue, String n) {
 		this.game = game;
 		this.queueModel = queue;
 		grid = new TileModel[d][d];
@@ -340,5 +340,17 @@ public class GridModel extends Observable {
 
 	public void setMoves(int number) {
 		moves = number;
+	}
+
+	public void setGame(SumFun newGame) {
+		game = newGame;
+	}
+
+	public void setQueue(QueueModel newQueue) {
+		queueModel = newQueue;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
