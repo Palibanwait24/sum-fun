@@ -49,6 +49,15 @@ public class QueueModel extends Observable {
 		return queue.poll();
 	}
 
+	public void reinitialize() {
+		for (int i = 0; i < size; i++) {
+			updateQueue();
+		}
+		count = 0;
+		setChanged();
+		notifyObservers();
+	}
+
 	public QueueModel getQueueModel() {
 		return model;
 	}
@@ -63,7 +72,7 @@ public class QueueModel extends Observable {
 
 	private int getRandomNumber() {
 		Random rand = new Random();
-		int n = rand.nextInt(10); // generate random number in range [1,9]
+		int n = rand.nextInt(10); // generate random number in range [0,9]
 		return n;
 	}
 

@@ -25,10 +25,11 @@ public class WindowView extends JFrame implements Observer {
 	private JPanel queueView; // view for game queue
 	private JPanel infoView; // view for info/statistics on current game
 	private final JMenuBar menu; // menu for options and operations
-	private JLabel moves_holder, score_holder;
+	private JLabel moves_holder, score_holder, time_holder;
 
 	private SumFun game;
 	private Timer timer;
+	private RefreshController rc;
 
 	// model members
 	private GridModel gridModel; // grid model
@@ -175,7 +176,7 @@ public class WindowView extends JFrame implements Observer {
 
 		// design fields
 		JLabel score_label, time_label, moves_label;
-		JLabel time_holder, empty_holder;
+		JLabel empty_holder;
 
 		// construct info pane layout
 		infoView.setLayout(new GridLayout(4, 2));
@@ -188,11 +189,10 @@ public class WindowView extends JFrame implements Observer {
 		moves_holder = new JLabel("" + movesRem);
 		time_holder = new JLabel();
 		if (timedGame) {
-
 			timer = new Timer(1000, new CountdownController(this, gridModel, time_holder, moves_holder));
-
 			timer.start();
-
+		} else {
+			time_holder.setText("--:--");
 		}
 
 		empty_holder = new JLabel("");
@@ -262,7 +262,8 @@ public class WindowView extends JFrame implements Observer {
 		});
 		helpMenu.add(hint);
 		JMenuItem refresh = new JMenuItem("Refresh queue");
-		refresh.addActionListener(new RefreshController(queue, queueModel));
+		rc = new RefreshController(queue, queueModel);
+		refresh.addActionListener(rc);
 		helpMenu.add(refresh);
 
 		JMenuItem about = new JMenuItem("About game");
@@ -293,6 +294,10 @@ public class WindowView extends JFrame implements Observer {
 		return timer;
 	}
 
+	public void setRefresh() {
+		rc.setRefresh(false);
+	}
+
 	public HighScoreView getHighScoreView() {
 		return h1;
 	}
@@ -320,10 +325,18 @@ public class WindowView extends JFrame implements Observer {
 		setLocation(ox, oy); // place window back in original position
 	}
 
-	public void setGame(SumFun newGame, GridModel grid, QueueModel queue, boolean timedGame) {
-		this.game = newGame;
-		this.gridModel = grid;
-		this.queueModel = queue;
-		this.timedGame = timedGame;
+	public void setTimedGame() {
+		if (timer != null) {
+			timer.stop();
+		}
+		timer = new Timer(1000, new CountdownController(this, gridModel, time_holder, moves_holder));
+		timer.start();
+	}
+
+	public void removeTimedGame() {
+		if (timer != null) {
+			timer.stop();
+		}
+		time_holder.setText("--:--");
 	}
 }

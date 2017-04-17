@@ -64,6 +64,25 @@ public class GridModel extends Observable {
 		return gridModel;
 	}
 
+	public void reinitialize() {
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[i].length; j++) {
+				if (i == 0 || i == grid.length - 1) {
+					grid[i][j].setData("");
+					continue;
+				} else if (j == 0 || j == grid.length - 1) {
+					grid[i][j].setData("");
+					continue;
+				}
+				Random rand = new Random();
+				int n = rand.nextInt(10);
+				grid[i][j].setData(n);
+			}
+		}
+		setChanged();
+		notifyObservers();
+	}
+
 	public boolean isGameLost() {
 		return gameLost;
 	}
@@ -352,5 +371,9 @@ public class GridModel extends Observable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setScore(int s) {
+		this.score = s;
 	}
 }

@@ -31,4 +31,8 @@ public class RefreshController implements ActionListener {
 
 	}
 
+	public void setRefresh(boolean b) {
+		usedRefresh = b;
+	}
+
 }
