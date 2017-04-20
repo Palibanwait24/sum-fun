@@ -1,5 +1,6 @@
 .*
 *.iml
 *.jar
+*.sh
 bin/
 resources/scores.txt
