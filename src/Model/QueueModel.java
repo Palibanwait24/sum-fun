@@ -1,6 +1,9 @@
-package Model;
+package model;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Queue;
+import java.util.Random;
 import sumfun.SumFun;
 
 public class QueueModel extends Observable {
@@ -66,7 +69,7 @@ public class QueueModel extends Observable {
 		return queue;
 	}
 
-	protected int getTopOfQueue() {
+	public int getTopOfQueue() {
 		return queue.element();
 	}
 

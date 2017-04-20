@@ -1,9 +1,9 @@
-package Controller;
-
-import sumfun.SumFun;
+package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import sumfun.SumFun;
 
 public class NewGameController implements ActionListener {
 	SumFun game;

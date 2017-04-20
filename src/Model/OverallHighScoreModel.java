@@ -1,6 +1,6 @@
-package Model;
+package model;
 
-import java.util.*;
+import java.util.Date;
 
 public class OverallHighScoreModel extends HighScoreModel implements Comparable<OverallHighScoreModel> {
 	private int score;

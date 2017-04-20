@@ -1,47 +1,55 @@
-package View;
+package view;
 
-import Model.OverallHighScoreModel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Scanner;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import model.OverallHighScoreModel;
 
 public class HighScoreView extends JFrame implements Observer {
 
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-	private final int LOCATION_X = screensize.height / 3;
-	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
-	private final int WINDOW_WIDTH = 400;
-	private final int WINDOW_HEIGHT = 400;
-	private final int NUMBER_OF_SCORES = 10;
-	private final String FILENAME = "resources/scores.txt";
+	private final int locationX = screensize.height / 3;
+	private final int locationY = (int) (screensize.width - (screensize.width * 0.97));
+	private final int width = 400;
+	private final int height = 400;
+	private final int numberOfScores = 10;
+	private final String fileName = "resources/scores.txt";
 	private ArrayList<JLabel> top10;
 	private ArrayList<OverallHighScoreModel> scoreList;
 	private Scanner sc;
 	private File file;
-	private String tmpName, tmpDate, tmpScore;
+	private String tmpName;
+	private String tmpDate;
+	private String tmpScore;
 	private Date date;
 	private SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
-	public void update(Observable o, Object arg) {
-
-	}
-
 	public HighScoreView() {
-		top10 = new ArrayList<>(NUMBER_OF_SCORES);
+		top10 = new ArrayList<>(numberOfScores);
 		int index = 0;
 		int score = 0;
-		scoreList = new ArrayList<>(NUMBER_OF_SCORES + 1);
+		scoreList = new ArrayList<>(numberOfScores + 1);
 		setVisible(true);
-		setLocation(LOCATION_X, LOCATION_Y);
-		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		setLocation(locationX, locationY);
+		setSize(width, height);
 		setResizable(false);
 		setTitle("High Scores");
 		setLayout(new GridLayout(11, 3));
 		try {
-			file = new File(FILENAME);
+			file = new File(fileName);
 			sc = new Scanner(file);
 			sc.useDelimiter(",");
 			while (sc.hasNext()) {
@@ -72,7 +80,7 @@ public class HighScoreView extends JFrame implements Observer {
 	}
 
 	public void printScores() {
-		int index = NUMBER_OF_SCORES - scoreList.size();
+		int index = numberOfScores - scoreList.size();
 		for (int i = 0, j = scoreList.size() + 1; i < index; i++, j++) {
 			JLabel temp = new JLabel(j + ". ");
 			top10.add(i, temp);
@@ -109,14 +117,20 @@ public class HighScoreView extends JFrame implements Observer {
 
 	public void updateFile() {
 		try {
-			PrintWriter writer = new PrintWriter(FILENAME);
+			PrintWriter writer = new PrintWriter(fileName);
 			for (OverallHighScoreModel el : scoreList) {
 				writer.print(el.getName() + "," + formatter.format(el.getDate()) + "," + el.getScore() + ",");
 			}
 			writer.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("file not updating");
+		} catch (Exception ex) {
+			System.out.println("Error occured in HighScoreView.updateFile()");
 		}
+
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
 
 	}
 

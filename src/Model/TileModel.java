@@ -1,12 +1,15 @@
-package Model;
+package model;
 
-import java.util.*;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.util.Random;
+
+import javax.swing.JButton;
 
 public class TileModel extends JButton {
 
-	private final int d = 60; // dimension of tile
+	private final int dimension = 60; // dimension of tile
 	private final Color cellColor = Color.WHITE; // default color of each cell
 	private String data = "";
 
@@ -71,7 +74,7 @@ public class TileModel extends JButton {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(d, d);
+		return new Dimension(dimension, dimension);
 	}
 
 }

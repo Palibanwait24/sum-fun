@@ -1,11 +1,16 @@
-package Model;
+package model;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Observable;
+import java.util.Random;
+
 import javax.swing.JOptionPane;
 
-import View.HighScoreView;
+import model.QueueModel;
+
 import sumfun.SumFun;
-import Model.QueueModel;
+
+import view.HighScoreView;
 
 public class GridModel extends Observable {
 
@@ -14,7 +19,7 @@ public class GridModel extends Observable {
 	private SumFun game; // reference to main game
 	private QueueModel queueModel; // reference to game queue
 	private TileModel[][] grid; // game board
-	private final int d = 9; // dimension of game board
+	private final int dimension = 9; // dimension of game board
 	private int moves; // current number of moves on board
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid
@@ -24,16 +29,15 @@ public class GridModel extends Observable {
 	private String name;
 	private HighScoreView hsView;
 
-	private GridModel(SumFun game, QueueModel queue, String n) {
+	private GridModel(SumFun game, QueueModel queue) {
 		this.game = game;
 		this.queueModel = queue;
-		grid = new TileModel[d][d];
+		grid = new TileModel[dimension][dimension];
 		moves = 0;
 		score = 0;
 		valid = true;
 		win = false;
 		boolean fill = false;
-		name = n;
 		hsView = new HighScoreView();
 		hsView.setVisible(false);
 
@@ -57,9 +61,9 @@ public class GridModel extends Observable {
 		notifyObservers();
 	}
 
-	public static GridModel getInstance(SumFun game, QueueModel queue, String name) {
+	public static GridModel getInstance(SumFun game, QueueModel queue) {
 		if (gridModel == null) {
-			gridModel = new GridModel(game, queue, name);
+			gridModel = new GridModel(game, queue);
 		}
 		return gridModel;
 	}
@@ -231,7 +235,7 @@ public class GridModel extends Observable {
 
 	// returns an array of the sum of each tile on the board based on its current neighbors
 	private int[][] getGridSums() {
-		int[][] temp = new int[d][d];
+		int[][] temp = new int[dimension][dimension];
 
 		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < grid[row].length; col++) {
@@ -249,7 +253,7 @@ public class GridModel extends Observable {
 
 	// returns an array of the number of neighbors that could possibly be removed from a given tile
 	private int[][] getNeighborsRemoved(int[][] gridSums, int tileToAdd) {
-		int[][] temp = new int[d][d];
+		int[][] temp = new int[dimension][dimension];
 		int count = 0; // number of neighbors for given tile
 
 		for (int row = 0; row < gridSums.length; row++) {
@@ -355,6 +359,10 @@ public class GridModel extends Observable {
 
 	public boolean getValid() {
 		return valid;
+	}
+
+	public void setValid(boolean bool) {
+		valid = bool;
 	}
 
 	public void setMoves(int number) {

@@ -1,10 +1,14 @@
 package sumfun;
 
-import Model.*;
-import View.WindowView;
 import javax.swing.JOptionPane;
 
-// CS360 - Sum Fun Game
+import model.BotModel;
+import model.GridModel;
+import model.QueueModel;
+
+import view.WindowView;
+
+// Sum Fun Game
 
 public class SumFun {
 
@@ -26,7 +30,7 @@ public class SumFun {
 	public void run(SumFun game) {
 		selectGame();
 		queue = new QueueModel(game);
-		grid = GridModel.getInstance(game, queue, name);
+		grid = GridModel.getInstance(game, queue);
 		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
 		bot = new BotModel(game, grid);
 		mainView.addObserver(grid);
@@ -46,6 +50,7 @@ public class SumFun {
 
 		selectGame();
 
+		grid.setValid(true);
 		grid.reinitialize();
 		queue.reinitialize();
 		mainView.setRefresh();
@@ -76,11 +81,11 @@ public class SumFun {
 			} else if (n == 2) { // timed game
 				timedGame = true;
 				botEnabled = false;
-				promptForName();
+				//promptForName();
 			} else if (n == 3) { // untimed game
 				timedGame = false;
 				botEnabled = false;
-				promptForName();
+				//promptForName();
 			} else { // exit
 				System.exit(0);
 			}

@@ -1,35 +1,67 @@
-package View;
+package view;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+import controller.CountdownController;
+import controller.GridController;
+import controller.HintController;
+import controller.NewGameController;
+import controller.RefreshController;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Queue;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.*;
-import Controller.*;
-import Model.*;
+
+import model.GridModel;
+import model.QueueModel;
+import model.TileModel;
+
 import sumfun.SumFun;
 
 public class WindowView extends JFrame implements Observer {
 
 	// utilities to size window
-	private final int WINDOW_WIDTH = 660;
-	private final int WINDOW_HEIGHT = 700;
+	private final int width = 800;
+	private final int height = 700;
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-	private final int LOCATION_X = screensize.height / 5;
-	private final int LOCATION_Y = (int) (screensize.width - (screensize.width * 0.97));
+	private final int locationX = screensize.height / 5;
+	private final int locationY = (int) (screensize.width - (screensize.width * 0.97));
 
 	// design members
 	private JPanel gameView; // holds all sub-views below
 	private JPanel gridView; // view for game board
 	private JPanel queueView; // view for game queue
 	private JPanel infoView; // view for info/statistics on current game
+	private JPanel helperView; // view for hint and refresh in-game helpers
 	private final JMenuBar menu; // menu for options and operations
-	private JLabel moves_holder, score_holder, time_holder;
+	private JLabel movesHolder;
+	private JLabel scoreHolder;
+	private JLabel timeHolder;
 
 	private SumFun game;
 	private Timer timer;
 	private RefreshController rc;
+	private HintController hc;
 
 	// model members
 	private GridModel gridModel; // grid model
@@ -43,24 +75,24 @@ public class WindowView extends JFrame implements Observer {
 
 	// statistic members
 	private int movesRem; // moves remaining in game
-	private boolean usedHint; // flag to determine if hint has been used
 
 	/**
 	 * Constructor for a Window object.
 	 */
-	public WindowView(SumFun game, GridModel g, QueueModel q, boolean tG) {
+	public WindowView(SumFun game, GridModel g, QueueModel q, boolean isTimedGame) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocation(LOCATION_X, LOCATION_Y);
-		setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		setLocation(locationX, locationY);
+		setSize(width, height);
 		setResizable(false);
 		setTitle("Sum Fun");
-		timedGame = tG;
+		timedGame = isTimedGame;
 		gameView = new JPanel();
 		gameView.setLayout(new BorderLayout());
 
 		gridView = new JPanel();
 		queueView = new JPanel();
 		infoView = new JPanel();
+		helperView = new JPanel();
 
 		this.game = game;
 		gridModel = g;
@@ -69,16 +101,17 @@ public class WindowView extends JFrame implements Observer {
 		queue = new TileModel[5];
 
 		movesRem = game.getMaxMoves();
-		usedHint = false;
 
 		buildGridView();
 		buildQueueView();
 		buildInfoView();
+		buildHelperView();
 		menu = createMenu();
 		setJMenuBar(menu);
 		gameView.add(gridView, BorderLayout.CENTER);
 		gameView.add(queueView, BorderLayout.WEST);
 		gameView.add(infoView, BorderLayout.SOUTH);
+		gameView.add(helperView, BorderLayout.EAST);
 		add(gameView);
 
 		//pack();
@@ -86,12 +119,12 @@ public class WindowView extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o.getClass().getName().equals("Model.GridModel")) {
+		if (o.getClass().getName().equals("model.GridModel")) {
 			// process grid update
 			TileModel[][] temp = ((GridModel) o).getGrid();
 
 			if (!gridModel.getValid()) {
-				//shake();
+				shake();
 			}
 			for (int r = 0; r < temp.length; r++) {
 				for (int c = 0; c < temp[r].length; c++) {
@@ -102,9 +135,9 @@ public class WindowView extends JFrame implements Observer {
 					}
 				}
 			}
-			score_holder.setText("" + gridModel.getScore());
-			moves_holder.setText("" + (game.getMaxMoves() - gridModel.getMovesTaken()));
-		} else if (o.getClass().getName().equals("Model.QueueModel")) {
+			scoreHolder.setText("" + gridModel.getScore());
+			movesHolder.setText("" + (game.getMaxMoves() - gridModel.getMovesTaken()));
+		} else if (o.getClass().getName().equals("model.QueueModel")) {
 			// process queue update
 			Queue<Integer> temp = ((QueueModel) o).getQueue();
 			int i = 0;
@@ -175,36 +208,54 @@ public class WindowView extends JFrame implements Observer {
 		int score = 0;
 
 		// design fields
-		JLabel score_label, time_label, moves_label;
-		JLabel empty_holder;
+		JLabel scoreLabel;
+		JLabel movesLabel;
+		JLabel timeLabel;
+		JLabel emptyHolder;
 
 		// construct info pane layout
 		infoView.setLayout(new GridLayout(4, 2));
 
-		score_label = new JLabel("  Score: ");
-		moves_label = new JLabel("  Moves remaining: ");
-		time_label = new JLabel("  Time: ");
+		scoreLabel = new JLabel("  Score: ");
+		movesLabel = new JLabel("  Moves remaining: ");
+		timeLabel = new JLabel("  Time: ");
 
-		score_holder = new JLabel("" + score);
-		moves_holder = new JLabel("" + movesRem);
-		time_holder = new JLabel();
+		scoreHolder = new JLabel("" + score);
+		movesHolder = new JLabel("" + movesRem);
+		timeHolder = new JLabel();
 		if (timedGame) {
-			timer = new Timer(1000, new CountdownController(this, gridModel, time_holder, moves_holder));
+			timer = new Timer(1000, new CountdownController(this, gridModel, timeHolder, movesHolder));
 			timer.start();
 		} else {
-			time_holder.setText("--:--");
+			timeHolder.setText("--:--");
 		}
 
-		empty_holder = new JLabel("");
+		emptyHolder = new JLabel("");
 
 		//build top pane
-		infoView.add(score_label);
-		infoView.add(score_holder);
-		infoView.add(moves_label);
-		infoView.add(moves_holder);
-		infoView.add(time_label);
-		infoView.add(time_holder);
-		infoView.add(empty_holder);
+		infoView.add(scoreLabel);
+		infoView.add(scoreHolder);
+		infoView.add(movesLabel);
+		infoView.add(movesHolder);
+		infoView.add(timeLabel);
+		infoView.add(timeHolder);
+		infoView.add(emptyHolder);
+	}
+
+	private void buildHelperView() {
+		helperView.setLayout(new GridLayout(2, 1));
+
+		JButton hintButton = new JButton("Hint");
+		JButton refreshButton = new JButton("Refresh Queue");
+
+		rc = new RefreshController(queue, queueModel);
+		refreshButton.addActionListener(rc);
+		helperView.add(refreshButton);
+
+		hc = new HintController(gridModel, queueModel, this);
+		hintButton.addActionListener(hc);
+		helperView.add(hintButton);
+
 	}
 
 	private JMenuBar createMenu() {
@@ -215,17 +266,6 @@ public class WindowView extends JFrame implements Observer {
 		newGame.addActionListener(new NewGameController(game));
 		fileMenu.add(newGame);
 
-		JMenuItem save = new JMenuItem("Save game");
-
-		fileMenu.add(save);
-
-		JMenuItem load = new JMenuItem("Load game");
-		load.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// load game
-			}
-		});
-		fileMenu.add(load);
 		JMenuItem exit = new JMenuItem("Exit"); // exit game
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -254,17 +294,6 @@ public class WindowView extends JFrame implements Observer {
 		temp.add(viewMenu);
 
 		JMenu helpMenu = new JMenu("Help");
-		JMenuItem hint = new JMenuItem("Hint");
-		hint.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// show hint
-			}
-		});
-		helpMenu.add(hint);
-		JMenuItem refresh = new JMenuItem("Refresh queue");
-		rc = new RefreshController(queue, queueModel);
-		refresh.addActionListener(rc);
-		helpMenu.add(refresh);
 
 		JMenuItem about = new JMenuItem("About game");
 		about.addActionListener(new ActionListener() {
@@ -329,7 +358,7 @@ public class WindowView extends JFrame implements Observer {
 		if (timer != null) {
 			timer.stop();
 		}
-		timer = new Timer(1000, new CountdownController(this, gridModel, time_holder, moves_holder));
+		timer = new Timer(1000, new CountdownController(this, gridModel, timeHolder, movesHolder));
 		timer.start();
 	}
 
@@ -337,6 +366,6 @@ public class WindowView extends JFrame implements Observer {
 		if (timer != null) {
 			timer.stop();
 		}
-		time_holder.setText("--:--");
+		timeHolder.setText("--:--");
 	}
 }

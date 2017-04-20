@@ -1,7 +1,7 @@
-package Model;
+package model;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
 
 public class HighScoreModel {
 	private String name;
