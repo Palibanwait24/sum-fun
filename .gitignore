@@ -1,6 +1,5 @@
-*.sh
-.DS_Store
 .*
+*.iml
+*.jar
 bin/
 resources/scores.txt
-*.iml
