@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Random;
@@ -99,6 +100,7 @@ public class GridModel extends Observable {
 	public void move(int row, int col) {
 		if (moves > game.getMaxMoves() - 1) {
 			gameLost = true;
+			game.setStop();
 			JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
 			return; // out of moves
 		}
@@ -110,7 +112,7 @@ public class GridModel extends Observable {
 			int tileToAdd = queueModel.updateQueue();
 			grid[row][col].setData(tileToAdd);
 
-			if (sum != 0) {
+			if (sum != -1) {
 				int mod = sum % 10; // calculates remainder using sum modulus 10
 
 				if (mod == tileToAdd) {
@@ -234,7 +236,7 @@ public class GridModel extends Observable {
 	}
 
 	// returns an array of the sum of each tile on the board based on its current neighbors
-	private int[][] getGridSums() {
+	public int[][] getGridSums() {
 		int[][] temp = new int[dimension][dimension];
 
 		for (int row = 0; row < grid.length; row++) {
@@ -252,7 +254,7 @@ public class GridModel extends Observable {
 	}
 
 	// returns an array of the number of neighbors that could possibly be removed from a given tile
-	private int[][] getNeighborsRemoved(int[][] gridSums, int tileToAdd) {
+	public int[][] getNeighborsRemoved(int[][] gridSums, int tileToAdd) {
 		int[][] temp = new int[dimension][dimension];
 		int count = 0; // number of neighbors for given tile
 
@@ -304,7 +306,7 @@ public class GridModel extends Observable {
 
 	// calculates sum of surrounding tiles
 	protected int tileSum(int row, int col) {
-		int sum = 0;
+		int sum = -1;
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				try {
@@ -312,6 +314,9 @@ public class GridModel extends Observable {
 						continue;
 					}
 					if (!grid[row + dx][col + dy].isEmpty()) {
+						if (sum == -1) {
+							sum++;
+						}
 						sum += Integer.parseInt(grid[row + dx][col + dy].getData());
 					}
 				} catch (ArrayIndexOutOfBoundsException ex) {
@@ -331,6 +336,20 @@ public class GridModel extends Observable {
 					if (grid[row + dx][col + dy].isEmpty()) { // empty tile, do nothing
 						continue;
 					} else if (dx == 0 && dy == 0) { // current tile, remove but do not count as removed tile
+						String temp = grid[row + dx][col + dy].getData();
+						try {
+							for (int i = 0; i < 5; i++) {
+								grid[row + dx][col + dy].setData("");
+								setChanged();
+								notifyObservers();
+								Thread.sleep(50);
+								grid[row + dx][col + dy].setData(temp);
+								setChanged();
+								notifyObservers();
+							}
+						} catch (Exception ex) {
+							System.out.println("Error occured in GridModel.erase()");
+						}
 						grid[row + dx][col + dy].setData("");
 						continue;
 					}
@@ -343,6 +362,13 @@ public class GridModel extends Observable {
 		}
 
 		return c;
+	}
+
+	public void highlightTile(int row, int col) {
+		grid[row][col].setHighlight(Color.GREEN);
+		setChanged();
+		notifyObservers();
+		grid[row][col].setHighlight(Color.WHITE);
 	}
 
 	public TileModel[][] getGrid() {

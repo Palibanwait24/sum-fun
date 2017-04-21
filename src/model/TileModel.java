@@ -10,7 +10,7 @@ import javax.swing.JButton;
 public class TileModel extends JButton {
 
 	private final int dimension = 60; // dimension of tile
-	private final Color cellColor = Color.WHITE; // default color of each cell
+	private Color cellColor = Color.WHITE; // default color of each cell
 	private String data = "";
 
 	/**
@@ -21,7 +21,7 @@ public class TileModel extends JButton {
 	public TileModel(boolean fill) {
 		setContentAreaFilled(true);
 		setBorderPainted(true);
-		setOpaque(false);
+		setOpaque(true);
 		setFont(new Font("Arial", Font.BOLD, 24));
 		setBackground(this.cellColor);
 		setForeground(getRandomColor());
@@ -75,6 +75,14 @@ public class TileModel extends JButton {
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(dimension, dimension);
+	}
+
+	public void setHighlight(Color myColor) {
+		this.cellColor = myColor;
+	}
+
+	public Color getHighlight() {
+		return cellColor;
 	}
 
 }

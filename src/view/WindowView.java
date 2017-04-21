@@ -96,7 +96,7 @@ public class WindowView extends JFrame implements Observer {
 
 		this.game = game;
 		gridModel = g;
-		queueModel = q;
+		queueModel = q.getQueueModel();
 		grid = gridModel.getGrid();
 		queue = new TileModel[5];
 
@@ -125,9 +125,11 @@ public class WindowView extends JFrame implements Observer {
 
 			if (!gridModel.getValid()) {
 				shake();
+				return;
 			}
 			for (int r = 0; r < temp.length; r++) {
 				for (int c = 0; c < temp[r].length; c++) {
+					grid[r][c].setBackground(temp[r][c].getHighlight());
 					if (temp[r][c].isEmpty()) {
 						grid[r][c].setData("");
 					} else {
@@ -143,7 +145,11 @@ public class WindowView extends JFrame implements Observer {
 			int i = 0;
 
 			for (Integer item : temp) {
-				queue[i].setData(item.toString());
+				if (item.intValue() == -1) {
+					queue[i].setData("");
+				} else {
+					queue[i].setData(item.toString());
+				}
 				i++;
 			}
 
@@ -248,11 +254,11 @@ public class WindowView extends JFrame implements Observer {
 		JButton hintButton = new JButton("Hint");
 		JButton refreshButton = new JButton("Refresh Queue");
 
-		rc = new RefreshController(queue, queueModel);
+		rc = new RefreshController(queue, queueModel, game);
 		refreshButton.addActionListener(rc);
 		helperView.add(refreshButton);
 
-		hc = new HintController(gridModel, queueModel, this);
+		hc = new HintController(gridModel, queueModel, this, game);
 		hintButton.addActionListener(hc);
 		helperView.add(hintButton);
 
@@ -309,7 +315,6 @@ public class WindowView extends JFrame implements Observer {
 					br.close();
 				} catch (Exception ex) {
 					System.out.println("Error occured in WindowView.createMenu()");
-					System.out.println(ex);
 				}
 			}
 		});
@@ -317,18 +322,6 @@ public class WindowView extends JFrame implements Observer {
 		temp.add(helpMenu);
 
 		return temp;
-	}
-
-	public Timer getTimer() {
-		return timer;
-	}
-
-	public void setRefresh() {
-		rc.setRefresh(false);
-	}
-
-	public HighScoreView getHighScoreView() {
-		return h1;
 	}
 
 	private void shake() {
@@ -354,12 +347,29 @@ public class WindowView extends JFrame implements Observer {
 		setLocation(ox, oy); // place window back in original position
 	}
 
-	public void setTimedGame() {
+	public void setTimedGame(boolean isTimedGame) {
+		timedGame = isTimedGame;
+		if (timedGame) {
+			initializeTimer();
+		}
+		game.setTimedGame(timedGame);
+	}
+
+	public void initializeTimer() {
+		timedGame = true;
 		if (timer != null) {
 			timer.stop();
 		}
 		timer = new Timer(1000, new CountdownController(this, gridModel, timeHolder, movesHolder));
 		timer.start();
+	}
+
+	public void setBotEnabled(boolean isBotEnabled) {
+		game.setBotEnabled(isBotEnabled);
+	}
+
+	public void setRefresh() {
+		rc.setRefresh(false);
 	}
 
 	public void removeTimedGame() {
@@ -368,4 +378,13 @@ public class WindowView extends JFrame implements Observer {
 		}
 		timeHolder.setText("--:--");
 	}
+
+	public Timer getTimer() {
+		return timer;
+	}
+
+	public HighScoreView getHighScoreView() {
+		return h1;
+	}
+
 }

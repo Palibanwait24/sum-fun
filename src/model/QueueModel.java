@@ -13,11 +13,14 @@ public class QueueModel extends Observable {
 	private QueueModel model;
 	private Queue<Integer> queue; // queue for game
 	private int count; // current count of how many tiles have been added to queue
+	private int maxTiles; // total possible number of tiles generated
+	private boolean allowNewTiles;
 
 	public QueueModel(SumFun game) {
 		this.game = game;
 		queue = new LinkedList<Integer>();
 		count = 0;
+		maxTiles = game.getMaxMoves();
 		for (int i = 0; i < size; i++) {
 			enqueue();
 		}
@@ -33,7 +36,7 @@ public class QueueModel extends Observable {
 
 		int next = dequeue();
 
-		if (count < game.getMaxMoves()) {
+		if (count <= game.getMaxMoves()) {
 			enqueue();
 		}
 
@@ -43,20 +46,32 @@ public class QueueModel extends Observable {
 	}
 
 	private void enqueue() {
-		queue.add(getRandomNumber());
-		count++;
-		// TODO only allow 50 tiles to be added to queue, no more
+		if (maxTiles - count > 0) {
+			queue.add(getRandomNumber());
+		} else {
+			queue.add(-1);
+		}
+		if (!allowNewTiles) {
+			count++;
+		}
 	}
 
 	private int dequeue() {
+		if (game.getStop()) {
+			return -1;
+		}
 		return queue.poll();
 	}
 
 	public void reinitialize() {
-		for (int i = 0; i < size; i++) {
-			updateQueue();
-		}
 		count = 0;
+		while (queue != null) {
+			dequeue();
+		}
+		for (int i = 0; i < size; i++) {
+			enqueue();
+		}
+		System.out.println(queue.toString());
 		setChanged();
 		notifyObservers();
 	}
@@ -77,6 +92,10 @@ public class QueueModel extends Observable {
 		Random rand = new Random();
 		int n = rand.nextInt(10); // generate random number in range [0,9]
 		return n;
+	}
+
+	public void setAllowNewTiles(boolean allow) {
+		allowNewTiles = allow;
 	}
 
 }
