@@ -20,10 +20,11 @@ public class StartView extends JFrame {
 		if (n == 2) { // bot game
 			parent.setTimedGame(false);
 			parent.setBotEnabled(true);
-			parent.setName("bot");
+			
 		} else if (n == 1) { // timed game
 			parent.setTimedGame(true);
 			parent.setBotEnabled(false);
+			parent.setName("bot");
 		} else if (n == 0) { // untimed game
 			parent.setTimedGame(false);
 			parent.setBotEnabled(false);

@@ -12,6 +12,7 @@ import model.QueueModel;
 import sumfun.SumFun;
 
 import view.HighScoreView;
+import view.NameView;
 
 public class GridModel extends Observable {
 
@@ -300,10 +301,16 @@ public class GridModel extends Observable {
 				}
 			}
 		}
-
+		
+		askForName();
 		return true; // all tiles are empty, game is over
 	}
-
+	private void askForName(){
+		if(name==null){
+			NameView getTheName = new NameView();
+			name = getTheName.getName();
+		}
+	}
 	// calculates sum of surrounding tiles
 	protected int tileSum(int row, int col) {
 		int sum = -1;
@@ -347,6 +354,7 @@ public class GridModel extends Observable {
 					}
 					grid[row + dx][col + dy].setData("");
 					c++;
+					
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					// no tile, do nothing
 				}
