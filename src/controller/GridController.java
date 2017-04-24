@@ -34,7 +34,7 @@ public class GridController implements ActionListener {
 			System.out.println("1");
 			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/removeTile.wav").getAbsoluteFile());
 			System.out.println("2");
-			System.out.println(audioInputStream.getFormat());
+			
 			clip = AudioSystem.getClip();
 			System.out.println("3");
 			clip.open(audioInputStream);
