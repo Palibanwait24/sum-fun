@@ -14,7 +14,6 @@ public class NewGameController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		game.mainView.setVisible(false);
 		game.startNewGame();
 	}
 

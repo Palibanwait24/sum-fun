@@ -1,8 +1,5 @@
 package sumfun;
 
-import javax.swing.Timer;
-
-import controller.CountdownController;
 import model.BotModel;
 import model.GridModel;
 import model.QueueModel;
@@ -19,7 +16,7 @@ public class SumFun {
 	public BotModel bot;
 	public WindowView mainView;
 	private StartView greetingDialog;
-	private final int maxMoves = 10;
+	private final int maxMoves = 50;
 	private boolean timedGame = false; // flag for timed or untimed game
 	private boolean botEnabled = false; // flag for if bot is enabled
 	private boolean stop = false; // flag to continue or stop game
@@ -48,6 +45,7 @@ public class SumFun {
 	}
 
 	public void startNewGame() {
+		mainView.setVisible(false);
 		stop = true;
 		grid.setMoves(0);
 		grid.setScore(0);
@@ -55,9 +53,11 @@ public class SumFun {
 
 		greetingDialog.show();
 
+		stop = false;
 		grid.reinitialize();
 		queue.reinitialize();
-		mainView.setRefresh();
+		mainView.resetRefresh();
+		mainView.resetHint();
 		if (timedGame) {
 			mainView.setTimedGame(true);
 		} else {

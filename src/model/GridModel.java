@@ -338,15 +338,7 @@ public class GridModel extends Observable {
 					} else if (dx == 0 && dy == 0) { // current tile, remove but do not count as removed tile
 						String temp = grid[row + dx][col + dy].getData();
 						try {
-							for (int i = 0; i < 5; i++) {
-								grid[row + dx][col + dy].setData("");
-								setChanged();
-								notifyObservers();
-								Thread.sleep(50);
-								grid[row + dx][col + dy].setData(temp);
-								setChanged();
-								notifyObservers();
-							}
+							grid[row + dx][col + dy].setData(temp);
 						} catch (Exception ex) {
 							System.out.println("Error occured in GridModel.erase()");
 						}

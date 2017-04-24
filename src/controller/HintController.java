@@ -59,4 +59,8 @@ public class HintController implements ActionListener {
 		}
 	}
 
+	public void resetHint() {
+		hintsRemaining = 3;
+	}
+
 }

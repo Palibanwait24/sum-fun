@@ -64,14 +64,11 @@ public class QueueModel extends Observable {
 	}
 
 	public void reinitialize() {
-		count = 0;
-		while (queue != null) {
-			dequeue();
-		}
+		count = 0; // reset number of items generated
+		queue.clear(); // empty the current queue
 		for (int i = 0; i < size; i++) {
 			enqueue();
 		}
-		System.out.println(queue.toString());
 		setChanged();
 		notifyObservers();
 	}

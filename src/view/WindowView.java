@@ -44,8 +44,8 @@ public class WindowView extends JFrame implements Observer {
 	private final int width = 800;
 	private final int height = 700;
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-	private final int locationX = screensize.height / 5;
-	private final int locationY = (int) (screensize.width - (screensize.width * 0.97));
+	private final int locationX = screensize.height / 3;
+	private final int locationY = (int) (screensize.width - (screensize.width * 0.96));
 
 	// design members
 	private JPanel gameView; // holds all sub-views below
@@ -74,6 +74,7 @@ public class WindowView extends JFrame implements Observer {
 	private boolean timedGame;
 
 	// statistic members
+	private int hintsRem; // hints remaining in game
 	private int movesRem; // moves remaining in game
 
 	/**
@@ -101,6 +102,7 @@ public class WindowView extends JFrame implements Observer {
 		queue = new TileModel[5];
 
 		movesRem = game.getMaxMoves();
+		hintsRem = 3;
 
 		buildGridView();
 		buildQueueView();
@@ -145,6 +147,9 @@ public class WindowView extends JFrame implements Observer {
 			int i = 0;
 
 			for (Integer item : temp) {
+				if (i > 4) {
+					break;
+				}
 				if (item.intValue() == -1) {
 					queue[i].setData("");
 				} else {
@@ -216,6 +221,7 @@ public class WindowView extends JFrame implements Observer {
 		// design fields
 		JLabel scoreLabel;
 		JLabel movesLabel;
+		JLabel hintsLabel;
 		JLabel timeLabel;
 		JLabel emptyHolder;
 
@@ -251,8 +257,8 @@ public class WindowView extends JFrame implements Observer {
 	private void buildHelperView() {
 		helperView.setLayout(new GridLayout(2, 1));
 
-		JButton hintButton = new JButton("Hint");
-		JButton refreshButton = new JButton("Refresh Queue");
+		JButton hintButton = new JButton("Hint (" + hintsRem + ")");
+		JButton refreshButton = new JButton("Refresh Queue (1)");
 
 		rc = new RefreshController(queue, queueModel, game);
 		refreshButton.addActionListener(rc);
@@ -276,8 +282,7 @@ public class WindowView extends JFrame implements Observer {
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int option = JOptionPane.showConfirmDialog((Component) getParent(),
-						"Are you sure you want to exit Sum Fun?\nAll unsaved progress will be lost.", "Confirm Exit",
-						0);
+						"Are you sure you want to exit Sum Fun?", "Confirm Exit", 0);
 				if (option == 0) {
 					System.exit(0);
 				} else {
@@ -368,8 +373,12 @@ public class WindowView extends JFrame implements Observer {
 		game.setBotEnabled(isBotEnabled);
 	}
 
-	public void setRefresh() {
+	public void resetRefresh() {
 		rc.setRefresh(false);
+	}
+
+	public void resetHint() {
+		hc.resetHint();
 	}
 
 	public void removeTimedGame() {
