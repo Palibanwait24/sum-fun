@@ -26,23 +26,19 @@ public class GridController implements ActionListener {
 
 	public void actionPerformed(ActionEvent click) {
 		game.move(row, col);
-		
+
 		AudioInputStream audioInputStream;
 		Clip clip;
-		
-		try{
-			System.out.println("1");
+
+		try {
 			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/removeTile.wav").getAbsoluteFile());
-			System.out.println("2");
-			
 			clip = AudioSystem.getClip();
-			System.out.println("3");
 			clip.open(audioInputStream);
-			System.out.println("4");
 			clip.start();
-			System.out.println("5");
-		}catch(Exception ex){
-			System.out.println(ex);
+		} catch (LineUnavailableException ex) {
+			System.out.println("Could not open sound effect file");
+		} catch (Exception ex) {
+			System.out.println("Error occured in sound()");
 		}
 	}
 
