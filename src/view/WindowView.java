@@ -279,6 +279,7 @@ public class WindowView extends JFrame implements Observer {
 		ric = new RemoveInstanceController(gridModel, game, this);
 		removeButton.addActionListener(ric);
 		helperView.add(removeButton, gbc);
+
 	}
 
 	private JMenuBar createMenu() {
