@@ -41,6 +41,7 @@ public class HintController implements ActionListener {
 			int max = 0;
 			int maxRow = 0;
 			int maxCol = 0;
+			boolean placeable = false;
 
 			for (int row = 0; row < neighborsRemoved.length; row++) {
 				for (int col = 0; col < neighborsRemoved[row].length; col++) {
@@ -48,12 +49,18 @@ public class HintController implements ActionListener {
 						max = neighborsRemoved[row][col];
 						maxRow = row;
 						maxCol = col;
+						placeable = true;
 					}
 				}
 			}
 
-			grid.highlightTile(maxRow, maxCol);
-			hintsRemaining--;
+			if (placeable) {
+				grid.highlightTile(maxRow, maxCol);
+				hintsRemaining--;
+				window.updateHintButtonCount(hintsRemaining);
+			} else {
+				JOptionPane.showMessageDialog(null, "No possible move for hint.");
+			}
 		} else {
 			JOptionPane.showMessageDialog(null, "No hints remaining!");
 		}
@@ -61,6 +68,7 @@ public class HintController implements ActionListener {
 
 	public void resetHint() {
 		hintsRemaining = 3;
+		window.updateHintButtonCount(hintsRemaining);
 	}
 
 }

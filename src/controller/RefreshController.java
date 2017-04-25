@@ -8,18 +8,22 @@ import javax.swing.JOptionPane;
 import model.QueueModel;
 import model.TileModel;
 import sumfun.SumFun;
+import view.WindowView;
 
 public class RefreshController implements ActionListener {
 
 	private boolean usedRefresh = false;
+	private int refreshCount = 1;
 	private TileModel[] queue;
 	private QueueModel model;
+	private WindowView window;
 	private SumFun game;
 
-	public RefreshController(TileModel[] queue, QueueModel model, SumFun game) {
+	public RefreshController(TileModel[] queue, QueueModel model, SumFun game, WindowView view) {
 		this.game = game;
 		this.queue = queue;
 		this.model = model;
+		this.window = view;
 	}
 
 	@Override
@@ -36,13 +40,17 @@ public class RefreshController implements ActionListener {
 			}
 			model.setAllowNewTiles(false);
 			usedRefresh = true;
+			refreshCount--;
+			window.updateRefreshButtonCount(refreshCount);
 		} else {
 			JOptionPane.showMessageDialog(null, "Refresh queue already used!");
 		}
 	}
 
-	public void setRefresh(boolean b) {
+	public void resetRefresh(boolean b) {
 		usedRefresh = b;
+		refreshCount = 1;
+		window.updateRefreshButtonCount(refreshCount);
 	}
 
 }

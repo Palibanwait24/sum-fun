@@ -7,6 +7,7 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
+import controller.SoundController;
 import model.QueueModel;
 
 import sumfun.SumFun;
@@ -30,6 +31,7 @@ public class GridModel extends Observable {
 	private boolean stopJoptionPaneBot = true;
 	private String name;
 	private HighScoreView hsView;
+	private SoundController sound;
 
 	private GridModel(SumFun game, QueueModel queue) {
 		this.game = game;
@@ -42,6 +44,7 @@ public class GridModel extends Observable {
 		boolean fill = false;
 		hsView = new HighScoreView();
 		hsView.setVisible(false);
+		sound = new SoundController();
 
 		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < grid[row].length; col++) {
@@ -108,6 +111,7 @@ public class GridModel extends Observable {
 		valid = true; // reset valid flag
 
 		if (grid[row][col].isEmpty()) {
+			sound.chimeRemoveTile();
 			int sum = tileSum(row, col); // determine sum of tile and its neighbors
 
 			int tileToAdd = queueModel.updateQueue();
@@ -301,16 +305,18 @@ public class GridModel extends Observable {
 				}
 			}
 		}
-		
+
 		askForName();
 		return true; // all tiles are empty, game is over
 	}
-	private void askForName(){
-		if(name==null){
+
+	private void askForName() {
+		if (name == null) {
 			NameView getTheName = new NameView();
 			name = getTheName.getName();
 		}
 	}
+
 	// calculates sum of surrounding tiles
 	protected int tileSum(int row, int col) {
 		int sum = -1;
@@ -354,7 +360,7 @@ public class GridModel extends Observable {
 					}
 					grid[row + dx][col + dy].setData("");
 					c++;
-					
+
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					// no tile, do nothing
 				}

@@ -5,6 +5,7 @@ import controller.GridController;
 import controller.HintController;
 import controller.NewGameController;
 import controller.RefreshController;
+import controller.RemoveInstanceController;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -57,11 +58,15 @@ public class WindowView extends JFrame implements Observer {
 	private JLabel movesHolder;
 	private JLabel scoreHolder;
 	private JLabel timeHolder;
+	private JButton hintButton;
+	private JButton refreshButton;
+	private JButton removeButton;
 
 	private SumFun game;
 	private Timer timer;
 	private RefreshController rc;
 	private HintController hc;
+	private RemoveInstanceController ric;
 
 	// model members
 	private GridModel gridModel; // grid model
@@ -115,8 +120,6 @@ public class WindowView extends JFrame implements Observer {
 		gameView.add(infoView, BorderLayout.SOUTH);
 		gameView.add(helperView, BorderLayout.EAST);
 		add(gameView);
-
-		//pack();
 	}
 
 	@Override
@@ -141,6 +144,7 @@ public class WindowView extends JFrame implements Observer {
 			}
 			scoreHolder.setText("" + gridModel.getScore());
 			movesHolder.setText("" + (game.getMaxMoves() - gridModel.getMovesTaken()));
+			//flashSingleTile(5, 5);
 		} else if (o.getClass().getName().equals("model.QueueModel")) {
 			// process queue update
 			Queue<Integer> temp = ((QueueModel) o).getQueue();
@@ -157,7 +161,6 @@ public class WindowView extends JFrame implements Observer {
 				}
 				i++;
 			}
-
 		} else {
 			System.out.println("Error occured in WindowView.update()");
 		}
@@ -221,7 +224,6 @@ public class WindowView extends JFrame implements Observer {
 		// design fields
 		JLabel scoreLabel;
 		JLabel movesLabel;
-		JLabel hintsLabel;
 		JLabel timeLabel;
 		JLabel emptyHolder;
 
@@ -255,18 +257,28 @@ public class WindowView extends JFrame implements Observer {
 	}
 
 	private void buildHelperView() {
-		helperView.setLayout(new GridLayout(2, 1));
+		helperView.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
 
-		JButton hintButton = new JButton("Hint (" + hintsRem + ")");
-		JButton refreshButton = new JButton("Refresh Queue (1)");
+		hintButton = new JButton("Hint (" + hintsRem + ")");
+		refreshButton = new JButton("Refresh queue (1)");
+		removeButton = new JButton("Remove instance (1)");
 
-		rc = new RefreshController(queue, queueModel, game);
+		// set button size?
+
+		rc = new RefreshController(queue, queueModel, game, this);
 		refreshButton.addActionListener(rc);
-		helperView.add(refreshButton);
+		helperView.add(refreshButton, gbc);
+		gbc.gridy = 1;
 
 		hc = new HintController(gridModel, queueModel, this, game);
 		hintButton.addActionListener(hc);
-		helperView.add(hintButton);
+		helperView.add(hintButton, gbc);
+		gbc.gridy = 2;
+
+		ric = new RemoveInstanceController(gridModel, game, this);
+		removeButton.addActionListener(ric);
+		helperView.add(removeButton, gbc);
 
 	}
 
@@ -329,6 +341,64 @@ public class WindowView extends JFrame implements Observer {
 		return temp;
 	}
 
+	public void setTimedGame(boolean isTimedGame) {
+		timedGame = isTimedGame;
+		if (timedGame) {
+			initializeTimer();
+		}
+		game.setTimedGame(timedGame);
+	}
+
+	public void initializeTimer() {
+		timedGame = true;
+		if (timer != null) {
+			timer.stop();
+		}
+		timer = new Timer(1000, new CountdownController(this, gridModel, timeHolder, movesHolder));
+		timer.start();
+	}
+
+	public void setBotEnabled(boolean isBotEnabled) {
+		game.setBotEnabled(isBotEnabled);
+	}
+
+	public void resetRefresh() {
+		rc.resetRefresh(false);
+	}
+
+	public void resetHint() {
+		hc.resetHint();
+	}
+
+	public void removeTimedGame() {
+		if (timer != null) {
+			timer.stop();
+		}
+		timeHolder.setText("--:--");
+	}
+
+	public Timer getTimer() {
+		return timer;
+	}
+
+	public HighScoreView getHighScoreView() {
+		return h1;
+	}
+
+	public void updateHintButtonCount(int hintsRemaining) {
+		hintButton.setText("Hint (" + hintsRemaining + ")");
+	}
+
+	public void updateRefreshButtonCount(int refreshCount) {
+		refreshButton.setText("Refresh Queue (" + refreshCount + ")");
+	}
+
+	/*
+	 *
+	 * BEGIN ENGAGING SPECIAL EFFECTS SECTION
+	 * 
+	 */
+
 	private void shake() {
 		final int length = 8;
 		final int ox = getLocationOnScreen().x; // original x position
@@ -352,48 +422,21 @@ public class WindowView extends JFrame implements Observer {
 		setLocation(ox, oy); // place window back in original position
 	}
 
-	public void setTimedGame(boolean isTimedGame) {
-		timedGame = isTimedGame;
-		if (timedGame) {
-			initializeTimer();
+	private void flashSingleTile(int row, int col) {
+		if (grid[row][col] == null) {
+			return;
 		}
-		game.setTimedGame(timedGame);
-	}
-
-	public void initializeTimer() {
-		timedGame = true;
-		if (timer != null) {
-			timer.stop();
+		try {
+			String temp = grid[row][col].getData();
+			for (int i = 0; i < 3; i++) {
+				grid[row][col].setData("");
+				Thread.sleep(50);
+				grid[row][col].setData(temp);
+			}
+		} catch (Exception ex) {
+			System.out.println("Error occured in flashSingleTile()");
 		}
-		timer = new Timer(1000, new CountdownController(this, gridModel, timeHolder, movesHolder));
-		timer.start();
-	}
 
-	public void setBotEnabled(boolean isBotEnabled) {
-		game.setBotEnabled(isBotEnabled);
-	}
-
-	public void resetRefresh() {
-		rc.setRefresh(false);
-	}
-
-	public void resetHint() {
-		hc.resetHint();
-	}
-
-	public void removeTimedGame() {
-		if (timer != null) {
-			timer.stop();
-		}
-		timeHolder.setText("--:--");
-	}
-
-	public Timer getTimer() {
-		return timer;
-	}
-
-	public HighScoreView getHighScoreView() {
-		return h1;
 	}
 
 }
