@@ -50,6 +50,7 @@ public class HighScoreView extends JFrame implements Observer {
 		setLayout(new GridLayout(11, 3));
 		try {
 			file = new File(fileName);
+			file.createNewFile();
 			sc = new Scanner(file);
 			sc.useDelimiter(",");
 			while (sc.hasNext()) {

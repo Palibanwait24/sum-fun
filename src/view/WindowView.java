@@ -276,7 +276,7 @@ public class WindowView extends JFrame implements Observer {
 		helperView.add(hintButton, gbc);
 		gbc.gridy = 2;
 
-		ric = new RemoveInstanceController(gridModel, game, this);
+		ric = new RemoveInstanceController(gridModel, this);
 		removeButton.addActionListener(ric);
 		helperView.add(removeButton, gbc);
 
@@ -391,6 +391,9 @@ public class WindowView extends JFrame implements Observer {
 
 	public void updateRefreshButtonCount(int refreshCount) {
 		refreshButton.setText("Refresh Queue (" + refreshCount + ")");
+	}
+	public void updateRemoveButtonCount(int removeCount) {
+		removeButton.setText("Remove instance (" + removeCount + ")");
 	}
 
 	/*
