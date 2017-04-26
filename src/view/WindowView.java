@@ -346,11 +346,14 @@ public class WindowView extends JFrame implements Observer {
 		if (timedGame) {
 			initializeTimer();
 		}
+		
 		game.setTimedGame(timedGame);
 	}
 
 	public void initializeTimer() {
 		timedGame = true;
+		
+		
 		if (timer != null) {
 			timer.stop();
 		}
@@ -368,6 +371,9 @@ public class WindowView extends JFrame implements Observer {
 
 	public void resetHint() {
 		hc.resetHint();
+	}
+	public void resetRemove() {
+		ric.resetRemove(false);
 	}
 
 	public void removeTimedGame() {

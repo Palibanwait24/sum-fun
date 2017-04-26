@@ -58,6 +58,7 @@ public class SumFun {
 		queue.reinitialize();
 		mainView.resetRefresh();
 		mainView.resetHint();
+		mainView.resetRemove();
 		if (timedGame) {
 			mainView.setTimedGame(true);
 		} else {
