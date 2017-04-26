@@ -14,15 +14,18 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -99,7 +102,7 @@ public class WindowView extends JFrame implements Observer {
 		queueView = new JPanel();
 		infoView = new JPanel();
 		helperView = new JPanel();
-
+		
 		this.game = game;
 		gridModel = g;
 		queueModel = q.getQueueModel();

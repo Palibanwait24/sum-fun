@@ -33,7 +33,7 @@ public class GridModel extends Observable {
 	private HighScoreView hsView;
 	private SoundController sound;
 
-	private GridModel(SumFun game, QueueModel queue) {
+	private GridModel(SumFun game, QueueModel queue, HighScoreView hsView) {
 		this.game = game;
 		this.queueModel = queue;
 		grid = new TileModel[dimension][dimension];
@@ -42,8 +42,7 @@ public class GridModel extends Observable {
 		valid = true;
 		win = false;
 		boolean fill = false;
-		hsView = new HighScoreView();
-		hsView.setVisible(false);
+		this.hsView = hsView;
 		sound = new SoundController();
 
 		for (int row = 0; row < grid.length; row++) {
@@ -66,9 +65,9 @@ public class GridModel extends Observable {
 		notifyObservers();
 	}
 
-	public static GridModel getInstance(SumFun game, QueueModel queue) {
+	public static GridModel getInstance(SumFun game, QueueModel queue, HighScoreView hsView) {
 		if (gridModel == null) {
-			gridModel = new GridModel(game, queue);
+			gridModel = new GridModel(game, queue, hsView);
 		}
 		return gridModel;
 	}

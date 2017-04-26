@@ -9,7 +9,7 @@ public class HighScoreModel {
 	private SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
 	public HighScoreModel(String n, Date d) {
-		name = n;
+		name = " " + n;
 		date = d;
 	}
 

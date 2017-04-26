@@ -1,9 +1,18 @@
 package sumfun;
 
+
+
+
+
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
+
 import model.BotModel;
 import model.GridModel;
 import model.QueueModel;
-
+import view.HighScoreView;
 import view.StartView;
 import view.WindowView;
 
@@ -21,7 +30,7 @@ public class SumFun {
 	private boolean botEnabled = false; // flag for if bot is enabled
 	private boolean stop = false; // flag to continue or stop game
 	private String name; // player name
-
+	private HighScoreView hsView;
 	public static void main(String[] args) {
 		SumFun game = new SumFun();
 		game.run(game);
@@ -29,9 +38,17 @@ public class SumFun {
 
 	public void run(SumFun game) {
 		queue = new QueueModel(game);
-		grid = GridModel.getInstance(game, queue);
+		hsView = new HighScoreView();
+		hsView.setVisible(false);
+		grid = GridModel.getInstance(game, queue, hsView);
 		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
-		greetingDialog = new StartView(mainView);
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image image = toolkit.getImage("resources/cursor.png");
+		Cursor c = toolkit.createCustomCursor(image , new Point(0, 
+		           0), "img");
+		mainView.setCursor (c);
+		
+		greetingDialog = new StartView(mainView, hsView);
 		greetingDialog.show();
 		bot = new BotModel(game, grid);
 		mainView.addObserver(grid);
@@ -46,6 +63,7 @@ public class SumFun {
 
 	public void startNewGame() {
 		mainView.setVisible(false);
+
 		stop = true;
 		grid.setMoves(0);
 		grid.setScore(0);

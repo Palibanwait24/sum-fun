@@ -75,6 +75,7 @@ public class HighScoreView extends JFrame implements Observer {
 			printScores();
 			updateJlabels();
 		} catch (Exception ex) {
+			System.out.println(ex);
 			System.out.printf("Error occured in HighScoreView");
 		}
 
