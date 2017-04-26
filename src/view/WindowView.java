@@ -174,7 +174,6 @@ public class WindowView extends JFrame implements Observer {
 		} else {
 			System.out.println("Error occured in WindowView.update()");
 		}
-
 	}
 
 	public void addObserver(Observable model) {
