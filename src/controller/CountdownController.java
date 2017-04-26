@@ -28,7 +28,7 @@ public class CountdownController implements ActionListener {
 
 		int minutes = counter1 / 60; // number of minutes
 		int seconds = counter1 % 60; // number of seconds
-		if (gridModel.isGameLost()) {
+		if (gridModel.getGameLost()) {
 			window.getTimer().stop();
 		}
 		if (counter1 == 0) {
