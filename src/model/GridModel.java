@@ -415,7 +415,8 @@ public class GridModel extends Observable {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name; 
+		
 	}
 
 	public void setScore(int s) {
