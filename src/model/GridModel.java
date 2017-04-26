@@ -92,20 +92,13 @@ public class GridModel extends Observable {
 		notifyObservers();
 	}
 
-	public boolean isGameLost() {
-		return gameLost;
-	}
-
-	public void setGameLost(boolean answer) {
-		gameLost = answer;
-	}
-
 	// perform move for user
 	public void move(int row, int col) {
 		if (moves > game.getMaxMoves() - 1) {
 			gameLost = true;
-			game.setStop();
-			JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
+			game.setStop(true);
+			setChanged();
+			notifyObservers();
 			return; // out of moves
 		}
 		valid = true; // reset valid flag
@@ -142,17 +135,18 @@ public class GridModel extends Observable {
 			gameLost = false;
 			OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
 			hsView.addScore(m1);
-			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
+			setChanged();
+			notifyObservers();
+			return;
 		}
 
 	}
 
 	// perform move for bot
 	protected void moveBot() {
-
 		if (moves > game.getMaxMoves() - 1 && stopJoptionPaneBot) {
 			gameLost = true;
-			JOptionPane.showMessageDialog(null, "Bot is out of moves! Please start a new game.");
+			game.setStop(true);
 			stopJoptionPaneBot = false;
 			return; // out of moves
 		}
@@ -231,7 +225,7 @@ public class GridModel extends Observable {
 		if (win && stopJoptionPaneBot) {
 			gameLost = false;
 			JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
-			game.setStop();
+			game.setStop(true);
 			stopJoptionPaneBot = false;
 			OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
 			hsView.addScore(m1);
@@ -306,11 +300,11 @@ public class GridModel extends Observable {
 			}
 		}
 
-		askForName();
+		promptName();
 		return true; // all tiles are empty, game is over
 	}
 
-	private void askForName() {
+	private void promptName() {
 		if (name == null) {
 			NameView getTheName = new NameView();
 			name = getTheName.getName();
@@ -391,6 +385,18 @@ public class GridModel extends Observable {
 
 	public boolean getValid() {
 		return valid;
+	}
+
+	public boolean getWin() {
+		return win;
+	}
+
+	public boolean getGameLost() {
+		return gameLost;
+	}
+
+	public void setGameLost(boolean answer) {
+		gameLost = answer;
 	}
 
 	public void setValid(boolean bool) {

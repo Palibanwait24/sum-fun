@@ -71,8 +71,8 @@ public class SumFun {
 		}
 	}
 
-	public void setStop() {
-		stop = true;
+	public void setStop(boolean isStop) {
+		stop = isStop;
 	}
 
 	public void setBotEnabled(boolean isBotEnabled) {

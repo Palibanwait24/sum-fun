@@ -126,7 +126,17 @@ public class WindowView extends JFrame implements Observer {
 	public void update(Observable o, Object arg) {
 		if (o.getClass().getName().equals("model.GridModel")) {
 			// process grid update
+			GridModel gridModel = (GridModel) o;
 			TileModel[][] temp = ((GridModel) o).getGrid();
+
+			if (game.getStop()) {
+				if (gridModel.getWin()) {
+					JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
+					return;
+				}
+				JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
+				return;
+			}
 
 			if (!gridModel.getValid()) {
 				shake();
@@ -346,14 +356,13 @@ public class WindowView extends JFrame implements Observer {
 		if (timedGame) {
 			initializeTimer();
 		}
-		
+
 		game.setTimedGame(timedGame);
 	}
 
 	public void initializeTimer() {
 		timedGame = true;
-		
-		
+
 		if (timer != null) {
 			timer.stop();
 		}
@@ -372,6 +381,7 @@ public class WindowView extends JFrame implements Observer {
 	public void resetHint() {
 		hc.resetHint();
 	}
+
 	public void resetRemove() {
 		ric.resetRemove(false);
 	}
@@ -398,6 +408,7 @@ public class WindowView extends JFrame implements Observer {
 	public void updateRefreshButtonCount(int refreshCount) {
 		refreshButton.setText("Refresh Queue (" + refreshCount + ")");
 	}
+
 	public void updateRemoveButtonCount(int removeCount) {
 		removeButton.setText("Remove instance (" + removeCount + ")");
 	}
