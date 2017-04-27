@@ -25,7 +25,7 @@ public class GridModel extends Observable {
 	private SumFun game; // reference to main game
 	private QueueModel queueModel; // reference to game queue
 	private TileModel[][] grid; // game board
-	private final int dimension = 3; // dimension of game board
+	private final int dimension = 9; // dimension of game board
 	private int moves; // current number of moves on board
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid
@@ -92,7 +92,7 @@ public class GridModel extends Observable {
 				}
 				Random rand = new Random();
 				int n = rand.nextInt(10);
-				grid[i][j].setData(n);/////asfd
+				grid[i][j].setData(0);/////asfd
 			}
 		}
 		setChanged();
@@ -142,11 +142,13 @@ public class GridModel extends Observable {
 		// valid = true; // reset valid flag
 		win = checkWin(); // check if game is over
 		if (win) {
-			int time=999;
+			int time=0;
+			gameLost = false;
 			try{
 			game.getTimerInstance().stop();
+			
 			time = getCountdown().getTime()+1;// add 1 second for lag
-			}catch(Exception ex){}
+			}catch(Exception ex){			}
 			
 			game.setStop(true);
 			name = promptName();

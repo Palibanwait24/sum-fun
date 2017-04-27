@@ -89,6 +89,7 @@ public class TimedHighScoreView extends JFrame implements Observer {
 			JLabel temp = new JLabel(j + ". ");
 			top10.add(i, temp);
 		}
+		
 		for (int i = 0, j = 1; i < scoreList.size(); i++, j++) {
 			JLabel temp = new JLabel(j + ". " + scoreList.get(i));
 			top10.add(i, temp);
@@ -105,7 +106,9 @@ public class TimedHighScoreView extends JFrame implements Observer {
 	}
 
 	public void addScore(TimedHighScoreModel addedScore) {
-		if (scoreList.size() >= 10) {
+		System.out.println(scoreList.toString());
+		if (scoreList.size() > 10) {
+			
 			scoreList.set(11, addedScore);
 			Collections.sort(scoreList);
 			scoreList.remove(11);
@@ -113,12 +116,18 @@ public class TimedHighScoreView extends JFrame implements Observer {
 			printScores();
 			updateJlabels();
 		} else {
+			
 			scoreList.add(addedScore);
+			System.out.println(scoreList.toString());
 			Collections.sort(scoreList);
+			System.out.println(scoreList.toString());
 			updateFile();
+			System.out.println(scoreList.toString());
 			printScores();
+			System.out.println(scoreList.toString());
 			updateJlabels();
 		}
+		System.out.println(scoreList.toString());
 	}
 
 	public void updateFile() {

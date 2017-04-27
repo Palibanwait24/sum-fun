@@ -28,7 +28,7 @@ public class TileModel extends JButton {
 
 		if (fill) {
 			Random rand = new Random();
-			int n = 1;
+			int n = 0;
 			//int n = rand.nextInt(10); // generate random number in range [1,9]
 			data = "" + n;
 		}
@@ -55,7 +55,7 @@ public class TileModel extends JButton {
 	public void newRandomValue() {
 		Random rand = new Random();
 		int n = rand.nextInt(10); // generate random number in range [1,9]
-		this.setData(n);
+		this.setData(0);
 	}
 
 	// get data and return as string

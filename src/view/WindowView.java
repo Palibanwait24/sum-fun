@@ -362,6 +362,7 @@ public class WindowView extends JFrame implements Observer {
 	public void setTimedGame(boolean isTimedGame) {
 		timedGame = isTimedGame;
 		if (timedGame) {
+
 			initializeTimer();
 		}
 
@@ -375,6 +376,7 @@ public class WindowView extends JFrame implements Observer {
 
 		if (timer != null) {
 			timer.stop();
+
 		}
 		countdownControl = new CountdownController(this, gridModel, timeHolder, movesHolder);
 		timer = new Timer(1000, countdownControl);

@@ -32,6 +32,6 @@ public class TimedHighScoreModel extends HighScoreModel implements Comparable<Ti
 
 	@Override
 	public int compareTo(TimedHighScoreModel other) {
-		return this.time < other.time ? -1 : this.time < other.time ? 1 : 0;
+		return this.time< other.time ? -1 : this.time < other.time ? 1 : 0;
 	}
 }
