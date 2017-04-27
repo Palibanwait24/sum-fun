@@ -3,4 +3,4 @@
 *.jar
 *.sh
 bin/
-resources/scores.txt
+resources/*cores.txt
