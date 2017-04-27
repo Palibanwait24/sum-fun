@@ -14,15 +14,18 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -67,12 +70,12 @@ public class WindowView extends JFrame implements Observer {
 	private RefreshController rc;
 	private HintController hc;
 	private RemoveInstanceController ric;
-
+	private CountdownController countdownControl;
 	// model members
 	private GridModel gridModel; // grid model
 	private QueueModel queueModel; // queue model
 	private HighScoreView h1;//score model
-
+	private TimedHighScoreView timedScore;//score model
 	// data members
 	private TileModel[][] grid; // grid data -> game board
 	private TileModel[] queue; // queue data -> game queue
@@ -99,7 +102,7 @@ public class WindowView extends JFrame implements Observer {
 		queueView = new JPanel();
 		infoView = new JPanel();
 		helperView = new JPanel();
-
+		
 		this.game = game;
 		gridModel = g;
 		queueModel = q.getQueueModel();
@@ -246,8 +249,9 @@ public class WindowView extends JFrame implements Observer {
 		scoreHolder = new JLabel("" + score);
 		movesHolder = new JLabel("" + movesRem);
 		timeHolder = new JLabel();
+		
 		if (timedGame) {
-			timer = new Timer(1000, new CountdownController(this, gridModel, timeHolder, movesHolder));
+			timer = new Timer(1000, countdownControl);
 			timer.start();
 		} else {
 			timeHolder.setText("--:--");
@@ -319,6 +323,14 @@ public class WindowView extends JFrame implements Observer {
 				h1 = new HighScoreView();
 			}
 		});
+		JMenuItem timedHighScores = new JMenuItem("Timed High scores"); // view local high scores
+		timedHighScores.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				timedScore = new TimedHighScoreView();
+			}
+		});
+		viewMenu.add(timedHighScores);
+
 		viewMenu.add(highScores);
 		temp.add(viewMenu);
 
@@ -355,14 +367,17 @@ public class WindowView extends JFrame implements Observer {
 
 		game.setTimedGame(timedGame);
 	}
-
+	public CountdownController getCountdown(){
+		return countdownControl;
+	}
 	public void initializeTimer() {
 		timedGame = true;
 
 		if (timer != null) {
 			timer.stop();
 		}
-		timer = new Timer(1000, new CountdownController(this, gridModel, timeHolder, movesHolder));
+		countdownControl = new CountdownController(this, gridModel, timeHolder, movesHolder);
+		timer = new Timer(1000, countdownControl);
 		timer.start();
 	}
 

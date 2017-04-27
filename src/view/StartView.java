@@ -7,9 +7,12 @@ public class StartView extends JFrame {
 
 	private WindowView parent;
 	private HighScoreView hsView;
-	public StartView(WindowView window, HighScoreView hsView) {
+	TimedHighScoreView TimedHSView;
+	
+	public StartView(WindowView window, HighScoreView hsView, TimedHighScoreView TimedHSView) {
 		this.parent = window;
 		this.hsView = hsView;
+		this.TimedHSView = TimedHSView;
 	}
 
 	public void show() {
@@ -23,6 +26,7 @@ public class StartView extends JFrame {
 				parent.setBotEnabled(false);
 				parent.setVisible(false);
 				hsView.setVisible(true);
+				TimedHSView.setVisible(true);
 				show();
 		 }else if (n == 2) { // bot game
 			parent.setTimedGame(false);

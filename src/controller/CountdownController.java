@@ -46,5 +46,9 @@ public class CountdownController implements ActionListener {
 		counter1--;
 
 	}
+	public int getTime(){
+		window.getTimer().stop();
+		return counter1;
+	}
 
 }

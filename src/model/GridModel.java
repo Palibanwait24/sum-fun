@@ -7,6 +7,7 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
+import controller.CountdownController;
 import controller.SoundController;
 import model.QueueModel;
 
@@ -14,6 +15,8 @@ import sumfun.SumFun;
 
 import view.HighScoreView;
 import view.NameView;
+import view.TimedHighScoreView;
+import view.WindowView;
 
 public class GridModel extends Observable {
 
@@ -31,11 +34,13 @@ public class GridModel extends Observable {
 	private boolean stopJoptionPaneBot = true;
 	private String name;
 	private HighScoreView hsView;
+	private TimedHighScoreView TimedHSView;
 	private SoundController sound;
 
-	private GridModel(SumFun game, QueueModel queue, HighScoreView hsView) {
+	private GridModel(SumFun game, QueueModel queue, HighScoreView hsView, TimedHighScoreView timedHSView) {
 		this.game = game;
 		this.queueModel = queue;
+		
 		grid = new TileModel[dimension][dimension];
 		moves = 0;
 		score = 0;
@@ -44,6 +49,7 @@ public class GridModel extends Observable {
 		boolean fill = false;
 		name = null;
 		this.hsView = hsView;
+		this.TimedHSView=timedHSView;
 		sound = new SoundController();
 
 		for (int row = 0; row < grid.length; row++) {
@@ -66,15 +72,14 @@ public class GridModel extends Observable {
 		notifyObservers();
 	}
 
-	public static GridModel getInstance(SumFun game, QueueModel queue, HighScoreView hsView) {
+	public static GridModel getInstance(SumFun game, QueueModel queue, HighScoreView hsView, TimedHighScoreView TimedHSView) {
 		if (gridModel == null) {
-			gridModel = new GridModel(game, queue, hsView);
+			gridModel = new GridModel(game, queue, hsView,TimedHSView);
 		}
 		return gridModel;
 	}
 
 	public void reinitialize() {
-		// reset other variables???
 		name = null;
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[i].length; j++) {
@@ -87,13 +92,15 @@ public class GridModel extends Observable {
 				}
 				Random rand = new Random();
 				int n = rand.nextInt(10);
-				grid[i][j].setData(n);
+				grid[i][j].setData(n);/////asfd
 			}
 		}
 		setChanged();
 		notifyObservers();
 	}
-
+	public CountdownController getCountdown(){
+		return game.getCountdown();
+	}
 	// perform move for user
 	public void move(int row, int col) {
 		if (moves > game.getMaxMoves() - 1) {
@@ -106,6 +113,7 @@ public class GridModel extends Observable {
 		valid = true; // reset valid flag
 
 		if (grid[row][col].isEmpty()) {
+			
 			int sum = tileSum(row, col); // determine sum of tile and its neighbors
 
 			int tileToAdd = queueModel.updateQueue();
@@ -129,19 +137,29 @@ public class GridModel extends Observable {
 		} else {
 			valid = false; // tile already has number, invalid move
 		}
-
 		setChanged();
 		notifyObservers();
 		// valid = true; // reset valid flag
 		win = checkWin(); // check if game is over
 		if (win) {
-			gameLost = false;
+			game.setStop(true);
+			game.getTimerInstance().stop();
+			int time = getCountdown().getTime()+1;// add 1 second for lag
 			name = promptName();
-			OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
-			hsView.addScore(m1);
+			gameLost = false;
+			if(game.getTimedGame() == false){
+			
+				OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
+				hsView.addScore(m1);
+			}
+			else{
+				TimedHighScoreModel timed1 = new TimedHighScoreModel(name, new Date(), time);
+				TimedHSView.addScore(timed1);
+
+			}
+
 			setChanged();
 			notifyObservers();
-			game.setStop(true);
 			return;
 		}
 
@@ -304,6 +322,8 @@ public class GridModel extends Observable {
 				}
 			}
 		}
+
+		
 		return true; // all tiles are empty, game is over
 	}
 
@@ -312,6 +332,7 @@ public class GridModel extends Observable {
 		name = getTheName.getName();
 		return name;
 	}
+
 
 	// calculates sum of surrounding tiles
 	protected int tileSum(int row, int col) {
@@ -418,8 +439,8 @@ public class GridModel extends Observable {
 	}
 
 	public void setName(String name) {
-		this.name = name;
-
+		this.name = name; 
+		
 	}
 
 	public void setScore(int s) {
