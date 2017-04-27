@@ -14,7 +14,6 @@ import sumfun.SumFun;
 
 import view.HighScoreView;
 import view.NameView;
-import view.WindowView;
 
 public class GridModel extends Observable {
 
