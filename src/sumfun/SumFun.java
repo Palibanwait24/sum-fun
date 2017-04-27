@@ -9,11 +9,15 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 
+import javax.swing.Timer;
+
+import controller.CountdownController;
 import model.BotModel;
 import model.GridModel;
 import model.QueueModel;
 import view.HighScoreView;
 import view.StartView;
+import view.TimedHighScoreView;
 import view.WindowView;
 
 // Sum Fun Game
@@ -31,6 +35,7 @@ public class SumFun {
 	private boolean stop = false; // flag to continue or stop game
 	private String name; // player name
 	private HighScoreView hsView;
+	private TimedHighScoreView timedHSView;
 	public static void main(String[] args) {
 		SumFun game = new SumFun();
 		game.run(game);
@@ -39,16 +44,19 @@ public class SumFun {
 	public void run(SumFun game) {
 		queue = new QueueModel(game);
 		hsView = new HighScoreView();
+		timedHSView = new TimedHighScoreView();
+		timedHSView.setVisible(false);
 		hsView.setVisible(false);
-		grid = GridModel.getInstance(game, queue, hsView);
+		grid = GridModel.getInstance(game, queue, hsView, timedHSView);
 		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
+		
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Image image = toolkit.getImage("resources/cursor.png");
 		Cursor c = toolkit.createCustomCursor(image , new Point(0, 
 		           0), "img");
 		mainView.setCursor (c);
 		
-		greetingDialog = new StartView(mainView, hsView);
+		greetingDialog = new StartView(mainView, hsView, timedHSView);
 		greetingDialog.show();
 		bot = new BotModel(game, grid);
 		mainView.addObserver(grid);
@@ -92,7 +100,12 @@ public class SumFun {
 	public void setStop(boolean isStop) {
 		stop = isStop;
 	}
-
+	public CountdownController getCountdown(){
+		return mainView.getCountdown();
+	}
+	public Timer getTimerInstance(){
+		return mainView.getTimer();
+	}
 	public void setBotEnabled(boolean isBotEnabled) {
 		botEnabled = isBotEnabled;
 	}

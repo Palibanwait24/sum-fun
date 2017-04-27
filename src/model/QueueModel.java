@@ -88,7 +88,7 @@ public class QueueModel extends Observable {
 	private int getRandomNumber() {
 		Random rand = new Random();
 		int n = rand.nextInt(10); // generate random number in range [0,9]
-		return n;
+		return 0; //// change
 	}
 
 	public void setAllowNewTiles(boolean allow) {

@@ -15,13 +15,14 @@ import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import model.OverallHighScoreModel;
 
 public class HighScoreView extends JFrame implements Observer {
 
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-	private final int locationX = screensize.height / 3;
+	private final int locationX = screensize.height/3 ;
 	private final int locationY = (int) (screensize.width - (screensize.width * 0.97));
 	private final int width = 400;
 	private final int height = 400;
@@ -82,9 +83,10 @@ public class HighScoreView extends JFrame implements Observer {
 	}
 
 	public void printScores() {
+
 		int index = numberOfScores - scoreList.size();
 		for (int i = 0, j = scoreList.size() + 1; i < index; i++, j++) {
-			JLabel temp = new JLabel(j + ". ");
+			JLabel temp = new JLabel("\t"+j + ". ");
 			top10.add(i, temp);
 		}
 		for (int i = 0, j = 1; i < scoreList.size(); i++, j++) {
@@ -95,6 +97,8 @@ public class HighScoreView extends JFrame implements Observer {
 	}
 
 	public void updateJlabels() {
+		JLabel title = new JLabel("Untimed High Scoreboard", SwingConstants.CENTER);
+		this.add(title);
 		for (JLabel el : top10) {
 			add(el);
 		}
