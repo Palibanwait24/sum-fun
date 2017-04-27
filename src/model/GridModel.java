@@ -142,9 +142,13 @@ public class GridModel extends Observable {
 		// valid = true; // reset valid flag
 		win = checkWin(); // check if game is over
 		if (win) {
-			game.setStop(true);
+			int time=999;
+			try{
 			game.getTimerInstance().stop();
-			int time = getCountdown().getTime()+1;// add 1 second for lag
+			time = getCountdown().getTime()+1;// add 1 second for lag
+			}catch(Exception ex){}
+			
+			game.setStop(true);
 			name = promptName();
 			gameLost = false;
 			if(game.getTimedGame() == false){
