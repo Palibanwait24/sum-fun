@@ -47,8 +47,8 @@ public class QueueModel extends Observable {
 
 	private void enqueue() {
 		if (maxTiles - count > 0) {
-			//queue.add(getRandomNumber());
-			queue.add(0);
+			queue.add(getRandomNumber());
+			//queue.add(0);
 		} else {
 			queue.add(-1);
 		}
@@ -89,7 +89,7 @@ public class QueueModel extends Observable {
 	private int getRandomNumber() {
 		Random rand = new Random();
 		int n = rand.nextInt(10); // generate random number in range [0,9]
-		return 0; //// change
+		return n; //// change
 	}
 
 	public void setAllowNewTiles(boolean allow) {

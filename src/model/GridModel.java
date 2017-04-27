@@ -92,7 +92,7 @@ public class GridModel extends Observable {
 				}
 				Random rand = new Random();
 				int n = rand.nextInt(10);
-				grid[i][j].setData(0);/////asfd
+				grid[i][j].setData(n);/////asfd
 			}
 		}
 		setChanged();
