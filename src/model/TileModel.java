@@ -22,6 +22,7 @@ public class TileModel extends JButton {
 		setContentAreaFilled(true);
 		setBorderPainted(true);
 		setOpaque(true);
+		
 		setFont(new Font("Arial", Font.BOLD, 24));
 		setBackground(this.cellColor);
 		setForeground(getRandomColor());

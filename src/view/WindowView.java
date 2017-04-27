@@ -18,6 +18,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,6 +27,7 @@ import java.util.Observer;
 import java.util.Queue;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -102,7 +104,13 @@ public class WindowView extends JFrame implements Observer {
 		queueView = new JPanel();
 		infoView = new JPanel();
 		helperView = new JPanel();
-		
+		/*
+		gridView.setBackground(Color.red);
+		queueView.setBackground(Color.pink);
+		infoView.setBackground(Color.green);
+		helperView.setBackground(Color.pink);
+		*/
+
 		this.game = game;
 		gridModel = g;
 		queueModel = q.getQueueModel();
@@ -223,9 +231,12 @@ public class WindowView extends JFrame implements Observer {
 			TileModel temp = new TileModel(true);
 			queueView.add(temp, gbc);
 			queue[i] = temp;
+			queue[i].setBorderPainted( false );
+			queue[i].setFocusPainted( false );
 		}
 		queue[0].setBackground(Color.GREEN);
 		queue[0].setOpaque(true);
+
 	}
 
 	private void buildInfoView() {
