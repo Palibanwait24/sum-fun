@@ -9,8 +9,8 @@ import javax.sound.sampled.LineUnavailableException;
 
 public class SoundController {
 
-	AudioInputStream audioInputStream;
-	Clip clip;
+	private AudioInputStream audioInputStream;
+	private Clip clip;
 
 	public SoundController() {
 		// new sound controller
@@ -25,7 +25,7 @@ public class SoundController {
 		} catch (LineUnavailableException ex) {
 			System.out.println("Could not open sound effect file");
 		} catch (Exception ex) {
-			System.out.println("Error occured in SoundController.play()");
+			System.out.println("Error occured in SoundController.chimeRemoveTile()");
 		}
 	}
 }

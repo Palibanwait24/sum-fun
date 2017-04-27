@@ -14,18 +14,15 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
 
-import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -102,7 +99,7 @@ public class WindowView extends JFrame implements Observer {
 		queueView = new JPanel();
 		infoView = new JPanel();
 		helperView = new JPanel();
-		
+
 		this.game = game;
 		gridModel = g;
 		queueModel = q.getQueueModel();
@@ -269,8 +266,7 @@ public class WindowView extends JFrame implements Observer {
 	}
 
 	private void buildHelperView() {
-		helperView.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
+		helperView.setLayout(new GridLayout(3, 1));
 
 		hintButton = new JButton("Hint (" + hintsRem + ")");
 		refreshButton = new JButton("Refresh queue (1)");
@@ -280,17 +276,15 @@ public class WindowView extends JFrame implements Observer {
 
 		rc = new RefreshController(queue, queueModel, game, this);
 		refreshButton.addActionListener(rc);
-		helperView.add(refreshButton, gbc);
-		gbc.gridy = 1;
+		helperView.add(refreshButton);
 
 		hc = new HintController(gridModel, queueModel, this, game);
 		hintButton.addActionListener(hc);
-		helperView.add(hintButton, gbc);
-		gbc.gridy = 2;
+		helperView.add(hintButton);
 
-		ric = new RemoveInstanceController(gridModel, this);
+		ric = new RemoveInstanceController(gridModel, this, game);
 		removeButton.addActionListener(ric);
-		helperView.add(removeButton, gbc);
+		helperView.add(removeButton);
 
 	}
 

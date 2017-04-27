@@ -14,6 +14,7 @@ import sumfun.SumFun;
 
 import view.HighScoreView;
 import view.NameView;
+import view.WindowView;
 
 public class GridModel extends Observable {
 
@@ -22,7 +23,7 @@ public class GridModel extends Observable {
 	private SumFun game; // reference to main game
 	private QueueModel queueModel; // reference to game queue
 	private TileModel[][] grid; // game board
-	private final int dimension = 9; // dimension of game board
+	private final int dimension = 3; // dimension of game board
 	private int moves; // current number of moves on board
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid
@@ -42,6 +43,7 @@ public class GridModel extends Observable {
 		valid = true;
 		win = false;
 		boolean fill = false;
+		name = null;
 		this.hsView = hsView;
 		sound = new SoundController();
 
@@ -73,6 +75,8 @@ public class GridModel extends Observable {
 	}
 
 	public void reinitialize() {
+		// reset other variables???
+		name = null;
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < grid[i].length; j++) {
 				if (i == 0 || i == grid.length - 1) {
@@ -103,22 +107,23 @@ public class GridModel extends Observable {
 		valid = true; // reset valid flag
 
 		if (grid[row][col].isEmpty()) {
-			sound.chimeRemoveTile();
 			int sum = tileSum(row, col); // determine sum of tile and its neighbors
 
 			int tileToAdd = queueModel.updateQueue();
 			grid[row][col].setData(tileToAdd);
 
-			if (sum != -1) {
-				int mod = sum % 10; // calculates remainder using sum modulus 10
+			if (sum == -1) {
+				sum = 0;
+			}
 
-				if (mod == tileToAdd) {
-					int tilesRemoved = erase(row, col); // erase surrounding tiles
-					if (tilesRemoved >= 3) {
-						score += (tilesRemoved * 10);
-					}
+			int mod = sum % 10; // calculates remainder using sum modulus 10
+
+			sound.chimeRemoveTile();
+			if (mod == tileToAdd) {
+				int tilesRemoved = erase(row, col); // erase surrounding tiles
+				if (tilesRemoved >= 3) {
+					score += (tilesRemoved * 10);
 				}
-
 			}
 
 			moves++;
@@ -132,10 +137,12 @@ public class GridModel extends Observable {
 		win = checkWin(); // check if game is over
 		if (win) {
 			gameLost = false;
+			name = promptName();
 			OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
 			hsView.addScore(m1);
 			setChanged();
 			notifyObservers();
+			game.setStop(true);
 			return;
 		}
 
@@ -298,16 +305,13 @@ public class GridModel extends Observable {
 				}
 			}
 		}
-
-		promptName();
 		return true; // all tiles are empty, game is over
 	}
 
-	private void promptName() {
-		if (name == null) {
-			NameView getTheName = new NameView();
-			name = getTheName.getName();
-		}
+	private String promptName() {
+		NameView getTheName = new NameView();
+		name = getTheName.getName();
+		return name;
 	}
 
 	// calculates sum of surrounding tiles
@@ -415,8 +419,8 @@ public class GridModel extends Observable {
 	}
 
 	public void setName(String name) {
-		this.name = name; 
-		
+		this.name = name;
+
 	}
 
 	public void setScore(int s) {

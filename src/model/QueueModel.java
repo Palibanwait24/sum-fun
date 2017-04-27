@@ -47,7 +47,7 @@ public class QueueModel extends Observable {
 
 	private void enqueue() {
 		if (maxTiles - count > 0) {
-			queue.add(getRandomNumber());
+			queue.add(1);
 		} else {
 			queue.add(-1);
 		}

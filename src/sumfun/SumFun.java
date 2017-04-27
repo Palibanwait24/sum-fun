@@ -1,9 +1,5 @@
 package sumfun;
 
-
-
-
-
 import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Point;
@@ -25,12 +21,13 @@ public class SumFun {
 	public BotModel bot;
 	public WindowView mainView;
 	private StartView greetingDialog;
-	private final int maxMoves = 50;
+	private final int maxMoves = 7;
 	private boolean timedGame = false; // flag for timed or untimed game
 	private boolean botEnabled = false; // flag for if bot is enabled
 	private boolean stop = false; // flag to continue or stop game
 	private String name; // player name
 	private HighScoreView hsView;
+
 	public static void main(String[] args) {
 		SumFun game = new SumFun();
 		game.run(game);
@@ -42,12 +39,8 @@ public class SumFun {
 		hsView.setVisible(false);
 		grid = GridModel.getInstance(game, queue, hsView);
 		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Image image = toolkit.getImage("resources/cursor.png");
-		Cursor c = toolkit.createCustomCursor(image , new Point(0, 
-		           0), "img");
-		mainView.setCursor (c);
-		
+
+		//generateCursor();
 		greetingDialog = new StartView(mainView, hsView);
 		greetingDialog.show();
 		bot = new BotModel(game, grid);
@@ -87,6 +80,13 @@ public class SumFun {
 		if (botEnabled) {
 			bot.run();
 		}
+	}
+
+	private void generateCursor() {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image image = toolkit.getImage("resources/cursor.png");
+		Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+		mainView.setCursor(c);
 	}
 
 	public void setStop(boolean isStop) {
