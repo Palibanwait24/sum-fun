@@ -3,4 +3,6 @@
 *.jar
 *.sh
 bin/
-resources/*cores.txt
+resources/scores.txt
+resources/scoresTimed.txt
+resources/timedScores.txt
