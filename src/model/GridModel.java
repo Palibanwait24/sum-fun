@@ -159,7 +159,7 @@ public class GridModel extends Observable {
 				hsView.addScore(m1);
 			}
 			else{
-				TimedHighScoreModel timed1 = new TimedHighScoreModel(name, new Date(), time);
+				TimedHighScoreModel timed1 = new TimedHighScoreModel(name, new Date(), getCountdown().getDefaultNumberOfSeconds() -time);
 				TimedHSView.addScore(timed1);
 
 			}

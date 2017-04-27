@@ -10,7 +10,8 @@ import model.GridModel;
 import view.WindowView;
 
 public class CountdownController implements ActionListener {
-	private int counter1 = 300; // number of seconds for the countdown, 5 min = 300
+	private int defaultNumberOfSeconds = 300;// number of seconds for the countdown, 5 min = 300
+	private int counter1 = defaultNumberOfSeconds; 
 	private GridModel gridModel;
 	private WindowView window;
 	private JLabel timeHolder;
@@ -22,7 +23,9 @@ public class CountdownController implements ActionListener {
 		this.timeHolder = timeHolder;
 		this.moveLabel = moveLabel;
 	}
-
+	public int getDefaultNumberOfSeconds(){
+		return defaultNumberOfSeconds;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
