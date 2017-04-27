@@ -23,9 +23,9 @@ public class SoundController {
 			clip.open(audioInputStream);
 			clip.start();
 		} catch (LineUnavailableException ex) {
-			System.out.println("Could not open sound effect file");
+			//System.out.println("Could not open sound effect file");
 		} catch (Exception ex) {
-			System.out.println("Error occured in SoundController.chimeRemoveTile()");
+			//System.out.println("Error occured in SoundController.chimeRemoveTile()");
 		}
 	}
 }
