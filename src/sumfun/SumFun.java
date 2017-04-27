@@ -25,13 +25,14 @@ public class SumFun {
 	public BotModel bot;
 	public WindowView mainView;
 	private StartView greetingDialog;
-	private final int maxMoves = 50;
+	private final int maxMoves = 7;
 	private boolean timedGame = false; // flag for timed or untimed game
 	private boolean botEnabled = false; // flag for if bot is enabled
 	private boolean stop = false; // flag to continue or stop game
 	private String name; // player name
 	private HighScoreView hsView;
 	private TimedHighScoreView timedHSView;
+
 	public static void main(String[] args) {
 		SumFun game = new SumFun();
 		game.run(game);
@@ -41,11 +42,9 @@ public class SumFun {
 		queue = new QueueModel(game);
 		hsView = new HighScoreView();
 		timedHSView = new TimedHighScoreView();
-		timedHSView.setVisible(false);
-		hsView.setVisible(false);
 		grid = GridModel.getInstance(game, queue, hsView, timedHSView);
 		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
-		
+
 		//generateCursor();
 		greetingDialog = new StartView(mainView, hsView, timedHSView);
 		greetingDialog.show();
@@ -77,7 +76,7 @@ public class SumFun {
 		mainView.resetHint();
 		mainView.resetRemove();
 		if (timedGame) {
-			
+
 			mainView.setTimedGame(true);
 		} else {
 			mainView.removeTimedGame();
@@ -92,18 +91,22 @@ public class SumFun {
 	public void setStop(boolean isStop) {
 		stop = isStop;
 	}
+
 	private void generateCursor() {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Image image = toolkit.getImage("resources/cursor.png");
 		Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
 		mainView.setCursor(c);
 	}
-	public CountdownController getCountdown(){
+
+	public CountdownController getCountdown() {
 		return mainView.getCountdown();
 	}
-	public Timer getTimerInstance(){
+
+	public Timer getTimerInstance() {
 		return mainView.getTimer();
 	}
+
 	public void setBotEnabled(boolean isBotEnabled) {
 		botEnabled = isBotEnabled;
 	}

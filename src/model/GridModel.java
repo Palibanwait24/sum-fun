@@ -16,16 +16,14 @@ import sumfun.SumFun;
 import view.HighScoreView;
 import view.NameView;
 import view.TimedHighScoreView;
-import view.WindowView;
 
 public class GridModel extends Observable {
 
 	private static GridModel gridModel;
-
 	private SumFun game; // reference to main game
 	private QueueModel queueModel; // reference to game queue
 	private TileModel[][] grid; // game board
-	private final int dimension = 9; // dimension of game board
+	private final int dimension = 3; // dimension of game board
 	private int moves; // current number of moves on board
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid
@@ -40,7 +38,7 @@ public class GridModel extends Observable {
 	private GridModel(SumFun game, QueueModel queue, HighScoreView hsView, TimedHighScoreView timedHSView) {
 		this.game = game;
 		this.queueModel = queue;
-		
+
 		grid = new TileModel[dimension][dimension];
 		moves = 0;
 		score = 0;
@@ -49,7 +47,7 @@ public class GridModel extends Observable {
 		boolean fill = false;
 		name = null;
 		this.hsView = hsView;
-		this.TimedHSView=timedHSView;
+		this.TimedHSView = timedHSView;
 		sound = new SoundController();
 
 		for (int row = 0; row < grid.length; row++) {
@@ -72,9 +70,10 @@ public class GridModel extends Observable {
 		notifyObservers();
 	}
 
-	public static GridModel getInstance(SumFun game, QueueModel queue, HighScoreView hsView, TimedHighScoreView TimedHSView) {
+	public static GridModel getInstance(SumFun game, QueueModel queue, HighScoreView hsView,
+			TimedHighScoreView TimedHSView) {
 		if (gridModel == null) {
-			gridModel = new GridModel(game, queue, hsView,TimedHSView);
+			gridModel = new GridModel(game, queue, hsView, TimedHSView);
 		}
 		return gridModel;
 	}
@@ -98,22 +97,21 @@ public class GridModel extends Observable {
 		setChanged();
 		notifyObservers();
 	}
-	public CountdownController getCountdown(){
+
+	public CountdownController getCountdown() {
 		return game.getCountdown();
 	}
+
 	// perform move for user
 	public void move(int row, int col) {
 		if (moves > game.getMaxMoves() - 1) {
-			gameLost = true;
-			game.setStop(true);
-			setChanged();
-			notifyObservers();
+			endGameLose();
 			return; // out of moves
 		}
 		valid = true; // reset valid flag
 
 		if (grid[row][col].isEmpty()) {
-			
+
 			int sum = tileSum(row, col); // determine sum of tile and its neighbors
 
 			int tileToAdd = queueModel.updateQueue();
@@ -142,33 +140,45 @@ public class GridModel extends Observable {
 		// valid = true; // reset valid flag
 		win = checkWin(); // check if game is over
 		if (win) {
-			int time=0;
-			gameLost = false;
-			try{
-			game.getTimerInstance().stop();
-			
-			time = getCountdown().getTime()+1;// add 1 second for lag
-			}catch(Exception ex){			}
-			
-			game.setStop(true);
-			name = promptName();
-			gameLost = false;
-			if(game.getTimedGame() == false){
-			
-				OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
-				hsView.addScore(m1);
-			}
-			else{
-				TimedHighScoreModel timed1 = new TimedHighScoreModel(name, new Date(), getCountdown().getDefaultNumberOfSeconds() -time);
-				TimedHSView.addScore(timed1);
-
-			}
-
-			setChanged();
-			notifyObservers();
+			endGameWin();
 			return;
 		}
 
+	}
+
+	private void endGameLose() {
+		gameLost = true;
+		game.setStop(true);
+		setChanged();
+		notifyObservers();
+	}
+
+	private void endGameWin() {
+		int time = 0;
+		gameLost = false;
+		try {
+			game.getTimerInstance().stop();
+			time = getCountdown().getTime() + 1;// add 1 second for lag
+		} catch (Exception ex) {
+			System.out.println("Error [timer] occured in GridModel.endGameWin()");
+		}
+
+		game.setStop(true);
+		name = promptName();
+		gameLost = false;
+		if (game.getTimedGame() == false) {
+
+			OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
+			hsView.addScore(m1);
+		} else {
+			TimedHighScoreModel timed1 = new TimedHighScoreModel(name, new Date(),
+					getCountdown().getDefaultNumberOfSeconds() - time);
+			TimedHSView.addScore(timed1);
+
+		}
+
+		setChanged();
+		notifyObservers();
 	}
 
 	// perform move for bot
@@ -329,7 +339,6 @@ public class GridModel extends Observable {
 			}
 		}
 
-		
 		return true; // all tiles are empty, game is over
 	}
 
@@ -338,7 +347,6 @@ public class GridModel extends Observable {
 		name = getTheName.getName();
 		return name;
 	}
-
 
 	// calculates sum of surrounding tiles
 	protected int tileSum(int row, int col) {
@@ -445,8 +453,8 @@ public class GridModel extends Observable {
 	}
 
 	public void setName(String name) {
-		this.name = name; 
-		
+		this.name = name;
+
 	}
 
 	public void setScore(int s) {

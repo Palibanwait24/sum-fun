@@ -22,7 +22,7 @@ import model.TimedHighScoreModel;
 public class TimedHighScoreView extends JFrame implements Observer {
 
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-	private final int locationX = screensize.height ;
+	private final int locationX = screensize.height;
 	private final int locationY = (int) (screensize.width - (screensize.width * 0.97));
 	private final int width = 400;
 	private final int height = 400;
@@ -43,7 +43,7 @@ public class TimedHighScoreView extends JFrame implements Observer {
 		int index = 0;
 		int time = 0;
 		scoreList = new ArrayList<>(numberOfScores + 1);
-		setVisible(true);
+		setVisible(false);
 		setLocation(locationX, locationY);
 		setSize(width, height);
 		setResizable(false);
@@ -81,15 +81,15 @@ public class TimedHighScoreView extends JFrame implements Observer {
 		}
 
 	}
-	
+
 	public void printScores() {
-		
+
 		int index = numberOfScores - scoreList.size();
 		for (int i = 0, j = scoreList.size() + 1; i < index; i++, j++) {
 			JLabel temp = new JLabel(j + ". ");
 			top10.add(i, temp);
 		}
-		
+
 		for (int i = 0, j = 1; i < scoreList.size(); i++, j++) {
 			JLabel temp = new JLabel(j + ". " + scoreList.get(i));
 			top10.add(i, temp);
@@ -108,7 +108,7 @@ public class TimedHighScoreView extends JFrame implements Observer {
 	public void addScore(TimedHighScoreModel addedScore) {
 		System.out.println(scoreList.toString());
 		if (scoreList.size() > 10) {
-			
+
 			scoreList.set(11, addedScore);
 			Collections.sort(scoreList);
 			scoreList.remove(11);
@@ -116,7 +116,7 @@ public class TimedHighScoreView extends JFrame implements Observer {
 			printScores();
 			updateJlabels();
 		} else {
-			
+
 			scoreList.add(addedScore);
 			System.out.println(scoreList.toString());
 			Collections.sort(scoreList);

@@ -14,20 +14,15 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Queue;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -231,8 +226,8 @@ public class WindowView extends JFrame implements Observer {
 			TileModel temp = new TileModel(true);
 			queueView.add(temp, gbc);
 			queue[i] = temp;
-			queue[i].setBorderPainted( false );
-			queue[i].setFocusPainted( false );
+			queue[i].setBorderPainted(false);
+			queue[i].setFocusPainted(false);
 		}
 		queue[0].setBackground(Color.GREEN);
 		queue[0].setOpaque(true);
@@ -260,7 +255,7 @@ public class WindowView extends JFrame implements Observer {
 		scoreHolder = new JLabel("" + score);
 		movesHolder = new JLabel("" + movesRem);
 		timeHolder = new JLabel();
-		
+
 		if (timedGame) {
 			timer = new Timer(1000, countdownControl);
 			timer.start();
@@ -379,9 +374,11 @@ public class WindowView extends JFrame implements Observer {
 
 		game.setTimedGame(timedGame);
 	}
-	public CountdownController getCountdown(){
+
+	public CountdownController getCountdown() {
 		return countdownControl;
 	}
+
 	public void initializeTimer() {
 		timedGame = true;
 
