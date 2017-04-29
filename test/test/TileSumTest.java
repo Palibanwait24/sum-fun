@@ -80,9 +80,10 @@ public class TileSumTest {
 			for (int j = middleIndex - 1; j < middleIndex + 2; j++) {
 				if (i >= 0 && j >= 0) {
 					data = tileObj[i][j].getData();
-					System.out.println(i + " " + j);
 				}
-				else if (i != middleIndex && j != middleIndex /*(data != "")*/) { // It's late as fuck and my boolean algebra is not with me so I'll fix this shit later. It *was* working earlier...
+				else
+					continue;
+				if (!(i == middleIndex && j == middleIndex) && (data != "")) {
 					sum += Integer.parseInt(data);
 					System.out.println(i + ", " + j + ": " + data);
 				}
@@ -97,10 +98,12 @@ public class TileSumTest {
 		String data = "";
 		for(int i = randomX - 1; i < randomX + 2; i++) {
 			for (int j = randomY - 1; j < randomY + 2; j++) {
-				if (i >= 0 && j >= 0) {
+				if ((i >= 0 && j >= 0) && (i < tileObj.length && j < tileObj.length)) {
 					data = tileObj[i][j].getData();
 				}
-				else if (!(i == randomX && j == randomY) && (i <= tileObj.length || j <= tileObj.length) && (data == "")) {
+				else
+					continue;
+				if (!(i == randomX && j == randomY) && (data != "")) {
 					sum += Integer.parseInt(data);
 					System.out.println(i + ", " + j + ": " + data);
 				}
