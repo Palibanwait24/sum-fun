@@ -67,8 +67,6 @@ public class TileSumTest {
 				}
 			}
 		}
-		if (sum == 0)
-			return -1;
 		return sum;
 	}
 	
@@ -109,8 +107,6 @@ public class TileSumTest {
 				}
 			}
 		}
-		if (sum == 0)
-			return -1;
 		return sum;
 	}
 	
