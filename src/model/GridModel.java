@@ -23,7 +23,7 @@ public class GridModel extends Observable {
 	private SumFun game; // reference to main game
 	private QueueModel queueModel; // reference to game queue
 	private TileModel[][] grid; // game board
-	private final int dimension = 3; // dimension of game board
+	private final int dimension = 5; // dimension of game board
 	private int moves; // current number of moves on board
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid

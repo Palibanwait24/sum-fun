@@ -21,11 +21,9 @@ public class MoveTest {
 		TileModel[][] tileObj = gm.getGrid();
 		QueueModel queueObj = queueModelReflection(gm);
 		
-		// Theoretically this test should work but I'm not sure why move() isn't placing the tile.
-		gm.move(0, 0);
-		
-		String tileActual = tileObj[0][0].getData();
 		String tileExpected = String.valueOf(queueObj.getTopOfQueue());
+		gm.move(0, 0);
+		String tileActual = tileObj[0][0].getData();
 		
 		assertEquals(tileExpected, tileActual);
 		
