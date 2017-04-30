@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import java.lang.reflect.*;
 
@@ -12,18 +13,19 @@ import model.TileModel;
 import sumfun.SumFun;
 
 public class MoveTestValid {
-	SumFun game;
-	GridModel gm;
-	TileModel[][] tileObj;
-	QueueModel queueObj;
+	static SumFun game;
+	static GridModel gm;
+	static TileModel[][] tileObj;
+	static QueueModel queueObj;
 
-	@Before
-	public void setup(){
-		game = new SumFun();
-		game.run(game);
-		gm = game.grid;
-		tileObj = gm.getGrid();
-		queueObj = queueModelReflection(gm);
+	@BeforeClass
+	public static void setup(){
+			game = new SumFun();
+			game.run(game);
+			gm = game.grid;
+			tileObj = gm.getGrid();
+			queueObj = queueModelReflection(gm);
+
 	}
 
 	@Test
@@ -50,7 +52,7 @@ public class MoveTestValid {
 	}
 
 	// This could be replaced by a simple getter in the GridModel class if needed.
-	public QueueModel queueModelReflection(GridModel gm) {
+	public static QueueModel queueModelReflection(GridModel gm) {
 		
 		QueueModel queueObj = null;
 		Field queueField = null;
