@@ -97,14 +97,15 @@ public class HighScoreView extends JFrame implements Observer {
 	}
 
 	public void updateJlabels() {
-		JLabel title = new JLabel("Untimed High Scoreboard", SwingConstants.CENTER);
+		JLabel title = new JLabel("Highest Score Leaderboard (Untimed and timed games)", SwingConstants.CENTER);
 		this.add(title);
 		for (JLabel el : top10) {
 			add(el);
 		}
-		
+
 	}
-	public void showView(boolean answer){
+
+	public void showView(boolean answer) {
 		this.setVisible(answer);
 	}
 
@@ -112,7 +113,7 @@ public class HighScoreView extends JFrame implements Observer {
 
 		if (scoreList.size() >= 10) {
 			scoreList.add(10, addedScore);
-			
+
 			Collections.sort(scoreList);
 			scoreList.remove(10);
 			updateFile();

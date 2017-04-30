@@ -47,7 +47,7 @@ public class TimedHighScoreView extends JFrame implements Observer {
 		setLocation(locationX, locationY);
 		setSize(width, height);
 		setResizable(false);
-		setTitle("High Scores");
+		setTitle("Fastest Times");
 		setLayout(new GridLayout(11, 3));
 		try {
 			file = new File(fileName);
@@ -96,11 +96,13 @@ public class TimedHighScoreView extends JFrame implements Observer {
 		}
 
 	}
-	public void showView(boolean answer){
+
+	public void showView(boolean answer) {
 		this.setVisible(answer);
 	}
+
 	public void updateJlabels() {
-		JLabel title = new JLabel("Timed Game Leaderboard", SwingConstants.CENTER);
+		JLabel title = new JLabel("Fastest Time Leaderboard (Timed games only)", SwingConstants.CENTER);
 		this.add(title);
 		for (JLabel el : top10) {
 			add(el);

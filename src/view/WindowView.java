@@ -6,7 +6,6 @@ import controller.HintController;
 import controller.NewGameController;
 import controller.RefreshController;
 import controller.RemoveInstanceController;
-import controller.SoundController;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -97,8 +96,8 @@ public class WindowView extends JFrame implements Observer {
 		timedGame = isTimedGame;
 		gameView = new JPanel();
 		gameView.setLayout(new BorderLayout());
-		outOfMoves= false;
-		botEnabled= false;
+		outOfMoves = false;
+		botEnabled = false;
 		gridView = new JPanel();
 		queueView = new JPanel();
 		infoView = new JPanel();
@@ -143,20 +142,18 @@ public class WindowView extends JFrame implements Observer {
 				if (gridModel.getWin()) {
 					JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 					return;
-				}
-				else if(outOfMoves == false ){
+				} else if (outOfMoves == false) {
 					JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
 					outOfMoves = true;
 					return;
-				}
-				else if(botEnabled == false){
+				} else if (botEnabled == false) {
 					JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
 					return;
 				}
 			}
 
 			if (!gridModel.getValid()) {
-				
+
 				shake();
 				return;
 			}
@@ -221,6 +218,7 @@ public class WindowView extends JFrame implements Observer {
 				gridView.add(tile, gbc);
 			}
 		}
+		gridView.setBackground(Color.DARK_GRAY);
 	}
 
 	public void buildQueueView() {
@@ -241,9 +239,10 @@ public class WindowView extends JFrame implements Observer {
 			queue[i].setBorderPainted(false);
 			queue[i].setFocusPainted(false);
 		}
-		queue[0].setBackground(Color.GREEN);
+		queue[0].setBackground(Color.YELLOW);
 		queue[0].setOpaque(true);
 
+		queueView.setBackground(Color.CYAN.darker());
 	}
 
 	private void buildInfoView() {
@@ -285,6 +284,8 @@ public class WindowView extends JFrame implements Observer {
 		infoView.add(timeLabel);
 		infoView.add(timeHolder);
 		infoView.add(emptyHolder);
+
+		infoView.setBackground(Color.CYAN.darker());
 	}
 
 	private void buildHelperView() {
@@ -294,8 +295,10 @@ public class WindowView extends JFrame implements Observer {
 		refreshButton = new JButton("Refresh queue (1)");
 		removeButton = new JButton("Remove instance (1)");
 
-		// set button size?
-		
+		hintButton.setForeground(Color.RED.brighter());
+		refreshButton.setForeground(Color.BLUE);
+		removeButton.setForeground(Color.GREEN.darker());
+
 		rc = new RefreshController(queue, queueModel, game, this);
 		refreshButton.addActionListener(rc);
 		helperView.add(refreshButton);
@@ -308,11 +311,13 @@ public class WindowView extends JFrame implements Observer {
 		removeButton.addActionListener(ric);
 		helperView.add(removeButton);
 
+		helperView.setBackground(Color.CYAN.darker());
+
 	}
 
 	private JMenuBar createMenu() {
 		JMenuBar temp = new JMenuBar();
-		
+
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem newGame = new JMenuItem("New game");
 		newGame.addActionListener(new NewGameController(game));
@@ -342,12 +347,13 @@ public class WindowView extends JFrame implements Observer {
 				h1.showView(true);
 			}
 		});
-		JMenuItem timedHighScores = new JMenuItem("Timed High scores"); // view local high scores
+		JMenuItem timedHighScores = new JMenuItem("Fastest times"); // view local high scores
 		timedHighScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				timedScore = new TimedHighScoreView();
 				timedScore.showView(true);
-			}});
+			}
+		});
 		viewMenu.add(timedHighScores);
 
 		viewMenu.add(highScores);
@@ -380,9 +386,9 @@ public class WindowView extends JFrame implements Observer {
 
 	public void setTimedGame(boolean isTimedGame) {
 		timedGame = isTimedGame;
-		
+
 		if (timedGame) {
-			
+
 			initializeTimer();
 			timer.start();
 		}
@@ -413,7 +419,7 @@ public class WindowView extends JFrame implements Observer {
 	}
 
 	public void resetRefresh() {
-		
+
 		rc.resetRefresh(false);
 	}
 

@@ -104,58 +104,58 @@ public class GridModel extends Observable {
 
 	// perform move for user
 	public int move(int row, int col) {
-	if(row < dimension && row >= 0 && col < dimension && col >= 0) {
+		if (row < dimension && row >= 0 && col < dimension && col >= 0) {
 
-		if (moves > game.getMaxMoves() - 1) {
-			endGameLose();
-			return -1; // out of moves
-		}
-		valid = true; // reset valid flag
-
-		if (grid[row][col].isEmpty()) {
-
-			int sum = tileSum(row, col); // determine sum of tile and its neighbors
-
-			int tileToAdd = queueModel.updateQueue();
-			grid[row][col].setData(tileToAdd);
-
-			if (sum == -1) {
-				sum = 0;
+			if (moves > game.getMaxMoves() - 1) {
+				endGameLose();
+				return -1; // out of moves
 			}
+			valid = true; // reset valid flag
 
-			int mod = sum % 10; // calculates remainder using sum modulus 10
+			if (grid[row][col].isEmpty()) {
 
-			sound.chimeTileSet();
-			
-			if (mod == tileToAdd) {
-				int tilesRemoved = erase(row, col); // erase surrounding tiles
-				if (tilesRemoved >= 3) {
-					score += (tilesRemoved * 10);
-					sound.chimeRemove3Tiles();
+				int sum = tileSum(row, col); // determine sum of tile and its neighbors
+
+				int tileToAdd = queueModel.updateQueue();
+				grid[row][col].setData(tileToAdd);
+
+				if (sum == -1) {
+					sum = 0;
 				}
-				
+
+				int mod = sum % 10; // calculates remainder using sum modulus 10
+
+				sound.chimeTileSet();
+
+				if (mod == tileToAdd) {
+					int tilesRemoved = erase(row, col); // erase surrounding tiles
+					if (tilesRemoved >= 3) {
+						score += (tilesRemoved * 10);
+						sound.chimeRemove3Tiles();
+					}
+
+				}
+
+				moves++;
+			} else {
+				sound.chimeInvalidMove();
+				valid = false; // tile already has number, invalid move
 			}
+			setChanged();
+			notifyObservers();
+			// valid = true; // reset valid flag
+			win = checkWin(); // check if game is over
+			if (win) {
+				sound.chimeGameWon();
 
-			moves++;
+				endGameWin();
+				return -1;
+			}
 		} else {
-			sound.chimeInvalidMove();
-			valid = false; // tile already has number, invalid move
-		}
-		setChanged();
-		notifyObservers();
-		// valid = true; // reset valid flag
-		win = checkWin(); // check if game is over
-		if (win) {
-			sound.chimeGameWon();
-
-			endGameWin();
+			sound.chimeGameLost();
 			return -1;
 		}
-	}else{
-		sound.chimeGameLost();
-		return -1;
-	}
-	return 0;
+		return 0;
 	}
 
 	private void endGameLose() {
@@ -335,7 +335,7 @@ public class GridModel extends Observable {
 
 		return temp;
 	}
-	
+
 	// iterate thru board to determine if game is over
 	protected boolean checkWin() {
 		for (int row = 0; row < grid.length; row++) {
