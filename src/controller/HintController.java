@@ -23,7 +23,7 @@ public class HintController implements ActionListener {
 		this.grid = grid;
 		this.queue = queue;
 		this.game = game;
-		hintsRemaining = 20;
+		hintsRemaining = 3;
 	}
 
 	@Override
@@ -55,6 +55,8 @@ public class HintController implements ActionListener {
 			}
 
 			if (placeable) {
+				SoundController sound = new SoundController();
+				sound.chimeHint();
 				grid.highlightTile(maxRow, maxCol);
 				hintsRemaining--;
 				window.updateHintButtonCount(hintsRemaining);

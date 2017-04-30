@@ -76,4 +76,40 @@ public class SoundController {
 			//System.out.println("Error occured in SoundController.chimeRemoveTile()");
 		}
 	}
+	public void chimeHint() {
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/hint.wav").getAbsoluteFile());
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (LineUnavailableException ex) {
+			//System.out.println("Could not open sound effect file");
+		} catch (Exception ex) {
+			//System.out.println("Error occured in SoundController.chimeRemoveTile()");
+		}
+	}
+	public void chimeRefresh() {
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/refresh.wav").getAbsoluteFile());
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (LineUnavailableException ex) {
+			//System.out.println("Could not open sound effect file");
+		} catch (Exception ex) {
+			//System.out.println("Error occured in SoundController.chimeRemoveTile()");
+		}
+	}
+	public void chimeRemoveInstance() {
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/removeInstance.wav").getAbsoluteFile());
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (LineUnavailableException ex) {
+			//System.out.println("Could not open sound effect file");
+		} catch (Exception ex) {
+			//System.out.println("Error occured in SoundController.chimeRemoveTile()");
+		}
+	}
 }

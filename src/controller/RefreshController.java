@@ -38,8 +38,11 @@ public class RefreshController implements ActionListener {
 				model.setAllowNewTiles(true);
 				model.updateQueue();
 			}
+			SoundController sound = new SoundController();
+			sound.chimeRefresh();
 			model.setAllowNewTiles(false);
 			usedRefresh = true;
+
 			refreshCount--;
 			window.updateRefreshButtonCount(refreshCount);
 		} else {

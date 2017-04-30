@@ -6,6 +6,7 @@ import controller.HintController;
 import controller.NewGameController;
 import controller.RefreshController;
 import controller.RemoveInstanceController;
+import controller.SoundController;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -294,7 +295,7 @@ public class WindowView extends JFrame implements Observer {
 		removeButton = new JButton("Remove instance (1)");
 
 		// set button size?
-
+		
 		rc = new RefreshController(queue, queueModel, game, this);
 		refreshButton.addActionListener(rc);
 		helperView.add(refreshButton);
@@ -311,7 +312,7 @@ public class WindowView extends JFrame implements Observer {
 
 	private JMenuBar createMenu() {
 		JMenuBar temp = new JMenuBar();
-
+		
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem newGame = new JMenuItem("New game");
 		newGame.addActionListener(new NewGameController(game));

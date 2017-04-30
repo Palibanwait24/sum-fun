@@ -38,7 +38,8 @@ public class RemoveInstanceController implements ActionListener {
 			if (valueToRemove == null) {
 				return;
 			}
-
+			SoundController sound = new SoundController();
+			sound.chimeRemoveInstance();
 			for (int i = 0; i < grid.length; i++) {
 				for (int j = 0; j < grid[i].length; j++) {
 					if (grid[i][j].getData().equals(valueToRemove)) {
