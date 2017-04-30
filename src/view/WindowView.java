@@ -327,14 +327,15 @@ public class WindowView extends JFrame implements Observer {
 		highScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				h1 = new HighScoreView();
+				h1.showView(true);
 			}
 		});
 		JMenuItem timedHighScores = new JMenuItem("Timed High scores"); // view local high scores
 		timedHighScores.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				timedScore = new TimedHighScoreView();
-			}
-		});
+				timedScore.showView(true);
+			}});
 		viewMenu.add(timedHighScores);
 
 		viewMenu.add(highScores);

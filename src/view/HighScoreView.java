@@ -102,6 +102,10 @@ public class HighScoreView extends JFrame implements Observer {
 		for (JLabel el : top10) {
 			add(el);
 		}
+		
+	}
+	public void showView(boolean answer){
+		this.setVisible(answer);
 	}
 
 	public void addScore(OverallHighScoreModel addedScore) {

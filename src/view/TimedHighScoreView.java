@@ -96,7 +96,9 @@ public class TimedHighScoreView extends JFrame implements Observer {
 		}
 
 	}
-
+	public void showView(boolean answer){
+		this.setVisible(answer);
+	}
 	public void updateJlabels() {
 		JLabel title = new JLabel("Timed Game Leaderboard", SwingConstants.CENTER);
 		this.add(title);

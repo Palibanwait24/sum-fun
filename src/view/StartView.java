@@ -16,7 +16,7 @@ public class StartView extends JFrame {
 	}
 
 	public void show() {
-		Object[] options = { "Untimed game", "Timed game", "Watch bot","Untimed High Score ","Exit" };
+		Object[] options = { "Untimed game", "Timed game", "Watch bot","High Scores ","Exit" };
 		int n = JOptionPane.showOptionDialog(null, "Welcome to Sum Fun!\nWhat type of game do you want to play?",
 				"Select Game", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
 				options[0]);
