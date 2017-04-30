@@ -11,7 +11,7 @@ import model.QueueModel;
 import model.TileModel;
 import sumfun.SumFun;
 
-public class MoveTest {
+public class MoveTestValid {
 	SumFun game;
 	GridModel gm;
 	TileModel[][] tileObj;
@@ -39,6 +39,13 @@ public class MoveTest {
 		String tileExpected = String.valueOf(queueObj.getTopOfQueue());
 		gm.move(4, 4);
 		String tileActual = tileObj[4][4].getData();
+		assertEquals(tileExpected, tileActual);
+	}
+	@Test
+	public void middleTest(){
+		String tileExpected = tileObj[2][2].getData();
+		gm.move(2, 2);
+		String tileActual = tileObj[2][2].getData();
 		assertEquals(tileExpected, tileActual);
 	}
 

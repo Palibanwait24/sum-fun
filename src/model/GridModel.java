@@ -103,10 +103,12 @@ public class GridModel extends Observable {
 	}
 
 	// perform move for user
-	public void move(int row, int col) {
+	public int move(int row, int col) {
+	if(row < dimension && row >= 0 && col < dimension && col >= 0) {
+
 		if (moves > game.getMaxMoves() - 1) {
 			endGameLose();
-			return; // out of moves
+			return -1; // out of moves
 		}
 		valid = true; // reset valid flag
 
@@ -141,9 +143,12 @@ public class GridModel extends Observable {
 		win = checkWin(); // check if game is over
 		if (win) {
 			endGameWin();
-			return;
+			return -1;
 		}
-
+	}else{
+		return -1;
+	}
+	return 0;
 	}
 
 	private void endGameLose() {
