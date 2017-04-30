@@ -109,10 +109,12 @@ public class HighScoreView extends JFrame implements Observer {
 	}
 
 	public void addScore(OverallHighScoreModel addedScore) {
+
 		if (scoreList.size() >= 10) {
-			scoreList.set(11, addedScore);
+			scoreList.add(10, addedScore);
+			
 			Collections.sort(scoreList);
-			scoreList.remove(11);
+			scoreList.remove(10);
 			updateFile();
 			printScores();
 			updateJlabels();

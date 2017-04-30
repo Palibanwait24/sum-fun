@@ -155,6 +155,7 @@ public class WindowView extends JFrame implements Observer {
 			}
 
 			if (!gridModel.getValid()) {
+				
 				shake();
 				return;
 			}
@@ -378,9 +379,11 @@ public class WindowView extends JFrame implements Observer {
 
 	public void setTimedGame(boolean isTimedGame) {
 		timedGame = isTimedGame;
+		
 		if (timedGame) {
-
+			
 			initializeTimer();
+			timer.start();
 		}
 
 		game.setTimedGame(timedGame);

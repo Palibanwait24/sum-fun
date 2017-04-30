@@ -111,9 +111,9 @@ public class TimedHighScoreView extends JFrame implements Observer {
 		System.out.println(scoreList.toString());
 		if (scoreList.size() > 10) {
 
-			scoreList.set(11, addedScore);
+			scoreList.set(10, addedScore);
 			Collections.sort(scoreList);
-			scoreList.remove(11);
+			scoreList.remove(10);
 			updateFile();
 			printScores();
 			updateJlabels();

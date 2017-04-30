@@ -16,9 +16,57 @@ public class SoundController {
 		// new sound controller
 	}
 
-	public void chimeRemoveTile() {
+	public void chimeTileSet() { // placed 
 		try {
-			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/removeTile.wav").getAbsoluteFile());
+			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/tileSet.wav").getAbsoluteFile());
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (LineUnavailableException ex) {
+			//System.out.println("Could not open sound effect file");
+		} catch (Exception ex) {
+			//System.out.println("Error occured in SoundController.chimeRemoveTile()");
+		}
+	}
+	public void chimeRemove3Tiles() { // placed
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/3TilesRemoved.wav").getAbsoluteFile());
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (LineUnavailableException ex) {
+			//System.out.println("Could not open sound effect file");
+		} catch (Exception ex) {
+			//System.out.println("Error occured in SoundController.chimeRemoveTile()");
+		}
+	}
+	public void chimeInvalidMove() { // placed
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/invalidMove.wav").getAbsoluteFile());
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (LineUnavailableException ex) {
+			//System.out.println("Could not open sound effect file");
+		} catch (Exception ex) {
+			//System.out.println("Error occured in SoundController.chimeRemoveTile()");
+		}
+	}
+	public void chimeGameWon() {
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/winGame.wav").getAbsoluteFile());
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (LineUnavailableException ex) {
+			//System.out.println("Could not open sound effect file");
+		} catch (Exception ex) {
+			//System.out.println("Error occured in SoundController.chimeRemoveTile()");
+		}
+	}
+	public void chimeGameLost() {
+		try {
+			audioInputStream = AudioSystem.getAudioInputStream(new File("resources/gameOver.wav").getAbsoluteFile());
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			clip.start();

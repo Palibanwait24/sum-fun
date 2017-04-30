@@ -125,16 +125,20 @@ public class GridModel extends Observable {
 
 			int mod = sum % 10; // calculates remainder using sum modulus 10
 
-			sound.chimeRemoveTile();
+			sound.chimeTileSet();
+			
 			if (mod == tileToAdd) {
 				int tilesRemoved = erase(row, col); // erase surrounding tiles
 				if (tilesRemoved >= 3) {
 					score += (tilesRemoved * 10);
+					sound.chimeRemove3Tiles();
 				}
+				
 			}
 
 			moves++;
 		} else {
+			sound.chimeInvalidMove();
 			valid = false; // tile already has number, invalid move
 		}
 		setChanged();
@@ -142,16 +146,20 @@ public class GridModel extends Observable {
 		// valid = true; // reset valid flag
 		win = checkWin(); // check if game is over
 		if (win) {
+			sound.chimeGameWon();
+
 			endGameWin();
 			return -1;
 		}
 	}else{
+		sound.chimeGameLost();
 		return -1;
 	}
 	return 0;
 	}
 
 	private void endGameLose() {
+		sound.chimeGameLost();
 		gameLost = true;
 		game.setStop(true);
 		setChanged();
@@ -165,7 +173,7 @@ public class GridModel extends Observable {
 			game.getTimerInstance().stop();
 			time = getCountdown().getTime() + 1;// add 1 second for lag
 		} catch (Exception ex) {
-			System.out.println("Error [timer] occured in GridModel.endGameWin()");
+			//System.out.println("Error [timer] occured in GridModel.endGameWin()");
 		}
 
 		game.setStop(true);
@@ -327,7 +335,7 @@ public class GridModel extends Observable {
 
 		return temp;
 	}
-
+	
 	// iterate thru board to determine if game is over
 	protected boolean checkWin() {
 		for (int row = 0; row < grid.length; row++) {

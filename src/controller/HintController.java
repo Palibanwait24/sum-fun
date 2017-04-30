@@ -23,7 +23,7 @@ public class HintController implements ActionListener {
 		this.grid = grid;
 		this.queue = queue;
 		this.game = game;
-		hintsRemaining = 3;
+		hintsRemaining = 20;
 	}
 
 	@Override
