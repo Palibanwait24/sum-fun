@@ -77,6 +77,8 @@ public class WindowView extends JFrame implements Observer {
 	private TileModel[][] grid; // grid data -> game board
 	private TileModel[] queue; // queue data -> game queue
 	private boolean timedGame;
+	private boolean outOfMoves;
+	private boolean botEnabled;
 
 	// statistic members
 	private int hintsRem; // hints remaining in game
@@ -94,7 +96,8 @@ public class WindowView extends JFrame implements Observer {
 		timedGame = isTimedGame;
 		gameView = new JPanel();
 		gameView.setLayout(new BorderLayout());
-
+		outOfMoves= false;
+		botEnabled= false;
 		gridView = new JPanel();
 		queueView = new JPanel();
 		infoView = new JPanel();
@@ -140,8 +143,15 @@ public class WindowView extends JFrame implements Observer {
 					JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 					return;
 				}
-				JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
-				return;
+				else if(outOfMoves == false ){
+					JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
+					outOfMoves = true;
+					return;
+				}
+				else if(botEnabled == false){
+					JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
+					return;
+				}
 			}
 
 			if (!gridModel.getValid()) {
@@ -393,10 +403,13 @@ public class WindowView extends JFrame implements Observer {
 	}
 
 	public void setBotEnabled(boolean isBotEnabled) {
+		outOfMoves = false;
+		botEnabled = isBotEnabled;
 		game.setBotEnabled(isBotEnabled);
 	}
 
 	public void resetRefresh() {
+		
 		rc.resetRefresh(false);
 	}
 
