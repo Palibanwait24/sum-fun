@@ -7,7 +7,9 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 		MoveTestValid.class,
-		TileSumTest.class
+		MoveTestInvalid.class,
+		TileSumTestValid.class,
+		TileSumTestInvalid.class
 })
 public class AllTests {
 

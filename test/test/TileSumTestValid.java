@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.Assert.*;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import java.lang.reflect.*;
 import java.util.Random;
@@ -10,51 +11,53 @@ import model.GridModel;
 import model.TileModel;
 import sumfun.SumFun;
 
-public class TileSumTest {
+public class TileSumTestValid {
 
-	@Test
-	public void summingTest() {
-		
-		SumFun game = new SumFun();
-		game.run(game);
-		GridModel gm = game.grid;
-		TileModel[][] tileObj = gm.getGrid();
-		Random rng = new Random();
-		
-		for (int i = 0; i < tileObj.length; i++) {
-			for (int j = 0; j < tileObj.length; j++) {
-				if (tileObj[i][j].getData() == "" && i * j != tileObj.length * tileObj.length) {
-					gm.move(i, j);
-				}
-			}
-		}
-		
-		int expected = upperLeftCornerSum(gm, tileObj);
-		int actual = reflection(gm, 0, 0);
-		
-		assertEquals(expected, actual);
-		System.out.println("Passed.");
-		
-		int middleIndex = (int) Math.ceil(tileObj.length/2.0) - 1;
-		
-		expected = middleSum(gm, tileObj, middleIndex);
-		actual = reflection(gm, middleIndex, middleIndex);
-		
-		assertEquals(expected, actual);
-		System.out.println("Passed.");
-		
-		int randomX = rng.nextInt(tileObj.length);
-		int randomY = rng.nextInt(tileObj.length);
-		
-		expected = arbitrarySum(gm, tileObj, randomX, randomY);
-		actual = reflection(gm, randomX, randomY);
-		
-		assertEquals(expected, actual);
-		System.out.println("Passed.");
-		
+	static SumFun game;
+	static GridModel gm;
+	static TileModel[][] tileObj;
+	static Random rng;
+	
+	@BeforeClass
+	public static void setup(){
+			game = new SumFun();
+			game.run(game);
+			gm = game.grid;
+			tileObj = gm.getGrid();
+			rng = new Random();
 	}
 	
-	public int upperLeftCornerSum(GridModel gm, TileModel[][] tileObj) {
+	@Test
+	public void upperLeftTest() {
+		int expected = upperLeftCornerSum();
+		int actual = reflection(0, 0);
+		
+		assertEquals(expected, actual);
+		System.out.println("Passed.");
+	}
+	
+	@Test
+	public void middleTest() {
+		int middleIndex = (int) Math.ceil(tileObj.length/2.0) - 1;
+		int expected = arbitrarySum(middleIndex, middleIndex);
+		int actual = reflection(middleIndex, middleIndex);
+		
+		assertEquals(expected, actual);
+		System.out.println("Passed.");
+	}
+	
+	@Test
+	public void arbitraryTest() {
+		int randomX = rng.nextInt(tileObj.length);
+		int randomY = rng.nextInt(tileObj.length);
+		int expected = arbitrarySum(randomX, randomY);
+		int actual = reflection(randomX, randomY);
+		
+		assertEquals(expected, actual);
+		System.out.println("Passed.");
+	}
+	
+	public int upperLeftCornerSum() {
 		
 		int sum = 0;
 		String data = "";
@@ -70,27 +73,7 @@ public class TileSumTest {
 		return sum;
 	}
 	
-	public int middleSum(GridModel gm, TileModel[][] tileObj, int middleIndex) {
-		
-		int sum = 0;
-		String data = "";
-		for(int i = middleIndex - 1; i < middleIndex + 2; i++) {
-			for (int j = middleIndex - 1; j < middleIndex + 2; j++) {
-				if (i >= 0 && j >= 0) {
-					data = tileObj[i][j].getData();
-				}
-				else
-					continue;
-				if (!(i == middleIndex && j == middleIndex) && (data != "")) {
-					sum += Integer.parseInt(data);
-					System.out.println(i + ", " + j + ": " + data);
-				}
-			}
-		}
-		return sum;
-	}
-	
-	public int arbitrarySum(GridModel gm, TileModel[][] tileObj, int randomX, int randomY) {
+	public int arbitrarySum(int randomX, int randomY) {
 		
 		int sum = 0;
 		String data = "";
@@ -111,8 +94,7 @@ public class TileSumTest {
 	}
 	
 	// This method is definitely needed since tileSum() is protected.
-	public int reflection(GridModel gm, int arg1, int arg2) {
-		
+	public int reflection(int arg1, int arg2) {
 		Method tileSum = null;
 		Class<?> para[] = new Class[2];
 		para[0] = int.class;
@@ -142,7 +124,6 @@ public class TileSumTest {
 		}
 		
 		return result;
-		
 	}
 
 }
