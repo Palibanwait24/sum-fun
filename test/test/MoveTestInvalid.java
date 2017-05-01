@@ -17,7 +17,7 @@ public class MoveTestInvalid {
     static GridModel gm;
     static TileModel[][] tileObj;
     static QueueModel queueObj;
-    static int expected = -1;
+    static int expected = 0;
 
     @BeforeClass
     public static void setup(){
