@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import model.QueueModel;
-import model.TileModel;
 import sumfun.SumFun;
 import view.WindowView;
 
