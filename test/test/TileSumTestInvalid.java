@@ -20,11 +20,11 @@ public class TileSumTestInvalid {
 	
 	@BeforeClass
 	public static void setup(){
-			game = new SumFun();
-			game.run(game);
-			gm = game.grid;
-			tileObj = gm.getGrid();
-			rng = new Random();
+		game = new SumFun();
+		game.run(game);
+		gm = game.grid;
+		tileObj = gm.getGrid();
+		rng = new Random();
 	}
 	
 	@Test
