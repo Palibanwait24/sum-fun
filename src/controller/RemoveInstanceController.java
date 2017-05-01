@@ -34,7 +34,7 @@ public class RemoveInstanceController implements ActionListener {
 		if (usedRemove == false) {
 			RemoveTileView myView = new RemoveTileView();
 			String valueToRemove = myView.getValueToRemove();
-
+			
 			if (valueToRemove == null) {
 				return;
 			}

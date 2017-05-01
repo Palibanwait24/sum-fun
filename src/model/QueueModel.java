@@ -46,12 +46,23 @@ public class QueueModel extends Observable {
 	}
 
 	public void refresh() {
-		int size = queue.size() - 1;
+		//if 
+		int size = 0;
+		if(queue.size()<=5){
+			size = queue.size()-1 ;
+		}
+		else{
+			size = queue.size() ;
+		}
+		//int size = queue.size() - 1;
 		queue.clear();
 		for (int i = 0; i < size; i++) {
 			enqueue();
 		}
-		queue.add(-1);
+		if(queue.size()<=5){
+			queue.add(-1);
+		}
+		
 		setChanged();
 		notifyObservers();
 	}

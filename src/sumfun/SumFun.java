@@ -25,7 +25,7 @@ public class SumFun {
 	public BotModel bot;
 	public WindowView mainView;
 	private StartView greetingDialog;
-	private final int maxMoves = 50;
+	private final int maxMoves = 6;
 	private boolean timedGame = false; // flag for timed or untimed game
 	private boolean botEnabled = false; // flag for if bot is enabled
 	private boolean stop = false; // flag to continue or stop game
