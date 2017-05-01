@@ -28,6 +28,7 @@ public class GridModel extends Observable {
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid
 	private boolean win; // flag to show if game is over
+	private boolean full; // flag to show if board is full (game over)
 	private boolean gameLost = false;
 	private boolean stopJoptionPaneBot = true;
 	private String name;
@@ -145,15 +146,17 @@ public class GridModel extends Observable {
 			notifyObservers();
 			// valid = true; // reset valid flag
 			win = checkWin(); // check if game is over
+			full = checkFullBoard(); // check if board is full
 			if (win) {
 				sound.chimeGameWon();
 
 				endGameWin();
 				return -1;
 			}
-		} else {
-			sound.chimeGameLost();
-			return -1;
+			if (full) {
+				endGameLose();
+				return -1;
+			}
 		}
 		return 0;
 	}
@@ -336,6 +339,23 @@ public class GridModel extends Observable {
 		return temp;
 	}
 
+	protected boolean checkFullBoard() {
+		for (int row = 0; row < grid.length; row++) {
+			for (int col = 0; col < grid[row].length; col++) {
+				try {
+					if (grid[row][col].isEmpty()) {
+						return false; // tile is empty, board is not full
+					} else {
+						continue; // tile is not empty, continue to check board
+					}
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					// tile is not on board, do nothing
+				}
+			}
+		}
+		return true; // all tiles are filled, game is over
+	}
+
 	// iterate thru board to determine if game is over
 	protected boolean checkWin() {
 		for (int row = 0; row < grid.length; row++) {
@@ -351,7 +371,6 @@ public class GridModel extends Observable {
 				}
 			}
 		}
-
 		return true; // all tiles are empty, game is over
 	}
 
@@ -472,5 +491,9 @@ public class GridModel extends Observable {
 
 	public void setScore(int s) {
 		this.score = s;
+	}
+
+	public boolean getFull() {
+		return full;
 	}
 }

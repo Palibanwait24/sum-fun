@@ -136,6 +136,9 @@ public class WindowView extends JFrame implements Observer {
 				if (gridModel.getWin()) {
 					JOptionPane.showMessageDialog(null, "Game is over! Nice job!");
 					return;
+				} else if (gridModel.getFull()) {
+					JOptionPane.showMessageDialog(null, "Board is full! Game over! Please start a new game");
+					return;
 				} else if (outOfMoves == false) {
 					JOptionPane.showMessageDialog(null, "You are out of moves! Please start a new game.");
 					outOfMoves = true;
