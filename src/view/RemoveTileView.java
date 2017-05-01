@@ -14,11 +14,14 @@ public class RemoveTileView extends JFrame {
 			if (value == null || value.equals("")) {
 				return null;
 			}
-			int n = Integer.parseInt(value);
+			int n = -1;
+			try {
+				n = Integer.parseInt(value);
+			} catch (Exception ex) {
+				// parse error, try again
+			}
 			if (n >= 0 && n <= 9) {
 				break;
-			} else {
-				shake();
 			}
 		}
 
@@ -42,7 +45,7 @@ public class RemoveTileView extends JFrame {
 				Thread.sleep(10);
 			}
 		} catch (Exception ex) {
-			System.out.println("Error occured in WindowView.shake()");
+			System.out.println("Error occured in RemoveTileView.shake()");
 			ex.printStackTrace();
 		}
 		setLocation(ox, oy); // place window back in original position

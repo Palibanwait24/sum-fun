@@ -293,10 +293,11 @@ public class WindowView extends JFrame implements Observer {
 		removeButton = new JButton("Remove instance (1)");
 
 		hintButton.setOpaque(true);
-		hintButton.setBackground(Color.PINK);
-		hintButton.setForeground(Color.RED.brighter());
-		refreshButton.setForeground(Color.BLUE);
-		removeButton.setForeground(Color.GREEN.darker());
+		hintButton.setBackground(Color.RED.brighter());
+		refreshButton.setOpaque(true);
+		refreshButton.setBackground(Color.BLUE);
+		removeButton.setOpaque(true);
+		removeButton.setBackground(Color.GREEN.darker());
 
 		rc = new RefreshController(queueModel, game, this);
 		refreshButton.addActionListener(rc);
