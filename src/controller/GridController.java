@@ -19,7 +19,6 @@ public class GridController implements ActionListener {
 
 	public void actionPerformed(ActionEvent click) {
 		game.move(row, col);
-		System.out.println(game.queue.getQueue().toString());
 	}
 
 }

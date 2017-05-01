@@ -222,10 +222,10 @@ public class WindowView extends JFrame implements Observer {
 
 	public void buildQueueView() {
 		queueView.setLayout(new GridBagLayout());
-		queueView.setPreferredSize(new Dimension(100,200));
+		queueView.setPreferredSize(new Dimension(100, 200));
 		queueView.revalidate();
 		GridBagConstraints gbc = new GridBagConstraints();
-		
+
 		JLabel label = new JLabel("Queue");
 		label.setFont(new Font("Rockwell ", Font.BOLD, 20));
 		label.setForeground(Color.WHITE);
@@ -296,26 +296,25 @@ public class WindowView extends JFrame implements Observer {
 	private void buildHelperView() {
 		helperView.setLayout(new GridLayout(3, 1));
 
-		
 		hintButton = new JButton("Hint (" + hintsRem + ")");
 		refreshButton = new JButton("<html>Refresh <br/>Queue (1)</html>");
 		removeButton = new JButton("<html>Remove <br/>Instance (1)</html>");
-		
+
 		hintButton.setFont(new Font("Rockwell ", Font.BOLD, 20));
 		refreshButton.setFont(new Font("Rockwell ", Font.BOLD, 20));
 		removeButton.setFont(new Font("Rockwell ", Font.BOLD, 20));
-		
+
 		hintButton.setOpaque(true);
 		hintButton.setBackground(Color.RED.brighter());
 		refreshButton.setOpaque(true);
 		refreshButton.setBackground(Color.BLUE);
 		removeButton.setOpaque(true);
 		removeButton.setBackground(Color.GREEN.darker());
-		
+
 		hintButton.setForeground(Color.WHITE);
 		refreshButton.setForeground(Color.WHITE);
 		removeButton.setForeground(Color.WHITE);
-		
+
 		rc = new RefreshController(queueModel, game, this);
 		refreshButton.addActionListener(rc);
 		helperView.add(refreshButton);
@@ -329,7 +328,6 @@ public class WindowView extends JFrame implements Observer {
 		helperView.add(removeButton);
 
 		helperView.setBackground(Color.CYAN.darker());
-
 	}
 
 	private JMenuBar createMenu() {
@@ -468,13 +466,13 @@ public class WindowView extends JFrame implements Observer {
 	}
 
 	public void updateRefreshButtonCount(int refreshCount) {
-		
-		refreshButton.setText("<html>Refresh <br/>Queue ("+refreshCount+")</html>");
+
+		refreshButton.setText("<html>Refresh <br/>Queue (" + refreshCount + ")</html>");
 	}
 
 	public void updateRemoveButtonCount(int removeCount) {
 
-		removeButton.setText("<html>Remove <br/>Instance ("+removeCount+")</html>");
+		removeButton.setText("<html>Remove <br/>Instance (" + removeCount + ")</html>");
 	}
 
 	/*
