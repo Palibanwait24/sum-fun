@@ -102,12 +102,6 @@ public class WindowView extends JFrame implements Observer {
 		queueView = new JPanel();
 		infoView = new JPanel();
 		helperView = new JPanel();
-		/*
-		gridView.setBackground(Color.red);
-		queueView.setBackground(Color.pink);
-		infoView.setBackground(Color.green);
-		helperView.setBackground(Color.pink);
-		*/
 
 		this.game = game;
 		gridModel = g;
@@ -295,11 +289,13 @@ public class WindowView extends JFrame implements Observer {
 		refreshButton = new JButton("Refresh queue (1)");
 		removeButton = new JButton("Remove instance (1)");
 
+		hintButton.setOpaque(true);
+		hintButton.setBackground(Color.PINK);
 		hintButton.setForeground(Color.RED.brighter());
 		refreshButton.setForeground(Color.BLUE);
 		removeButton.setForeground(Color.GREEN.darker());
 
-		rc = new RefreshController(queue, queueModel, game, this);
+		rc = new RefreshController(queueModel, game, this);
 		refreshButton.addActionListener(rc);
 		helperView.add(refreshButton);
 

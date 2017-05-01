@@ -14,14 +14,12 @@ public class RefreshController implements ActionListener {
 
 	private boolean usedRefresh = false;
 	private int refreshCount = 1;
-	private TileModel[] queue;
 	private QueueModel model;
 	private WindowView window;
 	private SumFun game;
 
-	public RefreshController(TileModel[] queue, QueueModel model, SumFun game, WindowView view) {
+	public RefreshController(QueueModel model, SumFun game, WindowView view) {
 		this.game = game;
-		this.queue = queue;
 		this.model = model;
 		this.window = view;
 	}
@@ -33,16 +31,12 @@ public class RefreshController implements ActionListener {
 			return;
 		}
 		if (usedRefresh == false) {
-			for (@SuppressWarnings("unused")
-			TileModel x : queue) {
-				model.setAllowNewTiles(true);
-				model.updateQueue();
-			}
+			model.setAllowNewTiles(true);
+			model.refresh();
+			model.setAllowNewTiles(false);
 			SoundController sound = new SoundController();
 			sound.chimeRefresh();
-			model.setAllowNewTiles(false);
 			usedRefresh = true;
-
 			refreshCount--;
 			window.updateRefreshButtonCount(refreshCount);
 		} else {

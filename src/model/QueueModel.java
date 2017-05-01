@@ -45,15 +45,28 @@ public class QueueModel extends Observable {
 		return next;
 	}
 
+	public void refresh() {
+		int size = queue.size() - 1;
+		queue.clear();
+		for (int i = 0; i < size; i++) {
+			enqueue();
+		}
+		queue.add(-1);
+		setChanged();
+		notifyObservers();
+	}
+
 	private void enqueue() {
+		if (allowNewTiles) {
+			queue.add(getRandomNumber());
+			return;
+		}
 		if (maxTiles - count > 0) {
 			queue.add(getRandomNumber());
 		} else {
 			queue.add(-1);
 		}
-		if (!allowNewTiles) {
-			count++;
-		}
+		count++;
 	}
 
 	private int dequeue() {
