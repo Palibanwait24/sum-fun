@@ -1,5 +1,7 @@
 package sumfun;
 
+import controller.CountdownController;
+
 import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Point;
@@ -7,7 +9,6 @@ import java.awt.Toolkit;
 
 import javax.swing.Timer;
 
-import controller.CountdownController;
 import model.BotModel;
 import model.GridModel;
 import model.QueueModel;
@@ -25,13 +26,13 @@ public class SumFun {
 	public BotModel bot;
 	public WindowView mainView;
 	private StartView greetingDialog;
-	private final int maxMoves = 7;
+	private final int maxMoves = 50;
 	private boolean timedGame = false; // flag for timed or untimed game
 	private boolean botEnabled = false; // flag for if bot is enabled
 	private boolean stop = false; // flag to continue or stop game
 	private String name; // player name
 	private HighScoreView hsView;
-	private TimedHighScoreView timedHSView;
+	private TimedHighScoreView timedHsView;
 
 	public static void main(String[] args) {
 		SumFun game = new SumFun();
@@ -41,12 +42,12 @@ public class SumFun {
 	public void run(SumFun game) {
 		queue = new QueueModel(game);
 		hsView = new HighScoreView();
-		timedHSView = new TimedHighScoreView();
-		grid = GridModel.getInstance(game, queue, hsView, timedHSView);
+		timedHsView = new TimedHighScoreView();
+		grid = GridModel.getInstance(game, queue, hsView, timedHsView);
 		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
 
 		generateCursor();
-		greetingDialog = new StartView(mainView, hsView, timedHSView);
+		greetingDialog = new StartView(mainView, hsView, timedHsView);
 		greetingDialog.show();
 		bot = new BotModel(game, grid);
 		mainView.addObserver(grid);

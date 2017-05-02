@@ -1,15 +1,17 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
 
 import model.GridModel;
 import model.QueueModel;
 import model.TileModel;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import sumfun.SumFun;
 
 public class MoveTestValid {
@@ -19,13 +21,12 @@ public class MoveTestValid {
 	static QueueModel queueObj;
 
 	@BeforeClass
-	public static void setup(){
-			game = new SumFun();
-			game.run(game);
-			gm = game.grid;
-			tileObj = gm.getGrid();
-			queueObj = queueModelReflection(gm);
-
+	public static void setup() {
+		game = new SumFun();
+		game.run(game);
+		gm = game.grid;
+		tileObj = gm.getGrid();
+		queueObj = queueModelReflection(gm);
 	}
 
 	@Test
@@ -37,14 +38,15 @@ public class MoveTestValid {
 	}
 
 	@Test
-	public void bottomLeftTest(){
+	public void bottomLeftTest() {
 		String tileExpected = String.valueOf(queueObj.getTopOfQueue());
 		gm.move(4, 4);
 		String tileActual = tileObj[4][4].getData();
 		assertEquals(tileExpected, tileActual);
 	}
+
 	@Test
-	public void middleTest(){
+	public void middleTest() {
 		String tileExpected = tileObj[2][2].getData();
 		gm.move(2, 2);
 		String tileActual = tileObj[2][2].getData();
@@ -53,20 +55,18 @@ public class MoveTestValid {
 
 	// This could be replaced by a simple getter in the GridModel class if needed.
 	public static QueueModel queueModelReflection(GridModel gm) {
-		
 		QueueModel queueObj = null;
 		Field queueField = null;
-		
+
 		try {
 			queueField = gm.getClass().getDeclaredField("queueModel");
 			queueField.setAccessible(true);
-			
 		} catch (NoSuchFieldException e) {
 			fail("Field does not exist in the given class.");
 		} catch (SecurityException e) {
 			fail("Field security exception met.");
 		}
-		
+
 		try {
 			queueObj = (QueueModel) queueField.get(gm);
 		} catch (IllegalArgumentException e) {
@@ -74,9 +74,8 @@ public class MoveTestValid {
 		} catch (IllegalAccessException e) {
 			fail("Illegal access exception met.");
 		}
-		
+
 		return queueObj;
-		
 	}
 
 }

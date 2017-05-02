@@ -1,5 +1,8 @@
 package model;
 
+import controller.CountdownController;
+import controller.SoundController;
+
 import java.awt.Color;
 import java.util.Date;
 import java.util.Observable;
@@ -7,8 +10,6 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import controller.CountdownController;
-import controller.SoundController;
 import model.QueueModel;
 
 import sumfun.SumFun;
@@ -23,7 +24,7 @@ public class GridModel extends Observable {
 	private SumFun game; // reference to main game
 	private QueueModel queueModel; // reference to game queue
 	private TileModel[][] grid; // game board
-	private final int dimension = 3; // dimension of game board
+	private final int dimension = 9; // dimension of game board
 	private int moves; // current number of moves on board
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid
@@ -34,10 +35,10 @@ public class GridModel extends Observable {
 	private boolean stop = false;
 	private String name;
 	private HighScoreView hsView;
-	private TimedHighScoreView TimedHSView;
+	private TimedHighScoreView timedHsView;
 	private SoundController sound;
 
-	private GridModel(SumFun game, QueueModel queue, HighScoreView hsView, TimedHighScoreView timedHSView) {
+	private GridModel(SumFun game, QueueModel queue, HighScoreView hsView, TimedHighScoreView timedHsView) {
 		this.game = game;
 		this.queueModel = queue;
 
@@ -49,7 +50,7 @@ public class GridModel extends Observable {
 		boolean fill = false;
 		name = null;
 		this.hsView = hsView;
-		this.TimedHSView = timedHSView;
+		this.timedHsView = timedHsView;
 		sound = new SoundController();
 
 		for (int row = 0; row < grid.length; row++) {
@@ -73,9 +74,9 @@ public class GridModel extends Observable {
 	}
 
 	public static GridModel getInstance(SumFun game, QueueModel queue, HighScoreView hsView,
-			TimedHighScoreView TimedHSView) {
+			TimedHighScoreView timedHsView) {
 		if (gridModel == null) {
-			gridModel = new GridModel(game, queue, hsView, TimedHSView);
+			gridModel = new GridModel(game, queue, hsView, timedHsView);
 		}
 		return gridModel;
 	}
@@ -192,7 +193,7 @@ public class GridModel extends Observable {
 		} else {
 			TimedHighScoreModel timed1 = new TimedHighScoreModel(name, new Date(),
 					getCountdown().getDefaultNumberOfSeconds() - time);
-			TimedHSView.addScore(timed1);
+			timedHsView.addScore(timed1);
 
 		}
 
