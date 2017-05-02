@@ -23,7 +23,7 @@ public class GridModel extends Observable {
 	private SumFun game; // reference to main game
 	private QueueModel queueModel; // reference to game queue
 	private TileModel[][] grid; // game board
-	private final int dimension = 9; // dimension of game board
+	private final int dimension = 3; // dimension of game board
 	private int moves; // current number of moves on board
 	private int score; // score for current game
 	private boolean valid; // flag to show if move is valid
@@ -31,6 +31,7 @@ public class GridModel extends Observable {
 	private boolean full; // flag to show if board is full (game over)
 	private boolean gameLost = false;
 	private boolean stopJoptionPaneBot = true;
+	private boolean stop = false;
 	private String name;
 	private HighScoreView hsView;
 	private TimedHighScoreView TimedHSView;
@@ -106,10 +107,12 @@ public class GridModel extends Observable {
 	// perform move for user
 	public int move(int row, int col) {
 		if (row < dimension && row >= 0 && col < dimension && col >= 0) {
-
 			if (moves > game.getMaxMoves() - 1) {
 				endGameLose();
 				return -1; // out of moves
+			}
+			if (stop) {
+				return -1;
 			}
 			valid = true; // reset valid flag
 
@@ -126,15 +129,16 @@ public class GridModel extends Observable {
 
 				int mod = sum % 10; // calculates remainder using sum modulus 10
 
-				sound.chimeTileSet();
-
 				if (mod == tileToAdd) {
 					int tilesRemoved = erase(row, col); // erase surrounding tiles
 					if (tilesRemoved >= 3) {
 						score += (tilesRemoved * 10);
 						sound.chimeRemove3Tiles();
+					} else if (tilesRemoved > 0) {
+						sound.chimeRemoveLessTiles();
 					}
-
+				} else {
+					sound.chimeTileSet();
 				}
 
 				moves++;
@@ -172,6 +176,7 @@ public class GridModel extends Observable {
 	private void endGameWin() {
 		int time = 0;
 		gameLost = false;
+		stop = true;
 		try {
 			game.getTimerInstance().stop();
 			time = getCountdown().getTime() + 1;// add 1 second for lag
@@ -181,9 +186,7 @@ public class GridModel extends Observable {
 
 		game.setStop(true);
 		name = promptName();
-		gameLost = false;
 		if (game.getTimedGame() == false) {
-
 			OverallHighScoreModel m1 = new OverallHighScoreModel(name, new Date(), score);
 			hsView.addScore(m1);
 		} else {
@@ -412,18 +415,11 @@ public class GridModel extends Observable {
 					if (grid[row + dx][col + dy].isEmpty()) { // empty tile, do nothing
 						continue;
 					} else if (dx == 0 && dy == 0) { // current tile, remove but do not count as removed tile
-						String temp = grid[row + dx][col + dy].getData();
-						try {
-							grid[row + dx][col + dy].setData(temp);
-						} catch (Exception ex) {
-							System.out.println("Error occured in GridModel.erase()");
-						}
 						grid[row + dx][col + dy].setData("");
 						continue;
 					}
 					grid[row + dx][col + dy].setData("");
 					c++;
-
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					// no tile, do nothing
 				}

@@ -47,10 +47,10 @@ public class QueueModel extends Observable {
 
 	public void refresh() {
 		int size = 0;
-		if (queue.size() <= 5) {
-			size = queue.size() - 1;
-		} else {
+		if (queue.size() == 5) {
 			size = queue.size();
+		} else {
+			size = queue.size() - 1; // handles -1 tail of queue
 		}
 
 		queue.clear();
@@ -58,7 +58,8 @@ public class QueueModel extends Observable {
 		for (int i = 0; i < size; i++) {
 			enqueue();
 		}
-		if (queue.size() <= 5) {
+
+		if (queue.size() < 5) {
 			queue.add(-1);
 		}
 
@@ -111,7 +112,7 @@ public class QueueModel extends Observable {
 	private int getRandomNumber() {
 		Random rand = new Random();
 		int n = rand.nextInt(10); // generate random number in range [0,9]
-		return n; //// change
+		return n;
 	}
 
 	public void setAllowNewTiles(boolean allow) {

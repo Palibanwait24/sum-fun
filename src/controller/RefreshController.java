@@ -16,16 +16,19 @@ public class RefreshController implements ActionListener {
 	private QueueModel model;
 	private WindowView window;
 	private SumFun game;
+	private SoundController sound;
 
 	public RefreshController(QueueModel model, SumFun game, WindowView view) {
 		this.game = game;
 		this.model = model;
 		this.window = view;
+		sound = new SoundController();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (game.getStop()) {
+			sound.chimeError();
 			JOptionPane.showMessageDialog(null, "You cannot do that now! Please start a new game.");
 			return;
 		}
@@ -33,12 +36,12 @@ public class RefreshController implements ActionListener {
 			model.setAllowNewTiles(true);
 			model.refresh();
 			model.setAllowNewTiles(false);
-			SoundController sound = new SoundController();
 			sound.chimeRefresh();
 			usedRefresh = true;
 			refreshCount--;
 			window.updateRefreshButtonCount(refreshCount);
 		} else {
+			sound.chimeError();
 			JOptionPane.showMessageDialog(null, "Refresh queue already used!");
 		}
 	}

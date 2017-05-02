@@ -10,7 +10,7 @@ import model.GridModel;
 import view.WindowView;
 
 public class CountdownController implements ActionListener {
-	private int defaultNumberOfSeconds = 15;// number of seconds for the countdown, 5 min = 300
+	private int defaultNumberOfSeconds = 300;// number of seconds for the countdown (5 min = 300)
 	private int counter1 = defaultNumberOfSeconds; 
 	private GridModel gridModel;
 	private WindowView window;

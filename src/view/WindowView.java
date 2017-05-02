@@ -32,7 +32,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import model.GridModel;
@@ -44,7 +43,7 @@ import sumfun.SumFun;
 public class WindowView extends JFrame implements Observer {
 
 	// utilities to size window
-	private final int width = 800;
+	private final int width = 850;
 	private final int height = 700;
 	private final Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
 	private final int locationX = screensize.height / 3;
@@ -152,10 +151,10 @@ public class WindowView extends JFrame implements Observer {
 			}
 
 			if (!gridModel.getValid()) {
-
 				shake();
 				return;
 			}
+
 			for (int r = 0; r < temp.length; r++) {
 				for (int c = 0; c < temp[r].length; c++) {
 					grid[r][c].setBackground(temp[r][c].getHighlight());
@@ -168,7 +167,6 @@ public class WindowView extends JFrame implements Observer {
 			}
 			scoreHolder.setText("" + gridModel.getScore());
 			movesHolder.setText("" + (game.getMaxMoves() - gridModel.getMovesTaken()));
-			//flashSingleTile(5, 5);
 		} else if (o.getClass().getName().equals("model.QueueModel")) {
 			// process queue update
 			Queue<Integer> temp = ((QueueModel) o).getQueue();
@@ -227,11 +225,9 @@ public class WindowView extends JFrame implements Observer {
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		JLabel label = new JLabel("Queue");
-		label.setFont(new Font("Rockwell ", Font.BOLD, 20));
-		label.setForeground(Color.WHITE);
-		JLabel separ = new JLabel("========");
-		separ.setFont(new Font("Rockwell ", Font.BOLD, 20));
-		separ.setForeground(Color.WHITE);
+		label.setFont(new Font("Rockwell", Font.BOLD, 20));
+		JLabel separ = new JLabel("=======");
+		separ.setFont(new Font("Rockwell", Font.BOLD, 20));
 		queueView.add(label, gbc);
 		gbc.gridy = 1;
 		queueView.add(separ, gbc);
@@ -259,18 +255,25 @@ public class WindowView extends JFrame implements Observer {
 		JLabel scoreLabel;
 		JLabel movesLabel;
 		JLabel timeLabel;
-		JLabel emptyHolder;
 
 		// construct info pane layout
-		infoView.setLayout(new GridLayout(4, 2));
+		infoView.setLayout(new GridLayout(3, 2));
 
-		scoreLabel = new JLabel("  Score: ");
-		movesLabel = new JLabel("  Moves remaining: ");
-		timeLabel = new JLabel("  Time: ");
+		scoreLabel = new JLabel("\t\tScore: ");
+		movesLabel = new JLabel("\t\tMoves remaining: ");
+		timeLabel = new JLabel("\t\tTime: ");
+
+		scoreLabel.setFont(new Font("Rockwell", Font.BOLD, 16));
+		movesLabel.setFont(new Font("Rockwell", Font.BOLD, 16));
+		timeLabel.setFont(new Font("Rockwell", Font.BOLD, 16));
 
 		scoreHolder = new JLabel("" + score);
 		movesHolder = new JLabel("" + movesRem);
 		timeHolder = new JLabel();
+
+		scoreHolder.setFont(new Font("Rockwell", Font.BOLD, 16));
+		movesHolder.setFont(new Font("Rockwell", Font.BOLD, 16));
+		timeHolder.setFont(new Font("Rockwell", Font.BOLD, 16));
 
 		if (timedGame) {
 			timer = new Timer(1000, countdownControl);
@@ -279,8 +282,6 @@ public class WindowView extends JFrame implements Observer {
 			timeHolder.setText("--:--");
 		}
 
-		emptyHolder = new JLabel("");
-
 		//build top pane
 		infoView.add(scoreLabel);
 		infoView.add(scoreHolder);
@@ -288,7 +289,6 @@ public class WindowView extends JFrame implements Observer {
 		infoView.add(movesHolder);
 		infoView.add(timeLabel);
 		infoView.add(timeHolder);
-		infoView.add(emptyHolder);
 
 		infoView.setBackground(Color.CYAN.darker());
 	}
@@ -300,9 +300,9 @@ public class WindowView extends JFrame implements Observer {
 		refreshButton = new JButton("<html>Refresh <br/>Queue (1)</html>");
 		removeButton = new JButton("<html>Remove <br/>Instance (1)</html>");
 
-		hintButton.setFont(new Font("Rockwell ", Font.BOLD, 20));
-		refreshButton.setFont(new Font("Rockwell ", Font.BOLD, 20));
-		removeButton.setFont(new Font("Rockwell ", Font.BOLD, 20));
+		hintButton.setFont(new Font("Rockwell", Font.BOLD, 20));
+		refreshButton.setFont(new Font("Rockwell", Font.BOLD, 20));
+		removeButton.setFont(new Font("Rockwell", Font.BOLD, 20));
 
 		hintButton.setOpaque(true);
 		hintButton.setBackground(Color.RED.brighter());
@@ -310,10 +310,6 @@ public class WindowView extends JFrame implements Observer {
 		refreshButton.setBackground(Color.BLUE);
 		removeButton.setOpaque(true);
 		removeButton.setBackground(Color.GREEN.darker());
-
-		hintButton.setForeground(Color.WHITE);
-		refreshButton.setForeground(Color.WHITE);
-		removeButton.setForeground(Color.WHITE);
 
 		rc = new RefreshController(queueModel, game, this);
 		refreshButton.addActionListener(rc);
@@ -502,23 +498,6 @@ public class WindowView extends JFrame implements Observer {
 			ex.printStackTrace();
 		}
 		setLocation(ox, oy); // place window back in original position
-	}
-
-	private void flashSingleTile(int row, int col) {
-		if (grid[row][col] == null) {
-			return;
-		}
-		try {
-			String temp = grid[row][col].getData();
-			for (int i = 0; i < 3; i++) {
-				grid[row][col].setData("");
-				Thread.sleep(50);
-				grid[row][col].setData(temp);
-			}
-		} catch (Exception ex) {
-			System.out.println("Error occured in flashSingleTile()");
-		}
-
 	}
 
 }

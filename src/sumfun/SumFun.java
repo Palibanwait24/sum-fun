@@ -25,7 +25,7 @@ public class SumFun {
 	public BotModel bot;
 	public WindowView mainView;
 	private StartView greetingDialog;
-	private final int maxMoves = 6;
+	private final int maxMoves = 7;
 	private boolean timedGame = false; // flag for timed or untimed game
 	private boolean botEnabled = false; // flag for if bot is enabled
 	private boolean stop = false; // flag to continue or stop game
@@ -45,7 +45,7 @@ public class SumFun {
 		grid = GridModel.getInstance(game, queue, hsView, timedHSView);
 		mainView = new WindowView(game, grid, queue, timedGame); // main game frame
 
-		//generateCursor();
+		generateCursor();
 		greetingDialog = new StartView(mainView, hsView, timedHSView);
 		greetingDialog.show();
 		bot = new BotModel(game, grid);

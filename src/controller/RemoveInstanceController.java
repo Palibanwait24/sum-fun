@@ -18,16 +18,19 @@ public class RemoveInstanceController implements ActionListener {
 	private int removeCount = 1;
 	private WindowView window;
 	private SumFun game;
+	private SoundController sound;
 
 	public RemoveInstanceController(GridModel model, WindowView window, SumFun game) {
 		this.window = window;
 		this.grid = model.getGrid();
 		this.game = game;
+		sound = new SoundController();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (game.getStop()) {
+			sound.chimeError();
 			JOptionPane.showMessageDialog(null, "You cannot do that now! Please start a new game.");
 			return;
 		}
@@ -38,7 +41,6 @@ public class RemoveInstanceController implements ActionListener {
 			if (valueToRemove == null) {
 				return;
 			}
-			SoundController sound = new SoundController();
 			sound.chimeRemoveInstance();
 			for (int i = 0; i < grid.length; i++) {
 				for (int j = 0; j < grid[i].length; j++) {
@@ -52,6 +54,7 @@ public class RemoveInstanceController implements ActionListener {
 			removeCount--;
 			window.updateRemoveButtonCount(removeCount);
 		} else {
+			sound.chimeError();
 			JOptionPane.showMessageDialog(null, "Remove instance already used!");
 		}
 	}

@@ -12,11 +12,12 @@ import view.WindowView;
 
 public class HintController implements ActionListener {
 
-	GridModel grid;
-	QueueModel queue;
-	WindowView window;
-	SumFun game;
-	int hintsRemaining;
+	private GridModel grid;
+	private QueueModel queue;
+	private WindowView window;
+	private SumFun game;
+	private SoundController sound;
+	private int hintsRemaining;
 
 	public HintController(GridModel grid, QueueModel queue, WindowView view, SumFun game) {
 		this.window = view;
@@ -24,11 +25,13 @@ public class HintController implements ActionListener {
 		this.queue = queue;
 		this.game = game;
 		hintsRemaining = 3;
+		sound = new SoundController();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (game.getStop()) {
+			sound.chimeError();
 			JOptionPane.showMessageDialog(null, "You cannot do that now! Please start a new game.");
 			return;
 		}
@@ -55,7 +58,6 @@ public class HintController implements ActionListener {
 			}
 
 			if (placeable) {
-				SoundController sound = new SoundController();
 				sound.chimeHint();
 				grid.highlightTile(maxRow, maxCol);
 				hintsRemaining--;
@@ -64,6 +66,7 @@ public class HintController implements ActionListener {
 				JOptionPane.showMessageDialog(null, "No possible move for hint. No hint used!");
 			}
 		} else {
+			sound.chimeError();
 			JOptionPane.showMessageDialog(null, "No hints remaining!");
 		}
 	}
