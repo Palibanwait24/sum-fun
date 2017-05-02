@@ -6,7 +6,7 @@ public class BotModel {
 
 	private GridModel gridModel;
 	private SumFun game;
-	private final int sleep = 0; // time between moves
+	private final int sleep = 500; // time between moves
 
 	public BotModel(SumFun game, GridModel gridModel) {
 		this.game = game;
