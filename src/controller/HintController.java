@@ -63,6 +63,7 @@ public class HintController implements ActionListener {
 				hintsRemaining--;
 				window.updateHintButtonCount(hintsRemaining);
 			} else {
+				sound.chimeTileSet();
 				JOptionPane.showMessageDialog(null, "No possible move for hint. No hint used!");
 			}
 		} else {
